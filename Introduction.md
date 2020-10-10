@@ -27,12 +27,11 @@ To get started with this tutorial, you should be familiar with:
 - Vanilla JS
 - React + React Hooks
 - Yarn
-- Familiarity with HTML and the DOM API
+- HTML and the DOM API
 
 In this tutorial, you will learn:
 
-- The Google Chrome Extension API
-- How to publish your Chrome Extension to the public
-- HTML Shadow Roots
-- Basic shell scripting in Bash or Windows CMD
-- How to transpile your code to Chrome-compatible JS using Webpack
+- Turn React to Chrome-compatible JS
+- Extension Background Scripts and Popups
+- Modify web pages with Content Scripts and the Shadow DOM
+- Publishing your Chrome Extension to the public and expedite review approval
