@@ -43,7 +43,7 @@ We'll break down each script in the following sections.
 
 Every Chrome Extension comes packages with a file called `manifest.json`. The manifest is used to orchestrate the Chrome Extension and instruct Chrome how and where to run your JavaScript components.
 
-Here is what our `manifest.json` should look like:
+First, create a `manifest.json` and add it to the `public` directory. Here is what our `manifest.json` should look like:
 
 ```json
 {
@@ -88,7 +88,7 @@ Your metadata will be visible at the url `chrome://extensions`
 
 - `permissions`: Listing permissions in this array gives you access to certain API operations such as `chrome.storage` and `chrome.bookmarks`. For our extension, we will only need access to `chrome.storage`, so we will use `storage`. Note: When you publish to the Chrome store, **you cannot request more permissions than your extension actually uses.** If you do, your application will be rejected by Chrome store reviewers.
 
-Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` api as an intermediary data store.
+Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` API as an intermediary data store.
 ![Communication between scripts](communication.png)
 
 ### Content Script
