@@ -8,11 +8,20 @@ So, for this tutorial, we'll build a simple extension that saves sticky notes on
 
 ## Create React App
 
+The best way to create a new react app is with `npx create-react-app`
 ..
 
-### Create the Sticky Note Component
+## Chrome Extension Configuration
 
-### Make the Sticky Note a Shadow Component
+Every chrome extension comes packages with
+
+### Creating the manifest
+
+### Content Script
+
+### Popup script
+
+### Create the Sticky Note Component
 
 ## Inject JS to the Webpage
 
@@ -27,6 +36,8 @@ So, for this tutorial, we'll build a simple extension that saves sticky notes on
 ## Persist Data in Chrome Storage
 
 ### Create a Background Script
+
+### Make the Sticky Note a Shadow Component
 
 ## Publish to the Chrome Store
 
