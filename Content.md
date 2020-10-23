@@ -4,7 +4,7 @@ The web is replete with great learning resources, but it's oftentimes difficult 
 
 So, for this tutorial, we'll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here's a simple mockup of what we'll build:
 
-![alt text](image.png)
+![alt text](mockup.png)
 
 ## Create React App
 
@@ -13,9 +13,22 @@ The best way to create a new react app is with `npx create-react-app`
 
 ## Chrome Extension Configuration
 
-Every chrome extension comes packages with
+Chrome Extensions may seem daunting, but it's really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know how to make Chrome extensions.
+
+Chrome extensions are composed of 3 main JavaScript components: Content Scripts, Popup Scripts, and Background Scripts. Additionally, every chrome extension must include a `manifest.json` that tells Chrome how to run your extension.
+
+![Chrome Extension Architecture](chrome extension.png)
+
+- `manifest.json`- Used to instruct Chrome how to run your scripts.
+
+-
+-
+
+We'll break down each script in the following sections.
 
 ### Creating the manifest
+
+Every Chrome Extension comes packages with a file called `manifest.json`. The manifest is used to orchestrate the Chrome Extension and instruct Chrome how and where to run your JavaScript components.
 
 ### Content Script
 
@@ -36,6 +49,8 @@ Every chrome extension comes packages with
 ## Persist Data in Chrome Storage
 
 ### Create a Background Script
+
+Since our extension is very simple, we won't require a backround script. However, if you wanted to use advanced techniques such as message passing, you can create a script called `background.js`
 
 ### Make the Sticky Note a Shadow Component
 
