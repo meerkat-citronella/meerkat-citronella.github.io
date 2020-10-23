@@ -286,6 +286,7 @@ First, create a `manifest.json` and add it to the `public` directory. Here is wh
 - `description`: Short description of what your app does. Note: This description is entirely separate from the description you will provide on the Chrome store page.
 
 Your metadata will be visible at the url `chrome://extensions`
+
 ![Metadata in the extensions tab](name.png)
 
 #### Scripts and permissions
@@ -360,7 +361,9 @@ We modified `package.json` to include 2 additional commands: `build:extension` a
 1. `build:extension` will run the `build-non-split.js` file and prevent Webpack from splitting the JS.
 2. Next, `build:clean` will rename the bundled js and css into a single set of files called `main.js` and `main.css` respectively. Finally, we remove the `static` directory, since it is no longer needed.
 
-From now on, when we are building our extension, we should run `yarn build:extension`.
+From now on, when we are building our extension, we should run `yarn build:extension`. Running this command will create a build directory that looks like this:
+
+![new build directory](newname.png)
 
 ### Content Script
 
@@ -385,6 +388,16 @@ From now on, when we are building our extension, we should run `yarn build:exten
 Since our extension is very simple, we won't require a backround script. However, if you wanted to use advanced techniques such as message passing, you can create a script called `background.js`
 
 ### Make the Sticky Note a Shadow Component
+
+## Testing your extension
+
+Now that we've finished building our extension, let's try it out.
+
+First, navigate to `chrome://extensions` in the URL bar. Next, enable `Developer Mode` in the top right corner. And lastly, click `Load Unpacked` and upload your `build` folder. That's it!
+
+![Enable developer mode and upload](developermode.png)
+
+Now, we can play around with our extension on any page.
 
 ## Publish to the Chrome Store
 
