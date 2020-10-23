@@ -11,6 +11,219 @@ So, for this tutorial, we'll build a simple extension that saves sticky notes on
 The best way to create a new react app is with `npx create-react-app`
 ..
 
+We are going to focus first on just building the react app, and then add the chrome extension functionality later.
+
+Run `npx create-react-app [YOUR_APP_NAME]` (we named ours react-chrome-sticky-note-extension) from a command line instance, and `cd` into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:
+
+![boilerplate react directory structure](react-boilerplate-dir-structure.png)
+
+Right off the bat we are going to download a module to help us out with styling our app. Frmo the root directory of your app (i.e. YOUR_APP_NAME), install styled-components into your app, with either `yarn add styled-components` or `npm install styled-components`
+
+Let's start with the file `App.js`. This will be the main component for our app. Let's go ahead and rename it, to something like `StickyNotes.js`. Also change the name of the component being rendered in the file in a similar fashion, from `App` to `StickyNotes`. Adjust the corresponding import in `index.js` (or let VSCode automatically updated it for you). Go ahead delete all the boilerplate in the return statement of the `StickyNotes` component.
+
+Next, we are going to make some styled components to use in our `StickyNotes` component. At the top of `StickyNotes.js` add the following:
+
+StickyNotes.js
+
+```
+// import the module
+import styled from 'styled-components'
+
+
+// the components
+const Container = styled.div`
+  z-index: 2;
+  border: 1px solid grey;
+  position: absolute;
+  background: white;
+  top: ${(props) => props.y + "px"};
+  left: ${(props) => props.x + "px"};
+`;
+
+const Header = styled.div`
+  height: 20px;
+  background-color: papayawhip;
+`;
+
+const StyledButton = styled.button`
+  height: 20px;
+  border: none;
+  opacity: 0.5;
+  float: right;
+`;
+
+const StyledTextArea = styled.textarea`
+  color: dark grey;
+  height: 200px;
+  width: 200px;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0.2);
+`;
+```
+
+if you're unfamiliar with styled-components, it's a very popular styling solution for React and you can read more about it here.
+Note that in `Container` we are passing props. More on this later.
+
+We are building this app with React Hooks. If you are unfamiliar with Hooks, you can read about them here. Hooks seem to be here to stay, and wonderfully abstract away a lot the extraneous typing that has to happen in a React class component.
+
+Let's create a stateful variable to hold our notes data. We will use the `useState` React hook:
+
+StickyNotes.js:
+
+```
+// import useState
+import React, { useState } from 'react'
+
+const StickyNotes = () => {
+  const [notes, setNotes] = useState([])
+
+  ...
+
+}
+```
+
+First, let's create the funcionality that let's us add a sticky note. We will be using shift + click. Let's add a listener to the component:
+
+StickyNotes.js:
+
+```
+// add useEffect to imports
+import React, { useState, useEffect } from "react";
+
+...
+
+const StickyNotes = () => {
+  const [notes, setNotes] = useState([])
+
+  // listen for shift + click to add note
+  useEffect(() => {
+    const clickListener = (e) => {
+      if (e.shiftKey) {
+        setNotes((prevNotes) => [...prevNotes, { x: e.pageX, y: e.pageY }]);
+      }
+    }
+    document.addEventListener("click", clickListener);
+    return () => document.removeEventListener("click", clickListener);
+  }, []);
+
+  ...
+
+}
+```
+
+Few things to note about this `useEffect` function. Note that we are removing the listener on `useEffect` return. You can read more about cleaning up effects here. You should always remove your listeners in React, as subsequent renders will keep adding listeners unless they are removed. Note that we are using a named function for the listener callback, another necessity if we want to remove the listener (needs a reference a named function). Lastly, note the empty dependency array `[]` as the second and final argument of the `useEffect` callback function: this is intentional, as we only need to set the listener once, on the first render. You can read more about dependency arrays in regards to `useEffect` here.
+
+For the `setNotes` function call, we are making use of JavaScript's wonderfully expressive object literal notation, and using the splat operator `...` to set our `notes` variable. You can read more about object destructuring and the splat operator here. `e.pageX, e.pageY` are the pixel coordinates of the click on the page.
+
+Remember the props we set up to be passed to our `Container` styled component above? Let's bring that into play. Let's set up our `return` statement:
+
+StickyNotes.js:
+
+```
+...
+
+const StickyNotes = () => {
+
+  ...
+
+  return (
+    <div>
+      {notes.map((note) => (
+        <Container x={note.x} y={note.y}>
+          <Header>
+            <StyledButton>X</StyledButton>
+          </Header>
+          <StyledTextArea />
+        </Container>
+      ))}
+    </div>
+  );
+}
+
+```
+
+The coordinates we gleaned from our shift + click listener are passed via props to the `Container` styled component, which then uses those coordinates to absolutely position itself on the page! You should now have some functionality that looks like this:
+
+![basic sticky note functionality](basic-note.gif)
+
+Although we are able to enter text into the `textarea`, it is not being saved at all. To do this, we need to turn the `textarea` into a controlled component. You can read more about React controlled components here. This is standard practice for React forms. We will save the note text from `textarea` alongside the coordinate data in the `notes` variable.
+
+In `StickyNotes.js`, update the component return statement to:
+
+```
+...
+const StickyNotes = () => {
+
+  ...
+
+  return (
+    <div>
+      {notes.map((note) => {
+        const handleChange = (e) => {
+          const editedText = e.target.value;
+          setNotes((prevNotes) =>
+            prevNotes.reduce(
+              (acc, cv) =>
+                cv.x === note.x && cv.y === note.y
+                  ? acc.push({ ...cv, note: editedText }) && acc
+                  : acc.push(cv) && acc,
+              []
+            )
+          );
+        };
+
+        return (
+          <Container x={note.x} y={note.y}>
+            <Header>
+              <StyledButton>X</StyledButton>
+            </Header>
+            <StyledTextArea onChange={handleChange} />
+          </Container>
+        );
+      })}
+    </div>
+  );
+}
+```
+
+We again make use of the splat notation, as well as terneray operators (read more here) and the `&&` notation. `setNotes` here is identifying the note that is being edited (by comparing the coordinates of the note (`cv`) with the coordinates in the locally-scoped `note` variable) and adding (or editing) the `note` property.
+
+The `textarea` is now a controlled component. You can log `notes` to the console, and see that is updating as you edit a note.
+
+Next, let's add functionality for the delete button. Change the component `return` statement to add the following:
+
+StickyNotes.js:
+
+```
+...
+return (
+    <div>
+      {notes.map((note) => {
+
+        ...
+
+        const handleDelete = () => {
+          setNotes((prevNotes) =>
+            prevNotes.reduce(
+              (acc, cv) =>
+                cv.x === note.x && cv.y === note.y ? acc : acc.push(cv) && acc,
+              []
+            )
+          );
+        };
+
+        return (
+          ...
+              <Header>
+                <StyledButton onClick={handleDelete}>X</StyledButton>
+              </Header>
+          ...
+        );
+      })}
+    </div>
+  );
+```
+
 ## Chrome Extension Configuration
 
 Chrome Extensions may seem daunting, but it's really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know how to make Chrome extensions.
