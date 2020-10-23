@@ -25,10 +25,9 @@ Next, we are going to make some styled components to use in our `StickyNotes` co
 
 StickyNotes.js
 
-```
+```jsx
 // import the module
-import styled from 'styled-components'
-
+import styled from "styled-components";
 
 // the components
 const Container = styled.div`
@@ -70,7 +69,7 @@ Let's create a stateful variable to hold our notes data. We will use the `useSta
 
 StickyNotes.js:
 
-```
+```jsx
 // import useState
 import React, { useState } from 'react'
 
@@ -86,7 +85,7 @@ First, let's create the funcionality that let's us add a sticky note. We will be
 
 StickyNotes.js:
 
-```
+```jsx
 // add useEffect to imports
 import React, { useState, useEffect } from "react";
 
@@ -119,7 +118,7 @@ Remember the props we set up to be passed to our `Container` styled component ab
 
 StickyNotes.js:
 
-```
+```jsx
 ...
 
 const StickyNotes = () => {
@@ -150,7 +149,7 @@ Although we are able to enter text into the `textarea`, it is not being saved at
 
 In `StickyNotes.js`, update the component return statement to:
 
-```
+```jsx
 ...
 const StickyNotes = () => {
 
@@ -194,7 +193,7 @@ Next, let's add functionality for the delete button. Change the component `retur
 
 StickyNotes.js:
 
-```
+```jsx
 ...
 return (
     <div>
@@ -305,6 +304,61 @@ Your metadata will be visible at the url `chrome://extensions`
 
 Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` API as an intermediary data store.
 ![Communication between scripts](communication.png)
+
+## Make React Compatible with Chrome
+
+Remember at the beginning we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension's package, Chrome won't know how to read your files and fail to run your extension.
+
+TODO:
+As mentioned earlier, a valid Chrome extension package needs a `manifest.json` and set of files and assets to use.
+
+### Prevent JavaScript file splitting
+
+By default, Create React App is configured with Webpack. According to Webpack's documentation: "Code splitting is one of the most compelling features of webpack. This feature allows you to split your code into various bundles which can then be loaded on demand or in parallel."
+
+Unfortunately for us, code splitting makes it difficult to package our code into an extension.
+
+Additionally, Webpack adds random hashes to the files it builds. (This is to prompt browser to re-fetch files that may have changed between builds instead of relying on cached files). However, this also poses an issue for us because unless we account for the hash changes, we'll have to change our `manifest.json` to match the new files names every time we build.
+
+![file_splitting](file_splitting.png)
+
+To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.
+
+```js
+const rewire = require("rewire");
+const defaults = rewire("react-scripts/scripts/build.js");
+let config = defaults.__get__("config");
+
+config.optimization.splitChunks = {
+  cacheGroups: {
+    default: false,
+  },
+};
+
+config.optimization.runtimeChunk = false;
+```
+
+Next, we need to modify our `package.json` to prevent code splitting and hashing.
+
+```json
+  ...
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "build:extension": "node ./scripts/build-non-split.js && yarn build:clean",
+    "build:clean": "cd build && mv static/js/*.js main.js && mv static/css/*.css main.css && rm -r static",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  ...
+```
+
+We modified `package.json` to include 2 additional commands: `build:extension` and `build:clean`.
+
+1. `build:extension` will run the `build-non-split.js` file and prevent Webpack from splitting the JS.
+2. Next, `build:clean` will rename the bundled js and css into a single set of files called `main.js` and `main.css` respectively. Finally, we remove the `static` directory, since it is no longer needed.
+
+From now on, when we are building our extension, we should run `yarn build:extension`.
 
 ### Content Script
 
