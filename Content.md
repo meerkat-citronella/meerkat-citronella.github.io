@@ -325,6 +325,7 @@ Additionally, Webpack adds random hashes to the files it builds. (This is to pro
 To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.
 
 ```js
+// build-non-split.js
 const rewire = require("rewire");
 const defaults = rewire("react-scripts/scripts/build.js");
 let config = defaults.__get__("config");
@@ -341,6 +342,7 @@ config.optimization.runtimeChunk = false;
 Next, we need to modify our `package.json` to prevent code splitting and hashing.
 
 ```json
+// package.json
   ...
   "scripts": {
     "start": "react-scripts start",
