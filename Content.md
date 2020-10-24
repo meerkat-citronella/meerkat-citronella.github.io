@@ -352,7 +352,7 @@ We'll break down each script in the following sections.
 
 Every Chrome Extension comes packages with a file called `manifest.json`. The manifest is used to orchestrate the Chrome Extension and instruct Chrome how and where to run your JavaScript components.
 
-Here is what our `manifest.json` should look like:
+First, create a `manifest.json` and add it to the `public` directory. Here is what our `manifest.json` should look like:
 
 ```json
 {
@@ -381,6 +381,7 @@ Here is what our `manifest.json` should look like:
 - `description`: Short description of what your app does. Note: This description is entirely separate from the description you will provide on the Chrome store page.
 
 Your metadata will be visible at the url `chrome://extensions`
+
 ![Metadata in the extensions tab](name.png)
 
 #### Scripts and permissions
@@ -397,8 +398,67 @@ Your metadata will be visible at the url `chrome://extensions`
 
 - `permissions`: Listing permissions in this array gives you access to certain API operations such as `chrome.storage` and `chrome.bookmarks`. For our extension, we will only need access to `chrome.storage`, so we will use `storage`. Note: When you publish to the Chrome store, **you cannot request more permissions than your extension actually uses.** If you do, your application will be rejected by Chrome store reviewers.
 
-Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` api as an intermediary data store.
+Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` API as an intermediary data store.
 ![Communication between scripts](communication.png)
+
+## Make React Compatible with Chrome
+
+Remember at the beginning we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension's package, Chrome won't know how to read your files and fail to run your extension.
+
+TODO:
+As mentioned earlier, a valid Chrome extension package needs a `manifest.json` and set of files and assets to use.
+
+### Prevent JavaScript file splitting
+
+By default, Create React App is configured with Webpack. According to Webpack's documentation: "Code splitting is one of the most compelling features of webpack. This feature allows you to split your code into various bundles which can then be loaded on demand or in parallel."
+
+Unfortunately for us, code splitting makes it difficult to package our code into an extension.
+
+Additionally, Webpack adds random hashes to the files it builds. (This is to prompt browser to re-fetch files that may have changed between builds instead of relying on cached files). However, this also poses an issue for us because unless we account for the hash changes, we'll have to change our `manifest.json` to match the new files names every time we build.
+
+![file_splitting](file_splitting.png)
+
+To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.
+
+```js
+// build-non-split.js
+const rewire = require("rewire");
+const defaults = rewire("react-scripts/scripts/build.js");
+let config = defaults.__get__("config");
+
+config.optimization.splitChunks = {
+  cacheGroups: {
+    default: false,
+  },
+};
+
+config.optimization.runtimeChunk = false;
+```
+
+Next, we need to modify our `package.json` to prevent code splitting and hashing.
+
+```json
+// package.json
+  ...
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "build:extension": "node ./scripts/build-non-split.js && yarn build:clean",
+    "build:clean": "cd build && mv static/js/*.js main.js && mv static/css/*.css main.css && rm -r static",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  ...
+```
+
+We modified `package.json` to include 2 additional commands: `build:extension` and `build:clean`.
+
+1. `build:extension` will run the `build-non-split.js` file and prevent Webpack from splitting the JS.
+2. Next, `build:clean` will rename the bundled js and css into a single set of files called `main.js` and `main.css` respectively. Finally, we remove the `static` directory, since it is no longer needed.
+
+From now on, when we are building our extension, we should run `yarn build:extension`. Running this command will create a build directory that looks like this:
+
+![new build directory](newname.png)
 
 ### Content Script
 
@@ -499,6 +559,16 @@ Note that we are using chrome.storage.local instead of chrome.
 Since our extension is very simple, we won't require a backround script. However, if you wanted to use advanced techniques such as message passing, you can create a script called `background.js`
 
 ### Make the Sticky Note a Shadow Component
+
+## Testing your extension
+
+Now that we've finished building our extension, let's try it out.
+
+First, navigate to `chrome://extensions` in the URL bar. Next, enable `Developer Mode` in the top right corner. And lastly, click `Load Unpacked` and upload your `build` folder. That's it!
+
+![Enable developer mode and upload](developermode.png)
+
+Now, we can play around with our extension on any page.
 
 ## Publish to the Chrome Store
 
