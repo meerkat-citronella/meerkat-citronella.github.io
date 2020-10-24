@@ -25,10 +25,9 @@ Next, we are going to make some styled components to use in our `StickyNotes` co
 
 StickyNotes.js
 
-```
+```jsx
 // import the module
-import styled from 'styled-components'
-
+import styled from "styled-components";
 
 // the components
 const Container = styled.div`
@@ -70,7 +69,7 @@ Let's create a stateful variable to hold our notes data. We will use the `useSta
 
 StickyNotes.js:
 
-```
+```jsx
 // import useState
 import React, { useState } from 'react'
 
@@ -86,7 +85,7 @@ First, let's create the funcionality that let's us add a sticky note. We will be
 
 StickyNotes.js:
 
-```
+```jsx
 // add useEffect to imports
 import React, { useState, useEffect } from "react";
 
@@ -119,7 +118,7 @@ Remember the props we set up to be passed to our `Container` styled component ab
 
 StickyNotes.js:
 
-```
+```jsx
 ...
 
 const StickyNotes = () => {
@@ -150,7 +149,7 @@ Although we are able to enter text into the `textarea`, it is not being saved at
 
 In `StickyNotes.js`, update the component return statement to:
 
-```
+```jsx
 ...
 const StickyNotes = () => {
 
@@ -194,7 +193,7 @@ Next, let's add functionality for the delete button. Change the component `retur
 
 StickyNotes.js:
 
-```
+```jsx
 ...
 return (
     <div>
@@ -225,6 +224,101 @@ return (
 ```
 
 This is the core functionality of the app! We can add notes, edit them, and delete them, and it is all saved in a single stateful variable. Next we'll turn this humble React app into a Chrome extension.
+
+The full code of StickyNotes.js at this point is as follows:
+
+StickyNotes.js:
+
+```jsx
+import React, { useState, useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import styled from "styled-components";
+
+const Container = styled.div`
+  z-index: 2;
+  border: 1px solid grey;
+  position: absolute;
+  background: white;
+  top: ${(props) => props.y + "px"};
+  left: ${(props) => props.x + "px"};
+`;
+
+const Header = styled.div`
+  height: 20px;
+  background-color: papayawhip;
+`;
+
+const StyledButton = styled.button`
+  height: 20px;
+  border: none;
+  opacity: 0.5;
+  float: right;
+`;
+
+const StyledTextArea = styled.textarea`
+  color: dark grey;
+  height: 200px;
+  width: 200px;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0.2);
+`;
+
+const StickyNotes = () => {
+  const [notes, setNotes] = useState([]);
+
+  // listen for shift + click to add note
+  useEffect(() => {
+    const clickListener = (e) => {
+      if (e.shiftKey) {
+        setNotes((prevNotes) => [...prevNotes, { x: e.pageX, y: e.pageY }]);
+      }
+    };
+    document.addEventListener("click", clickListener);
+    return () => document.removeEventListener("click", clickListener);
+  }, []);
+
+  return (
+    <div>
+      {notes.map((note) => {
+        const handleChange = (e) => {
+          const editedText = e.target.value;
+          setNotes((prevNotes) =>
+            prevNotes.reduce(
+              (acc, cv) =>
+                cv.x === note.x && cv.y === note.y
+                  ? acc.push({ ...cv, note: editedText }) && acc
+                  : acc.push(cv) && acc,
+              []
+            )
+          );
+        };
+
+        const handleDelete = () => {
+          setNotes((prevNotes) =>
+            prevNotes.reduce(
+              (acc, cv) =>
+                cv.x === note.x && cv.y === note.y ? acc : acc.push(cv) && acc,
+              []
+            )
+          );
+        };
+
+        return (
+          <Container x={note.x} y={note.y}>
+            <Header>
+              <StyledButton onClick={handleDelete}>X</StyledButton>
+            </Header>
+            <StyledTextArea onChange={handleChange} />
+          </Container>
+        );
+      })}
+    </div>
+  );
+};
+
+export default StickyNotes;
+```
 
 ## Chrome Extension Configuration
 
@@ -324,6 +418,82 @@ Our popup script will communicate to the content script (and vice versa) by usin
 
 ## Persist Data in Chrome Storage
 
+Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a chrome extension, we will be using the chrome.storage api (read about it here).
+
+First, add `/* global chrome */` to the top of StickyNotes.js:
+
+```jsx
+/* global chrome */
+import React, { useState, useEffect } from "react";
+...
+```
+
+This will make the chrome variables available when you run the extension in the browser. But note: chrome variables are not available when the app is spun up locally in dev mode! If you try to, for example, access chrome storage via a method like `chrome.storage.local.get()` while the app is running locally, you will get a syntax error. For this reason, let's set an environment variable and an easy toggle to access it. We'll create a `.env` file in the root folder of the project:
+
+.env:
+
+```env
+REACT_APP_LOCAL=true
+```
+
+We'll also create another file, which we'll reference to determine if the app is running locally:
+
+constants.js:
+
+```js
+export const localMode = process.env.REACT_APP_LOCAL === "true";
+```
+
+When spinning up the app locally, set this REACT_APP_LOCAL to "true", and when building it as a chrome extension, change it to "false" (or comment out the line, or change it to literally any other string... .env vars aren't imported as boolean, it's just a string).
+
+In StickyNotes.js, let's use another `useEffect` hook to `set()` our `notes` data to chrome storage on a note edit. We are going to organize our notes by URL; each URL will have it's own unique set of notes that the React app will save to and retrieve from chrome storage. Remember to import `localMode` from `constants.js` at the top of the file.
+
+Let's also add a `useEffect` to access the stored notes data for the URL in question, if there is any.
+
+StickyNotes.js:
+
+```jsx
+// import localMode
+import { localMode } from "./constants";
+
+...
+
+const StickyNotes = () => {
+  const [notes, setNotes] = useState([]);
+  const url = window.location.href; // save the url to a variable
+
+  ...
+
+  ...
+
+
+  // get notes if they're there
+  useEffect(() => {
+    if (!localMode) {
+      chrome.storage.local.get(url, (items) => {
+        items[url] && setNotes(items[url]);
+      });
+    }
+  }, []);
+
+  // set()
+  useEffect(() => {
+    if (!localMode) {
+      notes.length > 0
+        ? chrome.storage.local.set({ [url]: notes })
+        : chrome.storage.local.remove(url);
+    }
+  }, [notes]);
+
+  return (
+    ...
+  )
+}
+
+```
+
+Note that we are using chrome.storage.local instead of chrome.
+
 ### Create a Background Script
 
 Since our extension is very simple, we won't require a backround script. However, if you wanted to use advanced techniques such as message passing, you can create a script called `background.js`
@@ -335,3 +505,7 @@ Since our extension is very simple, we won't require a backround script. However
 ### Instructions
 
 ### Improving Your Odds of Getting Approved
+
+### appendix
+
+Stackoverflow thread on code-splitting while building, and prevent chunk files: https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix
