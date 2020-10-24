@@ -674,26 +674,11 @@ return (
     <div>
       {notes.map((note) => {
         const handleChange = (e) => {
-          const editedText = e.target.value;
-          setNotes((prevNotes) =>
-            prevNotes.reduce(
-              (acc, cv) =>
-                cv.x === note.x && cv.y === note.y
-                  ? acc.push({ ...cv, note: editedText }) && acc
-                  : acc.push(cv) && acc,
-              []
-            )
-          );
+          ...
         };
 
         const handleDelete = () => {
-          setNotes((prevNotes) =>
-            prevNotes.reduce(
-              (acc, cv) =>
-                cv.x === note.x && cv.y === note.y ? acc : acc.push(cv) && acc,
-              []
-            )
-          );
+          ...
         };
 
         return (
@@ -710,6 +695,8 @@ return (
     </div>
   );
 ```
+
+Go back to `www.example.com`, and voila! Our notes look the way we want them to.
 
 ### Add a dashboard / popup.html
 
