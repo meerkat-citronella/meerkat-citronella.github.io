@@ -700,6 +700,179 @@ Go back to `www.example.com`, and voila! Our notes look the way we want them to.
 
 ### Add a dashboard / popup.html
 
+At this point we have a decent notes app, but it can still be better. And we also have yet to make use of the chrome extension popup page, which is the probably the most recognizable feature of a chrome extension.
+
+For our popup page, we will be making a dashboard showing all the URLs that we have notes on, as well as all the notes at those URLS. A library for our notes, if you will. This will demonstrate a) how to inject React into the chrome extension popup, and b) a way to communicate between the popup and the content script via `chrome.storage`.
+
+The mechanics of creating the popup page component are pretty similar to how we made our `StickyNotes` component. We will use `useEffect` to query `chrome.storage.local`, set to a `notes` stateful variable, and use `styled-components` as our styling solution.
+
+PopupComponent.js:
+
+```jsx
+/* global chrome */
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+
+import { localMode } from "./constants";
+
+const ListNoMarker = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+const UrlP = styled.p`
+  background: papayawhip;
+  margin: 0.5em;
+  padding: 0.5em;
+  overflow: scroll;
+`;
+
+const UrlEntry = ({ entry }) => {
+  const [open, setOpen] = useState(false);
+  const url = entry[0];
+  const notes = entry[1];
+
+  return (
+    <li onClick={() => setOpen(!open)}>
+      <UrlP>
+        <b>{url}</b>
+      </UrlP>
+      {notes && (
+        <ul style={open ? { display: "inherit" } : { display: "none" }}>
+          {notes.map((note) => (
+            <li>{note.note}</li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+};
+
+export const PopupComponent = () => {
+  const [notes, setNotes] = useState([]);
+
+  // get notes to display in popup.html
+  useEffect(() => {
+    if (!localMode) {
+      chrome.storage.local.get((items) => {
+        setNotes(items);
+      });
+    }
+  }, []);
+
+  return (
+    <div>
+      <h3>Hello from sticky notes!</h3>
+      <p>
+        Press{" "}
+        <strong>
+          <i>Shift</i>
+        </strong>
+        + click to make a new note.
+      </p>
+      <h4>Your notes:</h4>
+      {notes && (
+        <ListNoMarker>
+          {Object.entries(notes).map((entry) => (
+            <UrlEntry entry={entry} />
+          ))}
+        </ListNoMarker>
+      )}
+    </div>
+  );
+};
+```
+
+The tricky part comes in making sure that `PopupComponent` gets where it needs to go (the `popup.html`) and doesn't go where it isn't needed (in the sticky notes).
+
+Remmeber in `manifest.json`, assinging the default popup like so?
+
+```json
+{
+  ...
+
+  "browser_action": {
+    "default_popup": "./popup.html"
+  }
+
+  ...
+}
+```
+
+Add a new file `popup.html` to the `public` directory. In it, put:
+
+popup.html:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sticky Notes</title>
+    <style>
+      body {
+        height: 400px;
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="popup-root"></div>
+  </body>
+  <script src="./main.js"></script>
+</html>
+```
+
+Now, in `index.js`, modify it so it looks like:
+
+index.js:
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import StickyNotes from "./StickyNotes";
+
+import { PopupComponent } from "./PopupComponent";
+
+const popupRoot = document.getElementById("popup-root");
+
+const insertionPoint = document.createElement("div");
+insertionPoint.id = "insertion-point";
+document.body.parentNode.insertBefore(insertionPoint, document.body);
+
+// StickyNotes / content script
+!popupRoot &&
+  ReactDOM.render(
+    <React.StrictMode>
+      <StickyNotes />
+    </React.StrictMode>,
+    document.getElementById("insertion-point")
+  );
+
+// PopupComponent / popup.html
+popupRoot &&
+  ReactDOM.render(
+    <React.Fragment>
+      <PopupComponent />
+    </React.Fragment>,
+    popupRoot
+  );
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+```
+
+How is this working? Well, when we build the React app, all these files are going to be in the `build` directory. In `popup.html`, we are loading up `main.js` via a `<script>` tag. `main.js` will run like a normal js file, having access to the DOM of `popup.html`.
+
+In `index.js`, we have created a way for our React app to render different parts of the app into different html files. It will search the DOM for the `popup-root` id, and if it's there, render the `PopupComponent`, and if it's not, render the content script for the sticky notes.
+
+Navigate to a webpage, and test it our for yourself!
+
+![complete notes app on google.com](completed-notes-app-google.gif)
+
 ## Publish to the Chrome Store
 
 ### Instructions
