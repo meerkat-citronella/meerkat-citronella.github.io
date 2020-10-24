@@ -352,7 +352,7 @@ We'll break down each script in the following sections.
 
 Every Chrome Extension comes packages with a file called `manifest.json`. The manifest is used to orchestrate the Chrome Extension and instruct Chrome how and where to run your JavaScript components.
 
-First, create a `manifest.json` and add it to the `public` directory. Here is what our `manifest.json` should look like:
+Here is what our `manifest.json` should look like:
 
 ```json
 {
@@ -381,7 +381,6 @@ First, create a `manifest.json` and add it to the `public` directory. Here is wh
 - `description`: Short description of what your app does. Note: This description is entirely separate from the description you will provide on the Chrome store page.
 
 Your metadata will be visible at the url `chrome://extensions`
-
 ![Metadata in the extensions tab](name.png)
 
 #### Scripts and permissions
@@ -398,67 +397,8 @@ Your metadata will be visible at the url `chrome://extensions`
 
 - `permissions`: Listing permissions in this array gives you access to certain API operations such as `chrome.storage` and `chrome.bookmarks`. For our extension, we will only need access to `chrome.storage`, so we will use `storage`. Note: When you publish to the Chrome store, **you cannot request more permissions than your extension actually uses.** If you do, your application will be rejected by Chrome store reviewers.
 
-Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` API as an intermediary data store.
+Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` api as an intermediary data store.
 ![Communication between scripts](communication.png)
-
-## Make React Compatible with Chrome
-
-Remember at the beginning we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension's package, Chrome won't know how to read your files and fail to run your extension.
-
-TODO:
-As mentioned earlier, a valid Chrome extension package needs a `manifest.json` and set of files and assets to use.
-
-### Prevent JavaScript file splitting
-
-By default, Create React App is configured with Webpack. According to Webpack's documentation: "Code splitting is one of the most compelling features of webpack. This feature allows you to split your code into various bundles which can then be loaded on demand or in parallel."
-
-Unfortunately for us, code splitting makes it difficult to package our code into an extension.
-
-Additionally, Webpack adds random hashes to the files it builds. (This is to prompt browser to re-fetch files that may have changed between builds instead of relying on cached files). However, this also poses an issue for us because unless we account for the hash changes, we'll have to change our `manifest.json` to match the new files names every time we build.
-
-![file_splitting](file_splitting.png)
-
-To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.
-
-```js
-// build-non-split.js
-const rewire = require("rewire");
-const defaults = rewire("react-scripts/scripts/build.js");
-let config = defaults.__get__("config");
-
-config.optimization.splitChunks = {
-  cacheGroups: {
-    default: false,
-  },
-};
-
-config.optimization.runtimeChunk = false;
-```
-
-Next, we need to modify our `package.json` to prevent code splitting and hashing.
-
-```json
-// package.json
-  ...
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build:extension": "node ./scripts/build-non-split.js && yarn build:clean",
-    "build:clean": "cd build && mv static/js/*.js main.js && mv static/css/*.css main.css && rm -r static",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  ...
-```
-
-We modified `package.json` to include 2 additional commands: `build:extension` and `build:clean`.
-
-1. `build:extension` will run the `build-non-split.js` file and prevent Webpack from splitting the JS.
-2. Next, `build:clean` will rename the bundled js and css into a single set of files called `main.js` and `main.css` respectively. Finally, we remove the `static` directory, since it is no longer needed.
-
-From now on, when we are building our extension, we should run `yarn build:extension`. Running this command will create a build directory that looks like this:
-
-![new build directory](newname.png)
 
 ### Content Script
 
@@ -552,7 +492,126 @@ const StickyNotes = () => {
 
 ```
 
-Note that we are using chrome.storage.local instead of chrome.
+Note that we are using `chrome.storage.local` instead of `chrome.storage.sync` (read about the difference here). We are doing this primarily because of the write limits to sync.
+
+Note also the `set`ter function removes the entry from the database if there are no notes. We don't want to be piling up URLs in our chrome storage that don't have any notes in them!
+
+You now have a fully-functioning notes app chrome extension! It's still very bare bones and there are still some bugs, so let's continue refining it. The code as of now should look like the below.
+
+StickyNotes.js:
+
+```jsx
+/* global chrome */
+import React, { useState, useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import styled from "styled-components";
+
+import { localMode } from "./constants";
+
+const Container = styled.div`
+  z-index: 2;
+  border: 1px solid grey;
+  position: absolute;
+  background: white;
+  top: ${(props) => props.y + "px"};
+  left: ${(props) => props.x + "px"};
+`;
+
+const Header = styled.div`
+  height: 20px;
+  background-color: papayawhip;
+`;
+
+const StyledButton = styled.button`
+  height: 20px;
+  border: none;
+  opacity: 0.5;
+  float: right;
+`;
+
+const StyledTextArea = styled.textarea`
+  color: dark grey;
+  height: 200px;
+  width: 200px;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0.2);
+`;
+
+const StickyNotes = () => {
+  const [notes, setNotes] = useState([]);
+  const url = window.location.href;
+
+  // listen for shift + click to add note
+  useEffect(() => {
+    const clickListener = (e) => {
+      if (e.shiftKey) {
+        setNotes((prevNotes) => [...prevNotes, { x: e.pageX, y: e.pageY }]);
+      }
+    };
+    document.addEventListener("click", clickListener);
+    return () => document.removeEventListener("click", clickListener);
+  }, []);
+
+  // get notes if they're there
+  useEffect(() => {
+    if (!localMode) {
+      chrome.storage.local.get(url, (items) => {
+        items[url] && setNotes(items[url]);
+      });
+    }
+  }, []);
+
+  // set()
+  useEffect(() => {
+    if (!localMode) {
+      notes.length > 0
+        ? chrome.storage.local.set({ [url]: notes })
+        : chrome.storage.local.remove(url);
+    }
+  }, [notes]);
+
+  return (
+    <div>
+      {notes.map((note) => {
+        const handleChange = (e) => {
+          const editedText = e.target.value;
+          setNotes((prevNotes) =>
+            prevNotes.reduce(
+              (acc, cv) =>
+                cv.x === note.x && cv.y === note.y
+                  ? acc.push({ ...cv, note: editedText }) && acc
+                  : acc.push(cv) && acc,
+              []
+            )
+          );
+        };
+
+        const handleDelete = () => {
+          setNotes((prevNotes) =>
+            prevNotes.reduce(
+              (acc, cv) =>
+                cv.x === note.x && cv.y === note.y ? acc : acc.push(cv) && acc,
+              []
+            )
+          );
+        };
+
+        return (
+          <Container x={note.x} y={note.y}>
+            <Header>
+              <StyledButton onClick={handleDelete}>X</StyledButton>
+            </Header>
+            <StyledTextArea onChange={handleChange} />
+          </Container>
+        );
+      })}
+    </div>
+  );
+};
+
+export default StickyNotes;
+```
 
 ### Create a Background Script
 
@@ -560,15 +619,99 @@ Since our extension is very simple, we won't require a backround script. However
 
 ### Make the Sticky Note a Shadow Component
 
-## Testing your extension
+One very important aspect of creating a browser extension is dealing with how it interacts with the existing content of the webpage. A React app is really just javascript, and as we saw above when crafting the `insertionPoint`, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it's own styling rules.
 
-Now that we've finished building our extension, let's try it out.
+Let's look at a concrete example of this. Load your chrome extension into chrome, and navigate to `www.example.com`. Shift + click to add a note, and see what happens.
 
-First, navigate to `chrome://extensions` in the URL bar. Next, enable `Developer Mode` in the top right corner. And lastly, click `Load Unpacked` and upload your `build` folder. That's it!
+![Styling conflicts between extension and example.com](example-site-styling-conflicts.gif)
 
-![Enable developer mode and upload](developermode.png)
+Our styling!! What happened? Well clearly, `www.example.com` has its own styling rules, and they are conflicting with those of our app.
 
-Now, we can play around with our extension on any page.
+There are a few solutions here. The first is to try to override the webpage's styling by using css techniques that take a higher precedence when the browser is computing styling, such as using `!important` or inline styling. These are inelegant solutions, both because they could potentially cause the inverse problem (our extension overriding the page styles and borking them up) and because they are heavy-handed and limited in the styling issues they can address (no more `styled-components`, for example). The second is to render these notes in an `<iframe>` element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these `StickyNotes` components inside of a shadow DOM instance.
+
+You can think of the shadow DOM as a "DOM within a DOM." Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don't conflict with those of the host webpage. You can read more about shadom DOMs here.
+
+To implement the shadow DOM in our app, we are going to use the module `react-shadow`. Read more about it in the repo here. Go ahead and add the package to your project via `npm i react-shadow` or `yarn add react-shadow`.
+
+Let's make a new file called `ShadowRoot.js` in our `src` folder. Add the code below:
+
+ShadowRoot.js:
+
+```jsx
+import React, { useState } from "react";
+import root from "react-shadow";
+import { StyleSheetManager } from "styled-components";
+
+export const ShadowRoot = ({ children }) => {
+  const [stylesNode, setStylesNode] = useState(null);
+
+  return (
+    <root.div>
+      <div ref={(node) => setStylesNode(node)}>
+        {stylesNode && (
+          <StyleSheetManager target={stylesNode}>{children}</StyleSheetManager>
+        )}
+      </div>
+    </root.div>
+  );
+};
+```
+
+`react-shadow` creates a new instance of a shadow DOM by wrapping a React component tree in a `<div>` element to which a shadow DOM is attached. This React component tree is now free from the pesky host page styles, and can style itself how it wants without fear of conflict! Note that we are adding a `StyleSheetManager` from `styled-components`. This is necessary, as under the hood, `styled-components` works by adding a class to each styled component, and specifying in the document `<head>` the styling of those classes. But since we are now in shadow DOM-land, our React component is cut off from the `<head>` of the document--so we have to re-insert those styles into the shadow DOM.
+
+Import `ShadowRoot` into `StickyNotes.js` and wrap the component, like so:
+
+StickyNotes.js:
+
+```jsx
+...
+import { ShadowRoot } from "./ShadowRoot";
+
+...
+...
+
+return (
+    <div>
+      {notes.map((note) => {
+        const handleChange = (e) => {
+          const editedText = e.target.value;
+          setNotes((prevNotes) =>
+            prevNotes.reduce(
+              (acc, cv) =>
+                cv.x === note.x && cv.y === note.y
+                  ? acc.push({ ...cv, note: editedText }) && acc
+                  : acc.push(cv) && acc,
+              []
+            )
+          );
+        };
+
+        const handleDelete = () => {
+          setNotes((prevNotes) =>
+            prevNotes.reduce(
+              (acc, cv) =>
+                cv.x === note.x && cv.y === note.y ? acc : acc.push(cv) && acc,
+              []
+            )
+          );
+        };
+
+        return (
+          <ShadowRoot>
+            <Container x={note.x} y={note.y}>
+              <Header>
+                <StyledButton onClick={handleDelete}>X</StyledButton>
+              </Header>
+              <StyledTextArea onChange={handleChange} />
+            </Container>
+          </ShadowRoot>
+        );
+      })}
+    </div>
+  );
+```
+
+### Add a dashboard / popup.html
 
 ## Publish to the Chrome Store
 
