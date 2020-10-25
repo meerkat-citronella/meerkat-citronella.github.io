@@ -175,7 +175,7 @@ const StickyNotes = () => {
             <Header>
               <StyledButton>X</StyledButton>
             </Header>
-            <StyledTextArea onChange={handleChange} />
+            <StyledTextArea onChange={handleChange} value={note.note ? note.note : ""}/>
           </Container>
         );
       })}
