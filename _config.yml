@@ -1,3 +1,9 @@
 theme: jekyll-theme-cayman
 title: myCustomTitle
 description: myCustomAndDetailedDescription
+markdown: kramdown
+kramdown:
+  highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
