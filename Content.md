@@ -1,18 +1,20 @@
 # Introduction
 
-## Browsers are the future!
+## Browsers are the future
 
 Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of market share with claims from Google of over 2 billion active Chrome browsers in 2016. Chrome is wonderful for a handful of reasons:
 
 1. It looks and runs the same on most computers
 2. It's easy to install
-3. You can turbocharge Chrome using Extensions.
+3. You can turbocharge Chrome using Extensions
 
-Regarding point number 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you're probability familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ)? Their software is almost entirely based around browser extensions, and Paypal just bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
+Regarding point 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you're probability familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ)? Their product is almost entirely based around browser extensions, and Paypal just bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
 
 ## Extensions are great, but not simple to build with React
 
-In the year 2020, there are countless JavaScript frameworks that make developing for the web easier than ever. ReactJS happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building beautiful frontend UIs. Unfortunately, Chrome extensions don't work the same as traditional web applications. At [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. Long story short, _you can't just run `create-react-app`, click export, and expect a working extension_.
+In the year 2020, there are countless JavaScript frameworks that make developing for the web easier than ever. ReactJS happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building beautiful frontend UIs. Unfortunately, Chrome extensions don't work the same as traditional web applications. At [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.
+
+Long story short, _you can't just run `create-react-app`, click export, and expect a working extension_.
 
 In this tutorial, we will guide you step-by-step in building your own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. [You can access the code for this extension here](https://github.com/meerkat-citronella/react-chrome-sticky-note-extension). Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.
 
@@ -25,19 +27,21 @@ Everyone! Beginners as well as seasoned experts will learn
 To get started with this tutorial, you should be familiar with:
 
 - Vanilla JS
-- Create React App
-- React + React Hooks
-- Yarn
-- HTML and the DOM API
+- [Create React App](https://reactjs.org/docs/create-a-new-react-app.html)
+- [React + React Hooks](https://reactjs.org/docs/hooks-intro.html)
+- [Styled Components](https://styled-components.com)
+- [Yarn](https://yarnpkg.com)
+- [HTML and the DOM API](https://developer.mozilla.org/en-US/docs/Web/API)
 
 In this tutorial, you will learn:
 
-- Turn React to Chrome Extension-compatible JS
-- Extension Background Scripts and Popups
-- Modify web pages with Content Scripts and the Shadow DOM
-- Publishing your Chrome Extension to the public and expedite review approval
+- Turn a React App into Chrome Extension-compatible JavaScript
+- Create Popups with the Chrome Extension API
+- Modify web pages with Content Scripts
+- Avoid CSS collisions with Shadow Roots
+- Resources to publish your Chrome Extension to the public and expedite the review process
 
-## Building our extension
+### What we'll build
 
 The web is replete with great learning resources, but it's oftentimes difficult to capture your thoughts when reading through dense topics. Research suggests that writing down notes while you read helps [improve knowledge retention](https://www.researchgate.net/publication/277951569_The_Effects_of_Note-Taking_Skills_Instruction_on_Elementary_Students%27_Reading).
 
@@ -47,15 +51,13 @@ So, for this tutorial, we'll build a simple extension that saves sticky notes on
 
 ## Create React App
 
-The best way to create a new react app is with Create React App.
+Before we add the Chrome extension functionality, let's focus on building a functioning React app.
 
-We are going to focus first on just building the react app, and then add the Chrome extension functionality later.
-
-Run `npx create-react-app [YOUR_APP_NAME]` (we named ours react-chrome-sticky-note-extension) from a command line instance, and `cd` into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:
+The easiest way to create a new React app is with Create React App. Run `npx create-react-app [YOUR_APP_NAME]` (we named ours react-chrome-sticky-note-extension) from a command line instance, and `cd` into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:
 
 ![boilerplate react directory structure](react-boilerplate-dir-structure.png)
 
-Right off the bat we are going to download a module to help us out with styling our app. Frmo the root directory of your app (i.e. YOUR_APP_NAME), install styled-components into your app, with either `yarn add styled-components` or `npm install styled-components`
+Right off the bat we are going to download a module to help us out with styling our app. From the root directory of your app (`[YOUR_APP_NAME`), install styled-components into your app, with `yarn add styled-components`.
 
 Let's start with the file `App.js`. This will be the main component for our app. Let's go ahead and rename it, to something like `StickyNotes.js`. Also change the name of the component being rendered in the file in a similar fashion, from `App` to `StickyNotes`. Adjust the corresponding import in `index.js` (or let VSCode automatically updated it for you). Go ahead delete all the boilerplate in the return statement of the `StickyNotes` component.
 
@@ -98,7 +100,8 @@ const StyledTextArea = styled.textarea`
 `;
 ```
 
-if you're unfamiliar with styled-components, it's a very popular styling solution for React and you can read more about it here.
+Styled-components, is a very popular styling library for React that makes adding CSS to our components easy.
+
 Note that in `Container` we are passing props. More on this later.
 
 We are building this app with React Hooks. If you are unfamiliar with Hooks, you can read about them here. Hooks seem to be here to stay, and wonderfully abstract away a lot the extraneous typing that has to happen in a React class component.
@@ -689,7 +692,7 @@ Since our extension is very simple, we won't require a backround script. However
 
 ### Make the Sticky Note a Shadow Component
 
-One very important aspect of creating a browser extension is dealing with how it interacts with the existing content of the webpage. A React app is really just javascript, and as we saw above when crafting the `insertionPoint`, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it's own styling rules.
+One very important aspect of creating a browser extension is dealing with how it interacts with the existing content of the webpage. A React app is really just JavaScript, and as we saw above when crafting the `insertionPoint`, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it's own styling rules.
 
 Let's look at a concrete example of this. Load your chrome extension into chrome, and navigate to `www.example.com`. Shift + click to add a note, and see what happens.
 
