@@ -2,15 +2,15 @@
 
 The web is replete with great learning resources, but it's oftentimes difficult to capture your thoughts when reading through dense topics. Research suggests that writing down notes while you read helps [improve knowledge retention](https://www.researchgate.net/publication/277951569_The_Effects_of_Note-Taking_Skills_Instruction_on_Elementary_Students%27_Reading).
 
-So, for this tutorial, we'll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here's a simple mockup of what we'll build:
+So, for this tutorial, we'll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here's a screenshot of what we'll build:
 
-![alt text](mockup.png)
+![alt text](screenshot.png)
 
 ## Create React App
 
-The best way to create a new react app is with `npx create-react-app`.
+The best way to create a new react app is with Create React App.
 
-We are going to focus first on just building the react app, and then add the chrome extension functionality later.
+We are going to focus first on just building the react app, and then add the Chrome extension functionality later.
 
 Run `npx create-react-app [YOUR_APP_NAME]` (we named ours react-chrome-sticky-note-extension) from a command line instance, and `cd` into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:
 
@@ -118,6 +118,7 @@ Remember the props we set up to be passed to our `Container` styled component ab
 StickyNotes.js:
 
 ```jsx
+// stickyNotes.js
 ...
 
 const StickyNotes = () => {
@@ -190,9 +191,8 @@ The `textarea` is now a controlled component. You can log `notes` to the console
 
 Next, let's add functionality for the delete button. Change the component `return` statement to add the following:
 
-StickyNotes.js:
-
 ```jsx
+// StickyNotes.js
 ...
 return (
     <div>
@@ -353,7 +353,6 @@ Every Chrome Extension comes packages with a file called `manifest.json`. The ma
 Here is what our `manifest.json` should look like:
 
 ```json
-// manifest.json
 {
   "name": "React Sticky Notes App",
   "version": "1.0.0",
@@ -430,10 +429,9 @@ config.optimization.splitChunks = {
 config.optimization.runtimeChunk = false;
 ```
 
-Next, we need to modify our `package.json` to prevent code splitting and hashing.
+Next, we need to modify our `"scripts"` section in the app's `package.json` to prevent code splitting and hashing.
 
 ```json
-// package.json
   ...
   "scripts": {
     "start": "react-scripts start",
@@ -454,24 +452,6 @@ We modified `package.json` to include 2 additional commands: `build:extension` a
 From now on, when we are building our extension, we should run `yarn build:extension`. Running this command will create a build directory that looks like this:
 
 ![new build directory](newname.png)
-
-### Content Script
-
-### Popup script
-
-### Create the Sticky Note Component
-
-## Inject JS to the Webpage
-
-### Modify Index.js
-
-### Add the Extension Manifest
-
-## Create a Settings Panel
-
-### Create a browserAction Popup
-
-## Persist Data in Chrome Storage
 
 Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a chrome extension, we will be using the chrome.storage api (read about it here).
 
@@ -842,11 +822,9 @@ Remember in `manifest.json`, assinging the default popup like so?
 // manifest.json
 {
   ...
-
   "browser_action": {
     "default_popup": "./popup.html"
   }
-
   ...
 }
 ```
@@ -919,16 +897,19 @@ How is this working? Well, when we build the React app, all these files are goin
 
 In `index.js`, we have created a way for our React app to render different parts of the app into different html files. It will search the DOM for the `popup-root` id, and if it's there, render the `PopupComponent`, and if it's not, render the content script for the sticky notes.
 
-Navigate to a webpage, and test it our for yourself!
+## Testing your extension
+
+Now that we've finished building our extension, let's try it out.
+
+First, navigate to `chrome://extensions` in the URL bar. Next, enable `Developer Mode` in the top right corner. And lastly, click `Load Unpacked` and upload your `build` folder. That's it!
+
+![Enable developer mode and upload](developermode.png)
+
+Now, we can play around with our extension on any page.
 
 ![complete notes app on google.com](completed-notes-app-google.gif)
 
-## Publish to the Chrome Store
+A# appendix
 
-### Instructions
-
-### Improving Your Odds of Getting Approved
-
-### appendix
-
-Stackoverflow thread on code-splitting while building, and prevent chunk files: https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix
+- Stackoverflow thread on code-splitting while building, and prevent chunk files: https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix
+- Submitting your extension to the chrome store
