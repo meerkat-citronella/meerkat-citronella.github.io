@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>Create a Chrome Extension with React</title>
+  <meta name="description" content="A Jekyll theme - Medium inspired
+" />
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@alexreibman" />
+    <meta name="twitter:title" content="Create a Chrome Extension with React" />
+    <meta name="twitter:image" content="http://localhost:4000/assets/images/df_logo.jpg" />
+    
+    <meta name="twitter:description" content="A Jekyll theme - Medium inspired" />
+    
+  
+  
+  <meta property="og:site_name" content="Mediator" />
+  <meta property="og:title" content="Create a Chrome Extension with React"/>
+  
+  <meta property="og:description" content="A Jekyll theme - Medium inspired" />
+  
+  <meta property="og:image" content="http://localhost:4000/assets/article_images/2014-08-29-welcome-to-jekyll/desktop.JPG" />
+  <meta property="og:url" content="http://localhost:4000/post.html" >
+  <meta property="og:type" content="blog" />
+  <meta property="article:published_time" content="2014-08-29T10:34:25-04:00">
+
+  <link rel="canonical" href="http://localhost:4000/post.html"/>
+  <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/png"/>
+  <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+</head>
+
+  <body itemscope itemtype="http://schema.org/Article">
+    <!-- header start -->
+
+
+  <a href="http://localhost:4000" class="logo-readium"><span class="logo" style="background-image: url(/assets/images/df_logo.jpg)"></span></a>
+
+<!-- header end -->
+
+    <main class="content" role="main">
+      <article class="post">
+        
+        <div class="article-image">
+          <div class="post-image-image" style="background-image: url(/assets/article_images/2014-08-29-welcome-to-jekyll/desktop.JPG)">
+            Article Image
+          </div>
+          <div class="post-image-image2" style="background-image: url()">
+            Article Image
+          </div>
+          <div class="post-meta">
+            <h1 class="post-title">Create a Chrome Extension with React</h1>
+            <div class="cf post-meta-text">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">Alex Reibman + Carter Chen</h4>
+              on
+              <time datetime="2014-08-29 14:34">29 Aug 2014</time>
+              <!-- , tagged on <span class="post-tag-">, <a href="/tag/"></a></span> -->
+            </div>
+            <div style="text-align:center">
+              <a href="#topofpage" class="topofpage"><i class="fa fa-angle-down"></i></a>
+            </div>
+          </div>
+        </div>
+        
+        <section class="post-content">
+          <div class="post-reading">
+            <span class="post-reading-time"></span> read
+          </div>
+          <a name="topofpage"></a>
+          <h1 id="introduction">Introduction</h1>
+
+<h2 id="browsers-are-the-future">Browsers are the future</h2>
+
+<p>Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of market share with claims from Google of over 2 billion active Chrome browsers in 2016. Chrome is wonderful for a handful of reasons:</p>
+
+<ol>
+  <li>It looks and runs the same on most computers</li>
+  <li>It’s easy to install</li>
+  <li>You can turbocharge Chrome using Extensions</li>
+</ol>
+
+<p>Regarding point 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you’re probability familiar with <a href="https://www.youtube.com/watch?v=aNv1qZ54YzQ">Honey</a>? Their product is almost entirely based around browser extensions, and Paypal just bought them for <strong>$4 billion</strong>! <a href="https://www.grammarly.com">Grammarly</a>, another Chrome extension, recently raised $90 million and is now valued at over $<strong>1 billion</strong>! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)</p>
+
+<h2 id="extensions-are-great-but-not-simple-to-build-with-react">Extensions are great, but not simple to build with React</h2>
+
+<p>In the year 2020, there are countless JavaScript frameworks that make developing for the web easier than ever. ReactJS happens to be <a href="https://twitter.com/AlexReibman/status/1203047332515926017/photo/1">one of the most in-demand JS frameworks</a> for building beautiful frontend UIs. Unfortunately, Chrome extensions don’t work the same as traditional web applications. At <a href="https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US">DocIt</a>, we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.</p>
+
+<p>Long story short, <em>you can’t just run <code class="language-plaintext highlighter-rouge">create-react-app</code>, click export, and expect a working extension</em>.</p>
+
+<p>In this tutorial, we will guide you step-by-step in building your own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. <a href="https://github.com/meerkat-citronella/react-chrome-sticky-note-extension">You can access the code for this extension here</a>. Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.</p>
+
+<h3 id="skill-level">Skill level</h3>
+
+<p>Everyone! Beginners as well as seasoned experts will learn</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p>To get started with this tutorial, you should be familiar with:</p>
+
+<ul>
+  <li>Vanilla JS</li>
+  <li><a href="https://reactjs.org/docs/create-a-new-react-app.html">Create React App</a></li>
+  <li><a href="https://reactjs.org/docs/hooks-intro.html">React + React Hooks</a></li>
+  <li><a href="https://styled-components.com">Styled Components</a></li>
+  <li><a href="https://yarnpkg.com">Yarn</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/API">HTML and the DOM API</a></li>
+</ul>
+
+<p>In this tutorial, you will learn:</p>
+
+<ul>
+  <li>Turn a React App into Chrome Extension-compatible JavaScript</li>
+  <li>Create Popups with the Chrome Extension API</li>
+  <li>Modify web pages with Content Scripts</li>
+  <li>Avoid CSS collisions with Shadow Roots</li>
+  <li>Resources to publish your Chrome Extension to the public and expedite the review process</li>
+</ul>
+
+<h3 id="what-well-build">What we’ll build</h3>
+
+<p>The web is replete with great learning resources, but it’s oftentimes difficult to capture your thoughts when reading through dense topics. Research suggests that writing down notes while you read helps <a href="https://www.researchgate.net/publication/277951569_The_Effects_of_Note-Taking_Skills_Instruction_on_Elementary_Students%27_Reading">improve knowledge retention</a>.</p>
+
+<p>So, for this tutorial, we’ll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here’s a screenshot of what we’ll build:</p>
+
+<p><img src="screenshot.png" alt="alt text" /></p>
+
+<h2 id="create-react-app">Create React App</h2>
+
+<p>Before we add the Chrome extension functionality, let’s focus on building a functioning React app.</p>
+
+<p>The easiest way to create a new React app is with Create React App. Run <code class="language-plaintext highlighter-rouge">npx create-react-app [YOUR_APP_NAME]</code> (we named ours react-chrome-sticky-note-extension) from a command line instance, and <code class="language-plaintext highlighter-rouge">cd</code> into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:</p>
+
+<p><img src="react-boilerplate-dir-structure.png" alt="boilerplate react directory structure" /></p>
+
+<p>Right off the bat we are going to download a module to help us out with styling our app. From the root directory of your app (<code class="language-plaintext highlighter-rouge">[YOUR_APP_NAME</code>), install styled-components into your app, with <code class="language-plaintext highlighter-rouge">yarn add styled-components</code>.</p>
+
+<p>Let’s start with the file <code class="language-plaintext highlighter-rouge">App.js</code>. This will be the main component for our app. Let’s go ahead and rename it, to something like <code class="language-plaintext highlighter-rouge">StickyNotes.js</code>. Also change the name of the component being rendered in the file in a similar fashion, from <code class="language-plaintext highlighter-rouge">App</code> to <code class="language-plaintext highlighter-rouge">StickyNotes</code>. Adjust the corresponding import in <code class="language-plaintext highlighter-rouge">index.js</code> (or let VSCode automatically updated it for you). Go ahead delete all the boilerplate in the return statement of the <code class="language-plaintext highlighter-rouge">StickyNotes</code> component.</p>
+
+<p>Next, we are going to make some styled components to use in our <code class="language-plaintext highlighter-rouge">StickyNotes</code> component. At the top of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code> add the following:</p>
+
+<p>StickyNotes.js</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// import the module</span>
+<span class="k">import</span> <span class="nx">styled</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="c1">// the components</span>
+<span class="kd">const</span> <span class="nx">Container</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">div</span><span class="s2">`
+  z-index: 2;
+  border: 1px solid grey;
+  position: absolute;
+  background: white;
+  top: </span><span class="p">${(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">px</span><span class="dl">"</span><span class="p">}</span><span class="s2">;
+  left: </span><span class="p">${(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">px</span><span class="dl">"</span><span class="p">}</span><span class="s2">;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Header</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">div</span><span class="s2">`
+  height: 20px;
+  background-color: papayawhip;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">StyledButton</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">button</span><span class="s2">`
+  height: 20px;
+  border: none;
+  opacity: 0.5;
+  float: right;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">StyledTextArea</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">textarea</span><span class="s2">`
+  color: dark grey;
+  height: 200px;
+  width: 200px;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0.2);
+`</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Styled-components, is a very popular styling library for React that makes adding CSS to our components easy.</p>
+
+<p>Note that in <code class="language-plaintext highlighter-rouge">Container</code> we are passing props. More on this later.</p>
+
+<p>We are building this app with React Hooks. If you are unfamiliar with Hooks, you can read about them here. Hooks seem to be here to stay, and wonderfully abstract away a lot the extraneous typing that has to happen in a React class component.</p>
+
+<p>Let’s create a stateful variable to hold our notes data. We will use the <code class="language-plaintext highlighter-rouge">useState</code> React hook:</p>
+
+<p>StickyNotes.js:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// import useState</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">notes</span><span class="p">,</span> <span class="nx">setNotes</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([])</span>
+
+  <span class="p">...</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>First, let’s create the funcionality that let’s us add a sticky note. We will be using shift + click. Let’s add a listener to the component:</p>
+
+<p>StickyNotes.js:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// add useEffect to imports</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">notes</span><span class="p">,</span> <span class="nx">setNotes</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([])</span>
+
+  <span class="c1">// listen for shift + click to add note</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">clickListener</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">shiftKey</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">[...</span><span class="nx">prevNotes</span><span class="p">,</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="p">}]);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">clickListener</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">clickListener</span><span class="p">);</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="p">...</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Few things to note about this <code class="language-plaintext highlighter-rouge">useEffect</code> function. Note that we are removing the listener on <code class="language-plaintext highlighter-rouge">useEffect</code> return. You can read more about cleaning up effects here. You should always remove your listeners in React, as subsequent renders will keep adding listeners unless they are removed. Note that we are using a named function for the listener callback, another necessity if we want to remove the listener (needs a reference a named function). Lastly, note the empty dependency array <code class="language-plaintext highlighter-rouge">[]</code> as the second and final argument of the <code class="language-plaintext highlighter-rouge">useEffect</code> callback function: this is intentional, as we only need to set the listener once, on the first render. You can read more about dependency arrays in regards to <code class="language-plaintext highlighter-rouge">useEffect</code> here.</p>
+
+<p>For the <code class="language-plaintext highlighter-rouge">setNotes</code> function call, we are making use of JavaScript’s wonderfully expressive object literal notation, and using the splat operator <code class="language-plaintext highlighter-rouge">...</code> to set our <code class="language-plaintext highlighter-rouge">notes</code> variable. You can read more about object destructuring and the splat operator here. <code class="language-plaintext highlighter-rouge">e.pageX, e.pageY</code> are the pixel coordinates of the click on the page.</p>
+
+<p>Remember the props we set up to be passed to our <code class="language-plaintext highlighter-rouge">Container</code> styled component above? Let’s bring that into play. Let’s set up our <code class="language-plaintext highlighter-rouge">return</code> statement:</p>
+
+<p>StickyNotes.js:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// stickyNotes.js</span>
+<span class="p">...</span>
+
+<span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+  <span class="p">...</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">notes</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">note</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">Container</span> <span class="na">x</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">x</span><span class="si">}</span> <span class="na">y</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">y</span><span class="si">}</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nc">Header</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">StyledButton</span><span class="p">&gt;</span>X<span class="p">&lt;/</span><span class="nc">StyledButton</span><span class="p">&gt;</span>
+          <span class="p">&lt;/</span><span class="nc">Header</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nc">StyledTextArea</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">Container</span><span class="p">&gt;</span>
+      <span class="p">))</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>The coordinates we gleaned from our shift + click listener are passed via props to the <code class="language-plaintext highlighter-rouge">Container</code> styled component, which then uses those coordinates to absolutely position itself on the page! You should now have some functionality that looks like this:</p>
+
+<p><img src="basic-note.gif" alt="basic sticky note functionality" /></p>
+
+<p>Although we are able to enter text into the <code class="language-plaintext highlighter-rouge">textarea</code>, it is not being saved at all. To do this, we need to turn the <code class="language-plaintext highlighter-rouge">textarea</code> into a controlled component. You can read more about React controlled components here. This is standard practice for React forms. We will save the note text from <code class="language-plaintext highlighter-rouge">textarea</code> alongside the coordinate data in the <code class="language-plaintext highlighter-rouge">notes</code> variable.</p>
+
+<p>In <code class="language-plaintext highlighter-rouge">StickyNotes.js</code>, update the component return statement to:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+<span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+  <span class="p">...</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">notes</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">note</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="kd">const</span> <span class="nx">editedText</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+          <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span>
+            <span class="nx">prevNotes</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span>
+              <span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">cv</span><span class="p">)</span> <span class="o">=&gt;</span>
+                <span class="nx">cv</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">y</span>
+                  <span class="p">?</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="p">...</span><span class="nx">cv</span><span class="p">,</span> <span class="na">note</span><span class="p">:</span> <span class="nx">editedText</span> <span class="p">})</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span>
+                  <span class="p">:</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">cv</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span><span class="p">,</span>
+              <span class="p">[]</span>
+            <span class="p">)</span>
+          <span class="p">);</span>
+        <span class="p">};</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+          <span class="p">&lt;</span><span class="nc">Container</span> <span class="na">x</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">x</span><span class="si">}</span> <span class="na">y</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">y</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Header</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nc">StyledButton</span><span class="p">&gt;</span>X<span class="p">&lt;/</span><span class="nc">StyledButton</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nc">Header</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">StyledTextArea</span> <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">handleChange</span><span class="si">}</span> <span class="na">value</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">note</span> <span class="p">?</span> <span class="nx">note</span><span class="p">.</span><span class="nx">note</span> <span class="p">:</span> <span class="dl">""</span><span class="si">}</span><span class="p">/&gt;</span>
+          <span class="p">&lt;/</span><span class="nc">Container</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+      <span class="p">})</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We again make use of the splat notation, as well as terneray operators (read more here) and the <code class="language-plaintext highlighter-rouge">&amp;&amp;</code> notation. <code class="language-plaintext highlighter-rouge">setNotes</code> here is identifying the note that is being edited (by comparing the coordinates of the note (<code class="language-plaintext highlighter-rouge">cv</code>) with the coordinates in the locally-scoped <code class="language-plaintext highlighter-rouge">note</code> variable) and adding (or editing) the <code class="language-plaintext highlighter-rouge">note</code> property.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">textarea</code> is now a controlled component. You can log <code class="language-plaintext highlighter-rouge">notes</code> to the console, and see that is updating as you edit a note.</p>
+
+<p>Next, let’s add functionality for the delete button. Change the component <code class="language-plaintext highlighter-rouge">return</code> statement to add the following:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js</span>
+<span class="p">...</span>
+<span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">notes</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">note</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+        <span class="p">...</span>
+
+        <span class="kd">const</span> <span class="nx">handleDelete</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span>
+            <span class="nx">prevNotes</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span>
+              <span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">cv</span><span class="p">)</span> <span class="o">=&gt;</span>
+                <span class="nx">cv</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">y</span> <span class="p">?</span> <span class="nx">acc</span> <span class="p">:</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">cv</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span><span class="p">,</span>
+              <span class="p">[]</span>
+            <span class="p">)</span>
+          <span class="p">);</span>
+        <span class="p">};</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+          <span class="p">...</span>
+              <span class="o">&lt;</span><span class="nx">Header</span><span class="o">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">StyledButton</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleDelete</span><span class="si">}</span><span class="p">&gt;</span>X<span class="p">&lt;/</span><span class="nc">StyledButton</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="err">/</span><span class="na">Header</span><span class="p">&gt;</span>
+          ...
+        );
+      })}
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+</code></pre></div></div>
+
+<p>This is the core functionality of the app! We can add notes, edit them, and delete them, and it is all saved in a single stateful variable. Next we’ll turn this humble React app into a Chrome extension.</p>
+
+<p>The full code of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code> at this point is as follows:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js:</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">logo</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./logo.svg</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">"</span><span class="s2">./App.css</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">styled</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Container</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">div</span><span class="s2">`
+  z-index: 2;
+  border: 1px solid grey;
+  position: absolute;
+  background: white;
+  top: </span><span class="p">${(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">px</span><span class="dl">"</span><span class="p">}</span><span class="s2">;
+  left: </span><span class="p">${(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">px</span><span class="dl">"</span><span class="p">}</span><span class="s2">;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Header</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">div</span><span class="s2">`
+  height: 20px;
+  background-color: papayawhip;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">StyledButton</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">button</span><span class="s2">`
+  height: 20px;
+  border: none;
+  opacity: 0.5;
+  float: right;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">StyledTextArea</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">textarea</span><span class="s2">`
+  color: dark grey;
+  height: 200px;
+  width: 200px;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0.2);
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">notes</span><span class="p">,</span> <span class="nx">setNotes</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+
+  <span class="c1">// listen for shift + click to add note</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">clickListener</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">shiftKey</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">[...</span><span class="nx">prevNotes</span><span class="p">,</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="p">}]);</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">clickListener</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">clickListener</span><span class="p">);</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">notes</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">note</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="kd">const</span> <span class="nx">editedText</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+          <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span>
+            <span class="nx">prevNotes</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span>
+              <span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">cv</span><span class="p">)</span> <span class="o">=&gt;</span>
+                <span class="nx">cv</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">y</span>
+                  <span class="p">?</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="p">...</span><span class="nx">cv</span><span class="p">,</span> <span class="na">note</span><span class="p">:</span> <span class="nx">editedText</span> <span class="p">})</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span>
+                  <span class="p">:</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">cv</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span><span class="p">,</span>
+              <span class="p">[]</span>
+            <span class="p">)</span>
+          <span class="p">);</span>
+        <span class="p">};</span>
+
+        <span class="kd">const</span> <span class="nx">handleDelete</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span>
+            <span class="nx">prevNotes</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span>
+              <span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">cv</span><span class="p">)</span> <span class="o">=&gt;</span>
+                <span class="nx">cv</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">y</span> <span class="p">?</span> <span class="nx">acc</span> <span class="p">:</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">cv</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span><span class="p">,</span>
+              <span class="p">[]</span>
+            <span class="p">)</span>
+          <span class="p">);</span>
+        <span class="p">};</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+          <span class="p">&lt;</span><span class="nc">Container</span> <span class="na">x</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">x</span><span class="si">}</span> <span class="na">y</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">y</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Header</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nc">StyledButton</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleDelete</span><span class="si">}</span><span class="p">&gt;</span>X<span class="p">&lt;/</span><span class="nc">StyledButton</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nc">Header</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">StyledTextArea</span> <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">handleChange</span><span class="si">}</span> <span class="p">/&gt;</span>
+          <span class="p">&lt;/</span><span class="nc">Container</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+      <span class="p">})</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">StickyNotes</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="chrome-extension-configuration">Chrome Extension Configuration</h2>
+
+<p>Chrome Extensions may seem daunting, but it’s really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know how to make Chrome extensions.</p>
+
+<p>Before we start coding, let’s break down how Chrome Extensions are configured.</p>
+
+<p>Extensions are generally composed of 3 main JavaScript components: Content Scripts, Popup Scripts, and Background Scripts. Additionally, every chrome extension must include a <code class="language-plaintext highlighter-rouge">manifest.json</code> that tells Chrome how to run your extension.</p>
+
+<p>However, things are a bit different when we’re working with React. When you build a React app, all of the code gets bundled into a single js file by Webpack. Hence, all of our our JS that affects UI (content scripts and popup scripts) will be bundled into a single file, <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
+
+<p><img src="ChromeExtension.png" alt="Chrome Extension Architecture" /></p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">manifest.json</code>- Used to instruct Chrome how to run your scripts.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">background.js</code>- A script that runs behind the scenes from your active web page. This script is usually used for advanced techniques such as message passing or running async computations.</p>
+  </li>
+  <li>
+    <p>Popup- Popup is the window that launches when you press the extension button on the Chrome Toolbar.</p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">popup.html</code>- The HTML document that renders when you click the extension button. <code class="language-plaintext highlighter-rouge">popup.js</code> will be used here.</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">popup.js</code>- Code that is excecuted in the popup window. This script will automatically be bundled into <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">contentScript.js</code>- A content script is a js file injected into the web page that the user is viewing (i.e. wikipedia.org, google.com, etc.). This script will be responsible for making any changes to the current wepbage being viewed. This script will automatically be bundled into <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
+  </li>
+  <li>
+    <p>Assets- Any images, css, and other files used by your extension.</p>
+  </li>
+</ul>
+
+<p>We’ll break down each script in the following sections.</p>
+
+<h3 id="creating-the-manifest">Creating the manifest</h3>
+
+<p>Every Chrome Extension comes packages with a file called <code class="language-plaintext highlighter-rouge">manifest.json</code>. The manifest is used to orchestrate the Chrome Extension and instruct Chrome how and where to run your JavaScript components.</p>
+
+<p>Here is what our <code class="language-plaintext highlighter-rouge">manifest.json</code> should look like:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"React Sticky Notes App"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"manifest_version"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lets you annotate web pages and persists those annotations across page visits."</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"content_scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"matches"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"&lt;all_urls&gt;"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"js"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"./main.js"</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"css"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/main.css"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"browser_action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"default_popup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./popup.html"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"storage"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h4 id="metadata">Metadata</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">name</code>: The name will appear when on Chrome Extension Store as well as when you select or hover your extension.</li>
+  <li><code class="language-plaintext highlighter-rouge">version</code>: The version of your extension. You can start at any number; however, every time you push an official update to the Chrome Store, you must increment your version.</li>
+  <li><code class="language-plaintext highlighter-rouge">description</code>: Short description of what your app does. Note: This description is entirely separate from the description you will provide on the Chrome store page.</li>
+</ul>
+
+<p>Your metadata will be visible at the url <code class="language-plaintext highlighter-rouge">chrome://extensions</code>
+<img src="name.png" alt="Metadata in the extensions tab" /></p>
+
+<h4 id="scripts-and-permissions">Scripts and permissions</h4>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">content_scripts</code>:</p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">matches</code>: This is a required field that tells Chrome which pages to run your extension on. Since we are interested in using our extension everywhere on the web, we leave this field as <code class="language-plaintext highlighter-rouge">["&lt;all_urls&gt;"]</code>. Otherwise, you can specify a <a href="https://developer.chrome.com/extensions/match_patterns">string matching pattern</a>.</li>
+      <li><code class="language-plaintext highlighter-rouge">js</code>: Since we are interested in rendering sticky notes onto our web pages, we need to inject JavaScript onto our page to do it. As mentioned earlier, Webpack will bundle all of the JS in our project into a single <code class="language-plaintext highlighter-rouge">main.js</code> file. So, we will make this field <code class="language-plaintext highlighter-rouge">["main.js"]</code>.</li>
+      <li><code class="language-plaintext highlighter-rouge">css</code>: Our React code also needs css to make the components look good. So, we need to include the <code class="language-plaintext highlighter-rouge">main.css</code> file created by Webpack.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">browser_action</code>: Browser action is used to specify details that are associated with the button on the Chrome Toolbar.</p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">default_popup</code>: The popup action can render an HTML document. We will create a special HTML file called <code class="language-plaintext highlighter-rouge">popup.html</code>with instructions to run <code class="language-plaintext highlighter-rouge">main.js</code> and render our React Components.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">permissions</code>: Listing permissions in this array gives you access to certain API operations such as <code class="language-plaintext highlighter-rouge">chrome.storage</code> and <code class="language-plaintext highlighter-rouge">chrome.bookmarks</code>. For our extension, we will only need access to <code class="language-plaintext highlighter-rouge">chrome.storage</code>, so we will use <code class="language-plaintext highlighter-rouge">storage</code>. Note: When you publish to the Chrome store, <strong>you cannot request more permissions than your extension actually uses.</strong> If you do, your application will be rejected by Chrome store reviewers.</p>
+  </li>
+</ul>
+
+<p>Our popup script will communicate to the content script (and vice versa) by using the <code class="language-plaintext highlighter-rouge">chrome.storage</code> api as an intermediary data store.
+<img src="communication.png" alt="Communication between scripts" /></p>
+
+<h2 id="make-react-compatible-with-chrome">Make React Compatible with Chrome</h2>
+
+<p>Remember at the beginning we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension’s package, Chrome won’t know how to read your files and fail to run your extension.</p>
+
+<h3 id="prevent-javascript-file-splitting">Prevent JavaScript file splitting</h3>
+
+<p>By default, Create React App is configured with Webpack. According to Webpack’s documentation: “Code splitting is one of the most compelling features of webpack. This feature allows you to split your code into various bundles which can then be loaded on demand or in parallel.”</p>
+
+<p>Unfortunately for us, code splitting makes it difficult to package our code into an extension.</p>
+
+<p>Additionally, Webpack adds random hashes to the files it builds. (This is to prompt browser to re-fetch files that may have changed between builds instead of relying on cached files). However, this also poses an issue for us because unless we account for the hash changes, we’ll have to change our <code class="language-plaintext highlighter-rouge">manifest.json</code> to match the new files names every time we build.</p>
+
+<p><img src="file_splitting.png" alt="file_splitting" /></p>
+
+<p>To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// build-non-split.js</span>
+<span class="kd">const</span> <span class="nx">rewire</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">rewire</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">defaults</span> <span class="o">=</span> <span class="nx">rewire</span><span class="p">(</span><span class="dl">"</span><span class="s2">react-scripts/scripts/build.js</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">defaults</span><span class="p">.</span><span class="nx">__get__</span><span class="p">(</span><span class="dl">"</span><span class="s2">config</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">config</span><span class="p">.</span><span class="nx">optimization</span><span class="p">.</span><span class="nx">splitChunks</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">cacheGroups</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">default</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+
+<span class="nx">config</span><span class="p">.</span><span class="nx">optimization</span><span class="p">.</span><span class="nx">runtimeChunk</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Next, we need to modify our <code class="language-plaintext highlighter-rouge">"scripts"</code> section in the app’s <code class="language-plaintext highlighter-rouge">package.json</code> to prevent code splitting and hashing.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="err">...</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react-scripts start"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react-scripts build"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"build:extension"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node ./scripts/build-non-split.js &amp;&amp; yarn build:clean"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"build:clean"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cd build &amp;&amp; mv static/js/*.js main.js &amp;&amp; mv static/css/*.css main.css &amp;&amp; rm -r static"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react-scripts test"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"eject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react-scripts eject"</span><span class="w">
+  </span><span class="p">}</span><span class="err">,</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>We modified <code class="language-plaintext highlighter-rouge">package.json</code> to include 2 additional commands: <code class="language-plaintext highlighter-rouge">build:extension</code> and <code class="language-plaintext highlighter-rouge">build:clean</code>.</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">build:extension</code> will run the <code class="language-plaintext highlighter-rouge">build-non-split.js</code> file and prevent Webpack from splitting the JS.</li>
+  <li>Next, <code class="language-plaintext highlighter-rouge">build:clean</code> will rename the bundled js and css into a single set of files called <code class="language-plaintext highlighter-rouge">main.js</code> and <code class="language-plaintext highlighter-rouge">main.css</code> respectively. Finally, we remove the <code class="language-plaintext highlighter-rouge">static</code> directory, since it is no longer needed.</li>
+</ol>
+
+<p>From now on, when we are building our extension, we should run <code class="language-plaintext highlighter-rouge">yarn build:extension</code>. Running this command will create a build directory that looks like this:</p>
+
+<p><img src="newname.png" alt="new build directory" /></p>
+
+<p>Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a chrome extension, we will be using the chrome.storage api (read about it here).</p>
+
+<p>First, add <code class="language-plaintext highlighter-rouge">/* global chrome */</code> to the top of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code>:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js</span>
+<span class="cm">/* global chrome */</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+<p>This will make the chrome variables available when you run the extension in the browser. But note: chrome variables are not available when the app is spun up locally in dev mode! If you try to, for example, access chrome storage via a method like <code class="language-plaintext highlighter-rouge">chrome.storage.local.get()</code> while the app is running locally, you will get a syntax error. For this reason, let’s set an environment variable and an easy toggle to access it. We’ll create a <code class="language-plaintext highlighter-rouge">.env</code> file in the root folder of the project:</p>
+
+<pre><code class="language-env"># .env
+REACT_APP_LOCAL=true
+</code></pre>
+
+<p>We’ll also create another file called <code class="language-plaintext highlighter-rouge">constants.js</code>, which we’ll reference to determine if the app is running locally:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// constants.js:</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">localMode</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_LOCAL</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">true</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>When spinning up the app locally, set this REACT_APP_LOCAL to “true”, and when building it as a chrome extension, change it to “false” (or comment out the line, or change it to literally any other string… .env vars aren’t imported as boolean, it’s just a string).</p>
+
+<p>In StickyNotes.js, let’s use another <code class="language-plaintext highlighter-rouge">useEffect</code> hook to <code class="language-plaintext highlighter-rouge">set()</code> our <code class="language-plaintext highlighter-rouge">notes</code> data to chrome storage on a note edit. We are going to organize our notes by URL; each URL will have it’s own unique set of notes that the React app will save to and retrieve from chrome storage. Remember to import <code class="language-plaintext highlighter-rouge">localMode</code> from <code class="language-plaintext highlighter-rouge">constants.js</code> at the top of the file.</p>
+
+<p>Let’s also add a <code class="language-plaintext highlighter-rouge">useEffect</code> to access the stored notes data for the URL in question, if there is any.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js:</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">localMode</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./constants</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">notes</span><span class="p">,</span> <span class="nx">setNotes</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+  <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">;</span> <span class="c1">// save the url to a variable</span>
+
+  <span class="p">...</span>
+
+  <span class="p">...</span>
+
+
+  <span class="c1">// get notes if they're there</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">localMode</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">(</span><span class="nx">items</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="p">[</span><span class="nx">url</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">setNotes</span><span class="p">(</span><span class="nx">items</span><span class="p">[</span><span class="nx">url</span><span class="p">]);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="c1">// set()</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">localMode</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">notes</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">?</span> <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="kd">set</span><span class="p">({</span> <span class="p">[</span><span class="nx">url</span><span class="p">]:</span> <span class="nx">notes</span> <span class="p">})</span>
+        <span class="p">:</span> <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">[</span><span class="nx">notes</span><span class="p">]);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">...</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Note that we are using <code class="language-plaintext highlighter-rouge">chrome.storage.local</code> instead of <code class="language-plaintext highlighter-rouge">chrome.storage.sync</code> (read about the difference here). We are doing this primarily because of the write limits to sync.</p>
+
+<p>Note also the <code class="language-plaintext highlighter-rouge">set</code>ter function removes the entry from the database if there are no notes. We don’t want to be piling up URLs in our chrome storage that don’t have any notes in them!</p>
+
+<p>You now have a fully-functioning notes app chrome extension! It’s still very bare bones and there are still some bugs, so let’s continue refining it. The code as of now should look like the below.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js:</span>
+<span class="cm">/* global chrome */</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">logo</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./logo.svg</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">"</span><span class="s2">./App.css</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">styled</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="p">{</span> <span class="nx">localMode</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./constants</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Container</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">div</span><span class="s2">`
+  z-index: 2;
+  border: 1px solid grey;
+  position: absolute;
+  background: white;
+  top: </span><span class="p">${(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">px</span><span class="dl">"</span><span class="p">}</span><span class="s2">;
+  left: </span><span class="p">${(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">px</span><span class="dl">"</span><span class="p">}</span><span class="s2">;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Header</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">div</span><span class="s2">`
+  height: 20px;
+  background-color: papayawhip;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">StyledButton</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">button</span><span class="s2">`
+  height: 20px;
+  border: none;
+  opacity: 0.5;
+  float: right;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">StyledTextArea</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">textarea</span><span class="s2">`
+  color: dark grey;
+  height: 200px;
+  width: 200px;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0.2);
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">notes</span><span class="p">,</span> <span class="nx">setNotes</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+  <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">;</span>
+
+  <span class="c1">// listen for shift + click to add note</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">clickListener</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">shiftKey</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">[...</span><span class="nx">prevNotes</span><span class="p">,</span> <span class="p">{</span> <span class="na">x</span><span class="p">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="p">}]);</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">clickListener</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nx">clickListener</span><span class="p">);</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="c1">// get notes if they're there</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">localMode</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">(</span><span class="nx">items</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="p">[</span><span class="nx">url</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">setNotes</span><span class="p">(</span><span class="nx">items</span><span class="p">[</span><span class="nx">url</span><span class="p">]);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="c1">// set()</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">localMode</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">notes</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">?</span> <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="kd">set</span><span class="p">({</span> <span class="p">[</span><span class="nx">url</span><span class="p">]:</span> <span class="nx">notes</span> <span class="p">})</span>
+        <span class="p">:</span> <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">[</span><span class="nx">notes</span><span class="p">]);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">notes</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">note</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="kd">const</span> <span class="nx">editedText</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+          <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span>
+            <span class="nx">prevNotes</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span>
+              <span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">cv</span><span class="p">)</span> <span class="o">=&gt;</span>
+                <span class="nx">cv</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">y</span>
+                  <span class="p">?</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="p">...</span><span class="nx">cv</span><span class="p">,</span> <span class="na">note</span><span class="p">:</span> <span class="nx">editedText</span> <span class="p">})</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span>
+                  <span class="p">:</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">cv</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span><span class="p">,</span>
+              <span class="p">[]</span>
+            <span class="p">)</span>
+          <span class="p">);</span>
+        <span class="p">};</span>
+
+        <span class="kd">const</span> <span class="nx">handleDelete</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="nx">setNotes</span><span class="p">((</span><span class="nx">prevNotes</span><span class="p">)</span> <span class="o">=&gt;</span>
+            <span class="nx">prevNotes</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span>
+              <span class="p">(</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">cv</span><span class="p">)</span> <span class="o">=&gt;</span>
+                <span class="nx">cv</span><span class="p">.</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="nx">note</span><span class="p">.</span><span class="nx">y</span> <span class="p">?</span> <span class="nx">acc</span> <span class="p">:</span> <span class="nx">acc</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">cv</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">acc</span><span class="p">,</span>
+              <span class="p">[]</span>
+            <span class="p">)</span>
+          <span class="p">);</span>
+        <span class="p">};</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+          <span class="p">&lt;</span><span class="nc">Container</span> <span class="na">x</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">x</span><span class="si">}</span> <span class="na">y</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">y</span><span class="si">}</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Header</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nc">StyledButton</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleDelete</span><span class="si">}</span><span class="p">&gt;</span>X<span class="p">&lt;/</span><span class="nc">StyledButton</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nc">Header</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">StyledTextArea</span> <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">handleChange</span><span class="si">}</span> <span class="p">/&gt;</span>
+          <span class="p">&lt;/</span><span class="nc">Container</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+      <span class="p">})</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">StickyNotes</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="create-a-background-script">Create a Background Script</h3>
+
+<p>Since our extension is very simple, we won’t require a backround script. However, if you wanted to use advanced techniques such as message passing, you can create a script called <code class="language-plaintext highlighter-rouge">background.js</code></p>
+
+<h3 id="make-the-sticky-note-a-shadow-component">Make the Sticky Note a Shadow Component</h3>
+
+<p>One very important aspect of creating a browser extension is dealing with how it interacts with the existing content of the webpage. A React app is really just JavaScript, and as we saw above when crafting the <code class="language-plaintext highlighter-rouge">insertionPoint</code>, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it’s own styling rules.</p>
+
+<p>Let’s look at a concrete example of this. Load your chrome extension into chrome, and navigate to <code class="language-plaintext highlighter-rouge">www.example.com</code>. Shift + click to add a note, and see what happens.</p>
+
+<p><img src="example-site-styling-conflicts.gif" alt="Styling conflicts between extension and example.com" /></p>
+
+<p>Our styling!! What happened? Well clearly, <code class="language-plaintext highlighter-rouge">www.example.com</code> has its own styling rules, and they are conflicting with those of our app.</p>
+
+<p>There are a few solutions here. The first is to try to override the webpage’s styling by using css techniques that take a higher precedence when the browser is computing styling, such as using <code class="language-plaintext highlighter-rouge">!important</code> or inline styling. These are inelegant solutions, both because they could potentially cause the inverse problem (our extension overriding the page styles and borking them up) and because they are heavy-handed and limited in the styling issues they can address (no more <code class="language-plaintext highlighter-rouge">styled-components</code>, for example). The second is to render these notes in an <code class="language-plaintext highlighter-rouge">&lt;iframe&gt;</code> element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these <code class="language-plaintext highlighter-rouge">StickyNotes</code> components inside of a shadow DOM instance.</p>
+
+<p>You can think of the shadow DOM as a “DOM within a DOM.” Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don’t conflict with those of the host webpage. You can read more about shadom DOMs here.</p>
+
+<p>To implement the shadow DOM in our app, we are going to use the module <code class="language-plaintext highlighter-rouge">react-shadow</code>. Read more about it in the repo here. Go ahead and add the package to your project via <code class="language-plaintext highlighter-rouge">npm i react-shadow</code> or <code class="language-plaintext highlighter-rouge">yarn add react-shadow</code>.</p>
+
+<p>Let’s make a new file called <code class="language-plaintext highlighter-rouge">ShadowRoot.js</code> in our <code class="language-plaintext highlighter-rouge">src</code> folder. Add the code below:</p>
+
+<p>ShadowRoot.js:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">root</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-shadow</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">StyleSheetManager</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">ShadowRoot</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">children</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">stylesNode</span><span class="p">,</span> <span class="nx">setStylesNode</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">root</span><span class="p">.</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">ref</span><span class="p">=</span><span class="si">{</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setStylesNode</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="si">{</span><span class="nx">stylesNode</span> <span class="o">&amp;&amp;</span> <span class="p">(</span>
+          <span class="p">&lt;</span><span class="nc">StyleSheetManager</span> <span class="na">target</span><span class="p">=</span><span class="si">{</span><span class="nx">stylesNode</span><span class="si">}</span><span class="p">&gt;</span><span class="si">{</span><span class="nx">children</span><span class="si">}</span><span class="p">&lt;/</span><span class="nc">StyleSheetManager</span><span class="p">&gt;</span>
+        <span class="p">)</span><span class="si">}</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">root</span><span class="p">.</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">react-shadow</code> creates a new instance of a shadow DOM by wrapping a React component tree in a <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> element to which a shadow DOM is attached. This React component tree is now free from the pesky host page styles, and can style itself how it wants without fear of conflict! Note that we are adding a <code class="language-plaintext highlighter-rouge">StyleSheetManager</code> from <code class="language-plaintext highlighter-rouge">styled-components</code>. This is necessary, as under the hood, <code class="language-plaintext highlighter-rouge">styled-components</code> works by adding a class to each styled component, and specifying in the document <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> the styling of those classes. But since we are now in shadow DOM-land, our React component is cut off from the <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> of the document–so we have to re-insert those styles into the shadow DOM.</p>
+
+<p>Import <code class="language-plaintext highlighter-rouge">ShadowRoot</code> into <code class="language-plaintext highlighter-rouge">StickyNotes.js</code> and wrap the component, like so:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js:</span>
+<span class="p">...</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ShadowRoot</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./ShadowRoot</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">...</span>
+<span class="p">...</span>
+
+<span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">notes</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">note</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="p">...</span>
+        <span class="p">};</span>
+
+        <span class="kd">const</span> <span class="nx">handleDelete</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="p">...</span>
+        <span class="p">};</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+          <span class="p">&lt;</span><span class="nc">ShadowRoot</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">Container</span> <span class="na">x</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">x</span><span class="si">}</span> <span class="na">y</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">y</span><span class="si">}</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nc">Header</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">StyledButton</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleDelete</span><span class="si">}</span><span class="p">&gt;</span>X<span class="p">&lt;/</span><span class="nc">StyledButton</span><span class="p">&gt;</span>
+              <span class="p">&lt;/</span><span class="nc">Header</span><span class="p">&gt;</span>
+              <span class="p">&lt;</span><span class="nc">StyledTextArea</span> <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">handleChange</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;/</span><span class="nc">Container</span><span class="p">&gt;</span>
+          <span class="p">&lt;/</span><span class="nc">ShadowRoot</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+      <span class="p">})</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+</code></pre></div></div>
+
+<p>Go back to <code class="language-plaintext highlighter-rouge">www.example.com</code>, and voila! Our notes look the way we want them to.</p>
+
+<h3 id="add-a-dashboard--popuphtml">Add a dashboard / popup.html</h3>
+
+<p>At this point we have a decent notes app, but it can still be better. And we also have yet to make use of the chrome extension popup page, which is the probably the most recognizable feature of a chrome extension.</p>
+
+<p>For our popup page, we will be making a dashboard showing all the URLs that we have notes on, as well as all the notes at those URLS. A library for our notes, if you will. This will demonstrate a) how to inject React into the chrome extension popup, and b) a way to communicate between the popup and the content script via <code class="language-plaintext highlighter-rouge">chrome.storage</code>.</p>
+
+<p>The mechanics of creating the popup page component are pretty similar to how we made our <code class="language-plaintext highlighter-rouge">StickyNotes</code> component. We will use <code class="language-plaintext highlighter-rouge">useEffect</code> to query <code class="language-plaintext highlighter-rouge">chrome.storage.local</code>, set to a <code class="language-plaintext highlighter-rouge">notes</code> stateful variable, and use <code class="language-plaintext highlighter-rouge">styled-components</code> as our styling solution.</p>
+
+<p>PopupComponent.js:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// popupComponent.js</span>
+<span class="cm">/* global chrome */</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">styled</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="p">{</span> <span class="nx">localMode</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./constants</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">ListNoMarker</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">ul</span><span class="s2">`
+  list-style-type: none;
+  padding: 0;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">UrlP</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">p</span><span class="s2">`
+  background: papayawhip;
+  margin: 0.5em;
+  padding: 0.5em;
+  overflow: scroll;
+`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">UrlEntry</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">entry</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">open</span><span class="p">,</span> <span class="nx">setOpen</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+  <span class="kd">const</span> <span class="nx">notes</span> <span class="o">=</span> <span class="nx">entry</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">li</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">setOpen</span><span class="p">(</span><span class="o">!</span><span class="nx">open</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nc">UrlP</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;</span><span class="si">{</span><span class="nx">url</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nc">UrlP</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">notes</span> <span class="o">&amp;&amp;</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">style</span><span class="p">=</span><span class="si">{</span><span class="nx">open</span> <span class="p">?</span> <span class="p">{</span> <span class="na">display</span><span class="p">:</span> <span class="dl">"</span><span class="s2">inherit</span><span class="dl">"</span> <span class="p">}</span> <span class="p">:</span> <span class="p">{</span> <span class="na">display</span><span class="p">:</span> <span class="dl">"</span><span class="s2">none</span><span class="dl">"</span> <span class="p">}</span><span class="si">}</span><span class="p">&gt;</span>
+          <span class="si">{</span><span class="nx">notes</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">note</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">note</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+          <span class="p">))</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+      <span class="p">)</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">PopupComponent</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">notes</span><span class="p">,</span> <span class="nx">setNotes</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+
+  <span class="c1">// get notes to display in popup.html</span>
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">localMode</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="kd">get</span><span class="p">((</span><span class="nx">items</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">setNotes</span><span class="p">(</span><span class="nx">items</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Hello from sticky notes!<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>
+        Press<span class="si">{</span><span class="dl">"</span><span class="s2"> </span><span class="dl">"</span><span class="si">}</span>
+        <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">i</span><span class="p">&gt;</span>Shift<span class="p">&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span>
+        + click to make a new note.
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>Your notes:<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">notes</span> <span class="o">&amp;&amp;</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">ListNoMarker</span><span class="p">&gt;</span>
+          <span class="si">{</span><span class="nb">Object</span><span class="p">.</span><span class="nx">entries</span><span class="p">(</span><span class="nx">notes</span><span class="p">).</span><span class="nx">map</span><span class="p">((</span><span class="nx">entry</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nc">UrlEntry</span> <span class="na">entry</span><span class="p">=</span><span class="si">{</span><span class="nx">entry</span><span class="si">}</span> <span class="p">/&gt;</span>
+          <span class="p">))</span><span class="si">}</span>
+        <span class="p">&lt;/</span><span class="nc">ListNoMarker</span><span class="p">&gt;</span>
+      <span class="p">)</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>The tricky part comes in making sure that <code class="language-plaintext highlighter-rouge">PopupComponent</code> gets where it needs to go (the <code class="language-plaintext highlighter-rouge">popup.html</code>) and doesn’t go where it isn’t needed (in the sticky notes).</p>
+
+<p>Remember in <code class="language-plaintext highlighter-rouge">manifest.json</code>, assinging the default popup like so?</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">//</span><span class="w"> </span><span class="err">manifest.json</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+  </span><span class="nl">"browser_action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"default_popup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./popup.html"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Add a new file <code class="language-plaintext highlighter-rouge">popup.html</code> to the <code class="language-plaintext highlighter-rouge">public</code> directory. In it, put:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- popup.html: --&gt;</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1.0"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Sticky Notes<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;style&gt;</span>
+      <span class="nt">body</span> <span class="p">{</span>
+        <span class="nl">height</span><span class="p">:</span> <span class="m">400px</span><span class="p">;</span>
+        <span class="nl">width</span><span class="p">:</span> <span class="m">400px</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"popup-root"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"./main.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>Now, in <code class="language-plaintext highlighter-rouge">index.js</code>, modify it so it looks like:</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//index.js</span>
+<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ReactDOM</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-dom</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">"</span><span class="s2">./index.css</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">StickyNotes</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./StickyNotes</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="p">{</span> <span class="nx">PopupComponent</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./PopupComponent</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">popupRoot</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">popup-root</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">insertionPoint</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">insertionPoint</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">insertion-point</span><span class="dl">"</span><span class="p">;</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">insertionPoint</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+
+<span class="c1">// StickyNotes / content script</span>
+<span class="o">!</span><span class="nx">popupRoot</span> <span class="o">&amp;&amp;</span>
+  <span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">React</span><span class="p">.</span><span class="nc">StrictMode</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nc">StickyNotes</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">React</span><span class="p">.</span><span class="nc">StrictMode</span><span class="p">&gt;,</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">insertion-point</span><span class="dl">"</span><span class="p">)</span>
+  <span class="p">);</span>
+
+<span class="c1">// PopupComponent / popup.html</span>
+<span class="nx">popupRoot</span> <span class="o">&amp;&amp;</span>
+  <span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">React</span><span class="p">.</span><span class="nc">Fragment</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nc">PopupComponent</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">React</span><span class="p">.</span><span class="nc">Fragment</span><span class="p">&gt;,</span>
+    <span class="nx">popupRoot</span>
+  <span class="p">);</span>
+
+<span class="c1">// If you want to start measuring performance in your app, pass a function</span>
+<span class="c1">// to log results (for example: reportWebVitals(console.log))</span>
+<span class="c1">// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals</span>
+</code></pre></div></div>
+
+<p>How is this working? Well, when we build the React app, all these files are going to be in the <code class="language-plaintext highlighter-rouge">build</code> directory. In <code class="language-plaintext highlighter-rouge">popup.html</code>, we are loading up <code class="language-plaintext highlighter-rouge">main.js</code> via a <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag. <code class="language-plaintext highlighter-rouge">main.js</code> will run like a normal js file, having access to the DOM of <code class="language-plaintext highlighter-rouge">popup.html</code>.</p>
+
+<p>In <code class="language-plaintext highlighter-rouge">index.js</code>, we have created a way for our React app to render different parts of the app into different html files. It will search the DOM for the <code class="language-plaintext highlighter-rouge">popup-root</code> id, and if it’s there, render the <code class="language-plaintext highlighter-rouge">PopupComponent</code>, and if it’s not, render the content script for the sticky notes.</p>
+
+<h2 id="testing-your-extension">Testing your extension</h2>
+
+<p>Now that we’ve finished building our extension, let’s try it out.</p>
+
+<p>First, navigate to <code class="language-plaintext highlighter-rouge">chrome://extensions</code> in the URL bar. Next, enable <code class="language-plaintext highlighter-rouge">Developer Mode</code> in the top right corner. And lastly, click <code class="language-plaintext highlighter-rouge">Load Unpacked</code> and upload your <code class="language-plaintext highlighter-rouge">build</code> folder. That’s it!</p>
+
+<p><img src="developermode.png" alt="Enable developer mode and upload" /></p>
+
+<p>Now, we can play around with our extension on any page.</p>
+
+<p><img src="completed-notes-app-google.gif" alt="complete notes app on google.com" /></p>
+
+<p>A# appendix</p>
+
+<ul>
+  <li>Stackoverflow thread on code-splitting while building, and prevent chunk files: https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix</li>
+  <li>Submitting your extension to the chrome store</li>
+</ul>
+
+<h2 id="summary">Summary</h2>
+
+<p>To wrap up, here’s what we learned:</p>
+
+<ul>
+  <li>
+    <p>Creating a Chrome Content Script that injects itself on every webpage and renders React Components</p>
+  </li>
+  <li>
+    <p>Created a Popup Script that renders an HTML document with React</p>
+  </li>
+  <li>
+    <p>Interfaced with the Chrome storage API</p>
+  </li>
+  <li>
+    <p>Modified our build instructions to make our build extension compatible</p>
+  </li>
+</ul>
+
+
+        </section>
+        <footer class="post-footer">
+          <section class="share">
+            
+              
+                <a class="icon-twitter" href="http://twitter.com/share?text=Create+a+Chrome+Extension+with+React&amp;url=http://localhost:4000"
+                  onclick="window.open(this.href, 'twitter-share', 'width=550,height=255');return false;">
+                <i class="fa fa-twitter"></i><span class="hidden">twitter</span>
+                </a>
+              
+            
+              
+            
+          </section>
+        </footer>
+        <div class="bottom-teaser cf">
+          <div class="isLeft">
+            <h5 class="index-headline featured"><span>Written by</span></h5>
+            <section class="author">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4>Alex Reibman + Carter Chen</h4>
+              <p class="bio"></p>
+              <hr>
+              <p class="published">Published <time datetime="2014-08-29 14:34">29 Aug 2014</time></p>
+            </section>
+          </div>
+          
+          <div class="isRight">
+            <h5 class="index-headline featured"><span>Supported by</span></h5>
+            <footer class="site-footer">
+              <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
+              <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
+              <div class="inner">
+                <section class="copyright">All content copyright <a href="/">Alex Reibman + Carter Chen</a> &copy; 2020<br>All rights reserved.</section>
+              </div>
+            </footer>
+          </div>
+        </div>
+        
+      </article>
+    </main>
+    <div class="bottom-closer">
+      <div class="background-closer-image"  style="background-image: url(/assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg)">
+        Image
+      </div>
+      <div class="inner">
+        <h1 class="blog-title">Mediator</h1>
+        <h2 class="blog-description">A Jekyll theme - Medium inspired
+</h2>
+        <a href=/ class="btn">Back to Overview</a>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/assets/js/index.js"></script>
+<script type="text/javascript" src="/assets/js/readingTime.min.js"></script>
+<script>
+(function ($) {
+  "use strict";
+  $(document).ready(function(){
+
+    var $window = $(window),
+    $image = $('.post-image-image, .teaserimage-image');
+    
+      $window.on('scroll', function() {
+        var top = $window.scrollTop();
+
+        if (top < 0 || top > 1500) { return; }
+        $image
+          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
+          .css('opacity', 1-Math.max(top/700, 0));
+      });
+      $window.trigger('scroll');
+
+      var height = $('.article-image').height();
+      $('.post-content').css('padding-top', height + 'px');
+
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+         && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+          }
+        }
+      });
+
+  });
+}(jQuery));
+</script>
+
+
+  </body>
+</html>
