@@ -1,68 +1,75 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# mediator
 
-## Available Scripts
+A medium inspired Jekyll blog theme. The basic idea came from the Ghost theme
+[Readium 2.0](http://www.svenread.com/readium-ghost-theme/). I use mediator on my own blog [The Base](http://blog.base68.com).
 
-In the project directory, you can run:
+## Screenshots
 
-### `yarn start`
+![screenshot](/assets/images/screenshot1.jpg)
+![screenshot](/assets/images/screenshot2.jpg)
+![screenshot](/assets/images/screenshot3.jpg)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- Fully Responsive layout
+- Use header images in articles, if you want to (add tag "image" and url to the image in the front matter section of a post)
+- Minimal design
+- Featured article support
+- FontAwesome implemented for easy use of icons fonts
+- Free & Open Source Font usage
 
-### `yarn test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [Fork this repository](https://github.com/dirkfabisch/mediator)
+- Clone it: `git clone https://github.com/YOUR-USER/mediator`
+- Install the requried gems ([GitHub Pages](https://github.com/github/pages-gem), [Bourbon](https://github.com/thoughtbot/bourbon) and [Jekyll](https://github.com/jekyll/jekyll), [Jemoji](https://github.com/jekyll/jemoji)): `bundle install`
+- Run the jekyll server: `bundle exec jekyll serve`
 
-### `yarn build`
+You should have a server up and running locally at <http://localhost:4000>.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Configuration
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+The main settings happen in side of the \_config.yml file:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Site
 
-### `yarn eject`
+Main settings for the site
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- **title**: name of your site
+- **description**: description of your site
+- **logo**: small logo for the site (300x \* 300x)
+- **cover**: large background image on the index page
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **name**: name site owner
+- **email**: mail address of the site owner
+- **author**: author name
+- **author_image**: small image of author (300x \* 300px)
+- **disqus**: add a disqus forum for your post
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Social
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The template allows to add all major social platforms to your site.
+Fill the the form for each platform. If you leave the share\_\* entries empty, the sharing buttons below a post are not shown. If you leave the **url** and **desc** empty the icons are not shown on the index page, but the share icons on the article pages remains untouched (Thanks to [Phil](https://github.com/philsturgeon))
 
-## Learn More
+- **icon**: name of social platform (must match a name of [font-awsome](http://fortawesome.github.io/Font-Awesome/) icon set )
+- **url**: url of your account
+- **desc**: slogan of the platform
+- **share_url**: share url
+- **share_title**: first part of url for the title
+- **share_link**: second part of the share url for the link to the post
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The Liquid template engine will magical combine the different parts to a share url.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+http://twitter.com/share?text=post_title&amp;url=post_url
+```
 
-### Code Splitting
+See [\_config.yml](https://github.com/dirkfabisch/mediator/blob/master/_config.yml) for more examples.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Licensing
 
-### Analyzing the Bundle Size
+[MIT](https://github.com/dirkfabisch/mediator/blob/master/LICENCE) with no added caveats, so feel free to use this on your site without linking back to me or using a disclaimer or anything silly like that.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+## Contact
 
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+I'd love to hear from you at [@dirkfabisch](https://twitter.com/dirkfabisch). Feel free to open issues if you run into trouble or have suggestions. Pull Requests always welcome.
