@@ -25,13 +25,14 @@ Everyone! Beginners as well as seasoned experts will learn
 To get started with this tutorial, you should be familiar with:
 
 - Vanilla JS
+- Create React App
 - React + React Hooks
 - Yarn
 - HTML and the DOM API
 
 In this tutorial, you will learn:
 
-- Turn React to Chrome-compatible JS
+- Turn React to Chrome Extension-compatible JS
 - Extension Background Scripts and Popups
 - Modify web pages with Content Scripts and the Shadow DOM
 - Publishing your Chrome Extension to the public and expedite review approval

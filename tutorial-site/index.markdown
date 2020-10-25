@@ -1,3 +1,49 @@
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: home
+---
+
+# Introduction
+
+## Browsers are the future!
+
+Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of market share with claims from Google of over 2 billion active Chrome browsers in 2016. Chrome is wonderful for a handful of reasons:
+
+1. It looks and runs the same on most computers
+2. It's easy to install
+3. You can turbocharge Chrome using Extensions.
+
+Regarding point number 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you're probability familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ)? Their software is almost entirely based around browser extensions, and Paypal just bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
+
+## Extensions are great, but not simple to build with React
+
+In the year 2020, there are countless JavaScript frameworks that make developing for the web easier than ever. ReactJS happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building beautiful frontend UIs. Unfortunately, Chrome extensions don't work the same as traditional web applications. At [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. Long story short, _you can't just run `create-react-app`, click export, and expect a working extension_.
+
+In this tutorial, we will guide you step-by-step in building your own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. [You can access the code for this extension here](https://github.com/meerkat-citronella/react-chrome-sticky-note-extension). Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.
+
+### Skill level
+
+Everyone! Beginners as well as seasoned experts will learn
+
+### Prerequisites
+
+To get started with this tutorial, you should be familiar with:
+
+- Vanilla JS
+- Create React App
+- React + React Hooks
+- Yarn
+- HTML and the DOM API
+
+In this tutorial, you will learn:
+
+- Turn React to Chrome Extension-compatible JS
+- Extension Background Scripts and Popups
+- Modify web pages with Content Scripts and the Shadow DOM
+- Publishing your Chrome Extension to the public and expedite review approval
+
 ## Building our extension
 
 The web is replete with great learning resources, but it's oftentimes difficult to capture your thoughts when reading through dense topics. Research suggests that writing down notes while you read helps [improve knowledge retention](https://www.researchgate.net/publication/277951569_The_Effects_of_Note-Taking_Skills_Instruction_on_Elementary_Students%27_Reading).
@@ -399,62 +445,6 @@ Your metadata will be visible at the url `chrome://extensions`
 Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` api as an intermediary data store.
 ![Communication between scripts](communication.png)
 
-## Make React Compatible with Chrome
-
-Remember at the beginning we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension's package, Chrome won't know how to read your files and fail to run your extension.
-
-### Prevent JavaScript file splitting
-
-By default, Create React App is configured with Webpack. According to Webpack's documentation: "Code splitting is one of the most compelling features of webpack. This feature allows you to split your code into various bundles which can then be loaded on demand or in parallel."
-
-Unfortunately for us, code splitting makes it difficult to package our code into an extension.
-
-Additionally, Webpack adds random hashes to the files it builds. (This is to prompt browser to re-fetch files that may have changed between builds instead of relying on cached files). However, this also poses an issue for us because unless we account for the hash changes, we'll have to change our `manifest.json` to match the new files names every time we build.
-
-![file_splitting](file_splitting.png)
-
-To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.
-
-```js
-// build-non-split.js
-const rewire = require("rewire");
-const defaults = rewire("react-scripts/scripts/build.js");
-let config = defaults.__get__("config");
-
-config.optimization.splitChunks = {
-  cacheGroups: {
-    default: false,
-  },
-};
-
-config.optimization.runtimeChunk = false;
-```
-
-Next, we need to modify our `package.json` to prevent code splitting and hashing.
-
-```json
-// package.json
-  ...
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build:extension": "node ./scripts/build-non-split.js && yarn build:clean",
-    "build:clean": "cd build && mv static/js/*.js main.js && mv static/css/*.css main.css && rm -r static",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  ...
-```
-
-We modified `package.json` to include 2 additional commands: `build:extension` and `build:clean`.
-
-1. `build:extension` will run the `build-non-split.js` file and prevent Webpack from splitting the JS.
-2. Next, `build:clean` will rename the bundled js and css into a single set of files called `main.js` and `main.css` respectively. Finally, we remove the `static` directory, since it is no longer needed.
-
-From now on, when we are building our extension, we should run `yarn build:extension`. Running this command will create a build directory that looks like this:
-
-![new build directory](newname.png)
-
 ### Content Script
 
 ### Popup script
@@ -836,7 +826,7 @@ export const PopupComponent = () => {
 
 The tricky part comes in making sure that `PopupComponent` gets where it needs to go (the `popup.html`) and doesn't go where it isn't needed (in the sticky notes).
 
-Remember in `manifest.json`, assinging the default popup like so?
+Remmeber in `manifest.json`, assinging the default popup like so?
 
 ```json
 // manifest.json
