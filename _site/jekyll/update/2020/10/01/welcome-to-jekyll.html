@@ -136,7 +136,7 @@
 
 <p>So, for this tutorial, we’ll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here’s a screenshot of what we’ll build:</p>
 
-<p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png" alt="alt text" /></p>
+<p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png" alt="Screenshot of our extension" /></p>
 
 <h2 id="create-react-app">Create React App</h2>
 
@@ -152,9 +152,7 @@
 
 <p>Next, we are going to make some styled components to use in our <code class="language-plaintext highlighter-rouge">StickyNotes</code> component. At the top of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code> add the following:</p>
 
-<p>StickyNotes.js</p>
-
-<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// import the module</span>
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js</span>
 <span class="k">import</span> <span class="nx">styled</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="c1">// the components</span>
@@ -1047,13 +1045,6 @@ REACT_APP_LOCAL=true
 
 <p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/completed-notes-app-google.gif" alt="complete notes app on google.com" /></p>
 
-<p>A# appendix</p>
-
-<ul>
-  <li>Stackoverflow thread on code-splitting while building, and prevent chunk files: https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix</li>
-  <li>Submitting your extension to the chrome store</li>
-</ul>
-
 <h2 id="summary">Summary</h2>
 
 <p>To wrap up, here’s what we learned:</p>
@@ -1071,6 +1062,13 @@ REACT_APP_LOCAL=true
   <li>
     <p>Modified our build instructions to make our build extension compatible</p>
   </li>
+</ul>
+
+<h2 id="appendix">Appendix</h2>
+
+<ul>
+  <li><a href="https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix">Stackoverflow thread on code-splitting while building, and prevent chunk files</a></li>
+  <li><a href="https://www.youtube.com/watch?v=A6X1fDf4poc">Submitting your extension to the Chrome Store</a></li>
 </ul>
 
 

@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 25 Oct 2020 20:08:43 -0400</pubDate>
-    <lastBuildDate>Sun, 25 Oct 2020 20:08:43 -0400</lastBuildDate>
+    <pubDate>Sun, 25 Oct 2020 21:20:11 -0400</pubDate>
+    <lastBuildDate>Sun, 25 Oct 2020 21:20:11 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -67,7 +67,7 @@
 
 &lt;p&gt;So, for this tutorial, we’ll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here’s a screenshot of what we’ll build:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png&quot; alt=&quot;alt text&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png&quot; alt=&quot;Screenshot of our extension&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;create-react-app&quot;&gt;Create React App&lt;/h2&gt;
 
@@ -83,9 +83,7 @@
 
 &lt;p&gt;Next, we are going to make some styled components to use in our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StickyNotes&lt;/code&gt; component. At the top of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StickyNotes.js&lt;/code&gt; add the following:&lt;/p&gt;
 
-&lt;p&gt;StickyNotes.js&lt;/p&gt;
-
-&lt;div class=&quot;language-jsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// import the module&lt;/span&gt;
+&lt;div class=&quot;language-jsx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// StickyNotes.js&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;styled&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;styled-components&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;c1&quot;&gt;// the components&lt;/span&gt;
@@ -978,13 +976,6 @@ REACT_APP_LOCAL=true
 
 &lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/completed-notes-app-google.gif&quot; alt=&quot;complete notes app on google.com&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;A# appendix&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Stackoverflow thread on code-splitting while building, and prevent chunk files: https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix&lt;/li&gt;
-  &lt;li&gt;Submitting your extension to the chrome store&lt;/li&gt;
-&lt;/ul&gt;
-
 &lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 
 &lt;p&gt;To wrap up, here’s what we learned:&lt;/p&gt;
@@ -1002,6 +993,13 @@ REACT_APP_LOCAL=true
   &lt;li&gt;
     &lt;p&gt;Modified our build instructions to make our build extension compatible&lt;/p&gt;
   &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;appendix&quot;&gt;Appendix&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix&quot;&gt;Stackoverflow thread on code-splitting while building, and prevent chunk files&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=A6X1fDf4poc&quot;&gt;Submitting your extension to the Chrome Store&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 </description>

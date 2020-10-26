@@ -55,7 +55,7 @@ The web is replete with great learning resources, but it's oftentimes difficult 
 
 So, for this tutorial, we'll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here's a screenshot of what we'll build:
 
-![alt text](screenshot.png)
+![Screenshot of our extension](screenshot.png)
 
 ## Create React App
 

@@ -56,7 +56,7 @@ The web is replete with great learning resources, but it's oftentimes difficult 
 
 So, for this tutorial, we'll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here's a screenshot of what we'll build:
 
-![alt text](/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png)
+![Screenshot of our extension](/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png)
 
 ## Create React App
 
@@ -72,10 +72,8 @@ Let's start with the file `App.js`. This will be the main component for our app.
 
 Next, we are going to make some styled components to use in our `StickyNotes` component. At the top of `StickyNotes.js` add the following:
 
-StickyNotes.js
-
 ```jsx
-// import the module
+// StickyNotes.js
 import styled from "styled-components";
 
 // the components
@@ -961,11 +959,6 @@ Now, we can play around with our extension on any page.
 
 ![complete notes app on google.com](/assets/article_images/2020-10-26-welcome-to-jekyll/completed-notes-app-google.gif)
 
-A# appendix
-
-- Stackoverflow thread on code-splitting while building, and prevent chunk files: https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix
-- Submitting your extension to the chrome store
-
 ## Summary
 
 To wrap up, here's what we learned:
@@ -977,6 +970,11 @@ To wrap up, here's what we learned:
 - Interfaced with the Chrome storage API
 
 - Modified our build instructions to make our build extension compatible
+
+## Appendix
+
+- [Stackoverflow thread on code-splitting while building, and prevent chunk files](https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix)
+- [Submitting your extension to the Chrome Store](https://www.youtube.com/watch?v=A6X1fDf4poc)
 
 [jekyll]: http://jekyllrb.com
 [jekyll-gh]: https://github.com/jekyll/jekyll
