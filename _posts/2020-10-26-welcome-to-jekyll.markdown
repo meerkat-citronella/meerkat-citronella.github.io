@@ -13,7 +13,7 @@ Chrome extensions are a great way for developers to deliver delightful software 
 
 ![Top picks from the Chrome Extension Store](/assets/article_images/2020-10-26-welcome-to-jekyll/extensions.png)
 
-Wouldn't it be great to build an extension in React? React happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building frontend code. Unfortunately, Chrome extensions don't work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.
+Wouldn't it be great to build an extension in React? React happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building frontend code. Unfortunately, Chrome extensions don't work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is entirely different.
 
 When we built [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:
 
@@ -29,7 +29,7 @@ In this tutorial, we will guide you step-by-step in building your own React-base
 
 ### Skill level
 
-This tutorial is for developers familiar with React and the JavaScript ecosystem, but beginners should be able to along.
+This tutorial is for developers familiar with React and the JavaScript ecosystem.
 
 ### Prerequisites
 
