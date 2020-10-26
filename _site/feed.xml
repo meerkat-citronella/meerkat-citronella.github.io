@@ -6,17 +6,21 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 26 Oct 2020 15:15:22 -0400</pubDate>
-    <lastBuildDate>Mon, 26 Oct 2020 15:15:22 -0400</lastBuildDate>
+    <pubDate>Mon, 26 Oct 2020 16:04:25 -0400</pubDate>
+    <lastBuildDate>Mon, 26 Oct 2020 16:04:25 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
         <title>Create a Chrome Extension with React</title>
-        <description>&lt;h2 id=&quot;extensions-are-great-but-not-simple-to-easy-to-build&quot;&gt;Extensions are great! But not simple to easy to build&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;extensions-are-great-but-not-simple-to-build&quot;&gt;Extensions are great! But not simple to build&lt;/h2&gt;
 
 &lt;p&gt;Chrome extensions are a great way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you might be probably familiar with &lt;a href=&quot;https://www.youtube.com/watch?v=aNv1qZ54YzQ&quot;&gt;Honey&lt;/a&gt;. Their product is almost entirely based around browser extensions, and Paypal recently bought them for &lt;strong&gt;$4 billion&lt;/strong&gt;! &lt;a href=&quot;https://www.grammarly.com&quot;&gt;Grammarly&lt;/a&gt;, another Chrome extension, recently raised $90 million and is now valued at over $&lt;strong&gt;1 billion&lt;/strong&gt;. With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)&lt;/p&gt;
 
-&lt;p&gt;There are plenty of great JavaScript frameworks for web development. But React happens to be &lt;a href=&quot;https://twitter.com/AlexReibman/status/1203047332515926017/photo/1&quot;&gt;one of the most in-demand JS frameworks&lt;/a&gt; for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. When we built &lt;a href=&quot;https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US&quot;&gt;DocIt&lt;/a&gt;, we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seem to work too well. Here are some of the issues we encountered:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/extensions.png&quot; alt=&quot;Top picks from the Chrome Extension Store&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are plenty of great JavaScript frameworks for web development. But React happens to be &lt;a href=&quot;https://twitter.com/AlexReibman/status/1203047332515926017/photo/1&quot;&gt;one of the most in-demand JS frameworks&lt;/a&gt; for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.&lt;/p&gt;
+
+&lt;p&gt;When we built &lt;a href=&quot;https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US&quot;&gt;DocIt&lt;/a&gt;, we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Webpack does not create extension-compatible React builds&lt;/li&gt;
@@ -57,9 +61,7 @@
   &lt;li&gt;Resources to publish your Chrome Extension to the public and expedite the review process&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;what-well-build&quot;&gt;What we’ll build&lt;/h3&gt;
-
-&lt;h2 id=&quot;create-react-app&quot;&gt;Create React App&lt;/h2&gt;
+&lt;h2 id=&quot;starting-with-a-fresh-react-app&quot;&gt;Starting with a Fresh React App&lt;/h2&gt;
 
 &lt;p&gt;Before we add the Chrome extension functionality, let’s focus on building a functioning React app.&lt;/p&gt;
 
@@ -396,7 +398,7 @@
         &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;popup.html&lt;/code&gt;- The HTML document that renders when you click the extension button. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;popup.js&lt;/code&gt; will be used here.&lt;/p&gt;
       &lt;/li&gt;
       &lt;li&gt;
-        &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;popup.js&lt;/code&gt;- Code that is excecuted in the popup window. This script will automatically be bundled into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main.js&lt;/code&gt;.&lt;/p&gt;
+        &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;popup.js&lt;/code&gt;- Code that is executed in the popup window. This script will automatically be bundled into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main.js&lt;/code&gt;.&lt;/p&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
@@ -550,7 +552,7 @@ REACT_APP_LOCAL=true
 &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;localMode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;REACT_APP_LOCAL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;When spinning up the app locally, set this REACT_APP_LOCAL to “true”, and when building it as a Chrome extension, change it to “false”.&lt;/p&gt;
+&lt;p&gt;When spinning up the app locally, set this &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REACT_APP_LOCAL&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;true&quot;&lt;/code&gt;. When building it as a Chrome extension, change it to “false”.&lt;/p&gt;
 
 &lt;p&gt;In StickyNotes.js, let’s use another &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set()&lt;/code&gt; our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;notes&lt;/code&gt; data to Chrome storage on a note edit. We will organize our notes by URL; each URL will have it’s own unique set of notes that the React app will save to and retrieve from Chrome storage. Remember to import &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;localMode&lt;/code&gt; from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;constants.js&lt;/code&gt; at the top of the file.&lt;/p&gt;
 

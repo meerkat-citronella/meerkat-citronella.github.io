@@ -8,7 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <title>Create a Chrome Extension with React</title>
-  <meta name="description" content="Extensions are great! But not simple to easy to build" />
+  <meta name="description" content="Extensions are great! But not simple to build" />
 
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -20,14 +20,14 @@
     <meta name="twitter:title" content="Create a Chrome Extension with React" />
     <meta name="twitter:image" content="http://localhost:4000/assets/images/df_logo.jpg" />
     
-    <meta name="twitter:description"  content="Extensions are great! But not simple to easy to build" />
+    <meta name="twitter:description"  content="Extensions are great! But not simple to build" />
     
   
   
   <meta property="og:site_name" content="Mediator" />
   <meta property="og:title" content="Create a Chrome Extension with React"/>
   
-  <meta property="og:description" content="Extensions are great! But not simple to easy to build" />
+  <meta property="og:description" content="Extensions are great! But not simple to build" />
   
   <meta property="og:image" content="http://localhost:4000/assets/article_images/2020-10-26-welcome-to-jekyll/desktop.JPG" />
   <meta property="og:url" content="http://localhost:4000/jekyll/update/2020/10/01/welcome-to-jekyll.html" >
@@ -81,11 +81,15 @@
             <span class="post-reading-time"></span> read
           </div>
           <a name="topofpage"></a>
-          <h2 id="extensions-are-great-but-not-simple-to-easy-to-build">Extensions are great! But not simple to easy to build</h2>
+          <h2 id="extensions-are-great-but-not-simple-to-build">Extensions are great! But not simple to build</h2>
 
 <p>Chrome extensions are a great way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you might be probably familiar with <a href="https://www.youtube.com/watch?v=aNv1qZ54YzQ">Honey</a>. Their product is almost entirely based around browser extensions, and Paypal recently bought them for <strong>$4 billion</strong>! <a href="https://www.grammarly.com">Grammarly</a>, another Chrome extension, recently raised $90 million and is now valued at over $<strong>1 billion</strong>. With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)</p>
 
-<p>There are plenty of great JavaScript frameworks for web development. But React happens to be <a href="https://twitter.com/AlexReibman/status/1203047332515926017/photo/1">one of the most in-demand JS frameworks</a> for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. When we built <a href="https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US">DocIt</a>, we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seem to work too well. Here are some of the issues we encountered:</p>
+<p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/extensions.png" alt="Top picks from the Chrome Extension Store" /></p>
+
+<p>There are plenty of great JavaScript frameworks for web development. But React happens to be <a href="https://twitter.com/AlexReibman/status/1203047332515926017/photo/1">one of the most in-demand JS frameworks</a> for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.</p>
+
+<p>When we built <a href="https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US">DocIt</a>, we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:</p>
 
 <ul>
   <li>Webpack does not create extension-compatible React builds</li>
@@ -126,9 +130,7 @@
   <li>Resources to publish your Chrome Extension to the public and expedite the review process</li>
 </ul>
 
-<h3 id="what-well-build">What we’ll build</h3>
-
-<h2 id="create-react-app">Create React App</h2>
+<h2 id="starting-with-a-fresh-react-app">Starting with a Fresh React App</h2>
 
 <p>Before we add the Chrome extension functionality, let’s focus on building a functioning React app.</p>
 
@@ -465,7 +467,7 @@
         <p><code class="language-plaintext highlighter-rouge">popup.html</code>- The HTML document that renders when you click the extension button. <code class="language-plaintext highlighter-rouge">popup.js</code> will be used here.</p>
       </li>
       <li>
-        <p><code class="language-plaintext highlighter-rouge">popup.js</code>- Code that is excecuted in the popup window. This script will automatically be bundled into <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
+        <p><code class="language-plaintext highlighter-rouge">popup.js</code>- Code that is executed in the popup window. This script will automatically be bundled into <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
       </li>
     </ul>
   </li>
@@ -619,7 +621,7 @@ REACT_APP_LOCAL=true
 <span class="k">export</span> <span class="kd">const</span> <span class="nx">localMode</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_LOCAL</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">true</span><span class="dl">"</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>When spinning up the app locally, set this REACT_APP_LOCAL to “true”, and when building it as a Chrome extension, change it to “false”.</p>
+<p>When spinning up the app locally, set this <code class="language-plaintext highlighter-rouge">REACT_APP_LOCAL</code> to <code class="language-plaintext highlighter-rouge">"true"</code>. When building it as a Chrome extension, change it to “false”.</p>
 
 <p>In StickyNotes.js, let’s use another <code class="language-plaintext highlighter-rouge">useEffect</code> hook to <code class="language-plaintext highlighter-rouge">set()</code> our <code class="language-plaintext highlighter-rouge">notes</code> data to Chrome storage on a note edit. We will organize our notes by URL; each URL will have it’s own unique set of notes that the React app will save to and retrieve from Chrome storage. Remember to import <code class="language-plaintext highlighter-rouge">localMode</code> from <code class="language-plaintext highlighter-rouge">constants.js</code> at the top of the file.</p>
 
