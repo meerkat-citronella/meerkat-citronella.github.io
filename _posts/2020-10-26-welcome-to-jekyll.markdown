@@ -386,7 +386,7 @@ However, things are a bit different when we're working with React. When you buil
 
   - `popup.html`- The HTML document that renders when you click the extension button. `popup.js` will be used here.
 
-  - `popup.js`- Code that is excecuted in the popup window. This script will automatically be bundled into `main.js`.
+  - `popup.js`- Code that is executed in the popup window. This script will automatically be bundled into `main.js`.
 
 - `contentScript.js`- A content script is a js file injected into the web page that the user is viewing (i.e. wikipedia.org, google.com, etc.). This script will be responsible for making any changes to the current webpage being viewed. This script will automatically be bundled into `main.js`.
 
