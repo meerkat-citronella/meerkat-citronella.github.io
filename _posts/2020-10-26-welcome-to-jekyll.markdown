@@ -21,15 +21,15 @@ Regarding point 3, Chrome extensions are an incredible way for developers to del
 
 ## Extensions are great but not simple to build with React
 
-In the year 2020, a plethora of intuitive yet powerful JavaScript frameworks have made developing for the web easier than ever. ReactJS happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building beautiful frontend UIs. Unfortunately, Chrome extensions don't work the same as traditional web applications. At [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.
+There are plenty of great JavaScript frameworks for web development. But ReactJS happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building frontend code. Unfortunately, Chrome extensions don't work the same as traditional web apps. At [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.
 
 Long story short, _you can't just run `create-react-app`, click export, and expect a working extension_.
 
-In this tutorial, we will guide you step-by-step in building our own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. [You can access the code for this extension here](https://github.com/meerkat-citronella/react-chrome-sticky-note-extension). Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.
+In this tutorial, we will guide you step-by-step in building our own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. [You can access the code for this extension here](https://github.com/meerkat-citronella/react-Chrome-sticky-note-extension). Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.
 
 ### Skill level
 
-This tutorial is written for developers familiar with React and the JavaScript ecosystem, but beginners should be able to along.
+This tutorial is for developers familiar with React and the JavaScript ecosystem, but beginners should be able to along.
 
 ### Prerequisites
 
@@ -62,15 +62,26 @@ So, for this tutorial, we'll build a simple extension that saves sticky notes on
 
 Before we add the Chrome extension functionality, let's focus on building a functioning React app.
 
-The easiest way to create a new React app is with Create React App. Run `npx create-react-app [YOUR_APP_NAME]` (we named ours react-chrome-sticky-note-extension) from a command line instance, and `cd` into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:
+The easiest way to create a new React app is with Create React App. Run `npx create-react-app [YOUR_APP_NAME]` (we named ours react-Chrome-sticky-note-extension) from the command line, and `cd` into the resulting directory, and open your favorite code editor (we use VSCode). Running CRA will give you the following boilerplate file structure:
 
 ![boilerplate react directory structure](/assets/article_images/2020-10-26-welcome-to-jekyll/react-boilerplate-dir-structure.png)
 
 Right off the bat we are going to download a module to help us out with styling our app. From the root directory of your app (`[YOUR_APP_NAME`), install styled-components into your app, with `yarn add styled-components`.
 
-Let's start with the file `App.js`. This will be the main component for our app. Let's go ahead and rename it, to something like `StickyNotes.js`. Also change the name of the component being rendered in the file in a similar fashion, from `App` to `StickyNotes`. Adjust the corresponding import in `index.js` (or let VSCode automatically updated it for you). Go ahead delete all the boilerplate in the return statement of the `StickyNotes` component.
+Let's start with a fresh component file `StickNotes.js`. `StickyNotes.js` will be our primary component. Also, update the name of the component being rendered in `index.js` from `App` to `StickyNotes`.
 
-Next, we are going to make some styled components to use in our `StickyNotes` component. At the top of `StickyNotes.js` add the following:
+```jsx
+// index.js
+...
+  ReactDOM.render(
+    <React.StrictMode>
+      <StickyNotes />
+    </React.StrictMode>,
+    document.getElementById("insertion-point")
+...
+```
+
+Next, we are going to make some [styled components](https://styled-components.com) to use in our `StickyNotes` component. At the top of `StickyNotes.js` add the following:
 
 ```jsx
 // StickyNotes.js
@@ -107,18 +118,12 @@ const StyledTextArea = styled.textarea`
 `;
 ```
 
-Styled-components, is a very popular styling library for React that makes adding CSS to our components easy.
-
 Note that in `Container` we are passing props. More on this later.
-
-We are building this app with React Hooks. If you are unfamiliar with Hooks, you can read about them here. Hooks seem to be here to stay, and wonderfully abstract away a lot the extraneous typing that has to happen in a React class component.
 
 Let's create a stateful variable to hold our notes data. We will use the `useState` React hook:
 
-StickyNotes.js:
-
 ```jsx
-// import useState
+// StickyNotes.js:
 import React, { useState } from 'react'
 
 const StickyNotes = () => {
@@ -129,11 +134,11 @@ const StickyNotes = () => {
 }
 ```
 
-First, let's create the funcionality that let's us add a sticky note. We will be using shift + click. Let's add a listener to the component:
-
-StickyNotes.js:
+Now, let's create the funcionality that let's us add sticky notes. We will be using shift + click. Let's add a listener to the component:
 
 ```jsx
+// StickyNotes.js:
+
 // add useEffect to imports
 import React, { useState, useEffect } from "react";
 
@@ -158,16 +163,16 @@ const StickyNotes = () => {
 }
 ```
 
-Few things to note about this `useEffect` function. Note that we are removing the listener on `useEffect` return. You can read more about cleaning up effects [here](https://reactjs.org/docs/hooks-intro.html). You should always remove your listeners in React, as subsequent renders will keep adding listeners unless they are removed. Lastly, note the empty dependency array `[]` as the second and final argument of the `useEffect` callback function: this is intentional, as we only need to set the listener once, on the first render. You can read more about dependency arrays in regards to `useEffect` [here](https://medium.com/better-programming/understanding-the-useeffect-dependency-array-2913da504c44).
+In this update, we included a `useEffect` hook. Note: we are removing the listener on `useEffect` return because you should always remove your listeners in React, as subsequent renders will keep adding listeners unless they are removed. You can read more about cleaning up effects [here](https://reactjs.org/docs/hooks-intro.html). Additionally, note the empty dependency array `[]` as the second and final argument of the `useEffect` callback function: this is intentional, as we only need to set the listener once, on the first render. You can read more about dependency arrays in regards to `useEffect` [here](https://medium.com/better-programming/understanding-the-useeffect-dependency-array-2913da504c44).
 
-For the `setNotes` function call, we are making use of JavaScript's wonderfully expressive object literal notation, and using the splat operator `...` to set our `notes` variable. You can read more about object destructuring and the splat operator [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax). `e.pageX, e.pageY` are the pixel coordinates of the click on the page.
+For the `setNotes` function call, we are making use of JavaScript's wonderfully expressive object literal notation, and using the spread operator `...` to set our `notes` variable. You can read more about object destructuring and the spread operator [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
+
+`e.pageX, e.pageY` are the pixel coordinates of the click on the page. We use these to remember the exact position where we place our sticky notes.
 
 Remember the props we set up to be passed to our `Container` styled component above? Let's bring that into play. Let's set up our `return` statement:
 
-StickyNotes.js:
-
 ```jsx
-// stickyNotes.js
+// StickyNotes.js
 ...
 
 const StickyNotes = () => {
@@ -190,15 +195,16 @@ const StickyNotes = () => {
 
 ```
 
-The coordinates we gleaned from our shift + click listener are passed via props to the `Container` styled component, which then uses those coordinates to absolutely position itself on the page! You should now have some functionality that looks like this:
+The coordinates we get from our shift + click listener are passed via props to the `Container` styled component, which then uses those coordinates to absolutely position itself on the page. You should now have some functionality that looks like this:
 
-![basic sticky note functionality](/assets/article_images/2020-10-26-welcome-to-jekyll/basic-note.gif)
+![Basic sticky note functionality](/assets/article_images/2020-10-26-welcome-to-jekyll/basic-note.gif)
 
-Although we are able to enter text into the `textarea`, it is not being saved at all. To do this, we need to turn the `textarea` into a controlled component. You can read more about React controlled components [here](https://reactjs.org/docs/forms.html). This is standard practice for React forms. We will save the note text from `textarea` alongside the coordinate data in the `notes` variable.
+Although we are able to enter text into the `textarea`, it is not being saved anywhere. To do this, we need to turn the `textarea` into a controlled component. You can read more about React controlled components [here](https://reactjs.org/docs/forms.html). We will save the note text from `textarea` alongside the coordinate data in the `notes` variable.
 
 In `StickyNotes.js`, update the component return statement to:
 
 ```jsx
+// StickyNotes.js
 ...
 const StickyNotes = () => {
 
@@ -234,7 +240,7 @@ const StickyNotes = () => {
 }
 ```
 
-We again make use of the splat notation, as well as ternery operators (read more [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator)) and the `&&` notation. `setNotes` here is identifying the note that is being edited (by comparing the coordinates of the note (`cv`) with the coordinates in the locally-scoped `note` variable) and adding (or editing) the `note` property.
+We again make use of the spread notation, as well as ternary operators (read more [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator)) and the `&&` notation. `setNotes` here is identifying the note that is being edited (by comparing the coordinates of the note (`cv`) with the coordinates in the locally-scoped `note` variable) and adding (or editing) the `note` property.
 
 The `textarea` is now a controlled component. You can log `notes` to the console, and see that is updating as you edit a note.
 
@@ -271,7 +277,7 @@ return (
   );
 ```
 
-This is the core functionality of the app! We can add notes, edit them, and delete them, and it is all saved in a single stateful variable. Next we'll turn this humble React app into a Chrome extension.
+We're done with the core functionality of the app! We can add notes, edit them, and delete them, and it is all saved in a single stateful variable. Next we'll turn this humble React app into a Chrome extension.
 
 The full code of `StickyNotes.js` at this point is as follows:
 
@@ -372,14 +378,13 @@ export default StickyNotes;
 
 ## Chrome Extension Configuration
 
-Chrome Extensions may seem daunting, but it's really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know
-how to make Chrome extensions.
+Chrome Extensions may seem daunting, but it's really all just JavaScript. A Chrome Extension is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know how to make Chrome extensions.
 
 Before we start coding, let's break down how Chrome Extensions are configured.
 
-Extensions are generally composed of 3 main JavaScript components: Content Scripts, Popup Scripts, and Background Scripts. Additionally, every chrome extension must include a `manifest.json` that tells Chrome how to run your extension.
+Extensions are generally composed of 3 main JavaScript components: Content Scripts, Popup Scripts, and Background Scripts. Additionally, every Chrome extension must include a `manifest.json` that tells Chrome how to run your extension.
 
-However, things are a bit different when we're working with React. When you build a React app, all of the code gets bundled into a single js file by Webpack. Hence, all of our our JS that affects UI (content scripts and popup scripts) will be bundled into a single file, `main.js`.
+However, things are a bit different when we're working with React. When you build a React app, all of the code gets bundled into a single js file by Webpack. Hence, all of our JS that affects UI (content scripts and popup scripts) will be bundled into a single file, `main.js`.
 
 ![Chrome Extension Architecture](/assets/article_images/2020-10-26-welcome-to-jekyll/ChromeExtension.png)
 
@@ -393,7 +398,7 @@ However, things are a bit different when we're working with React. When you buil
 
   - `popup.js`- Code that is excecuted in the popup window. This script will automatically be bundled into `main.js`.
 
-- `contentScript.js`- A content script is a js file injected into the web page that the user is viewing (i.e. wikipedia.org, google.com, etc.). This script will be responsible for making any changes to the current wepbage being viewed. This script will automatically be bundled into `main.js`.
+- `contentScript.js`- A content script is a js file injected into the web page that the user is viewing (i.e. wikipedia.org, google.com, etc.). This script will be responsible for making any changes to the current webpage being viewed. This script will automatically be bundled into `main.js`.
 
 - Assets- Any images, css, and other files used by your extension.
 
@@ -453,7 +458,7 @@ Our popup script will communicate to the content script (and vice versa) by usin
 
 ## Make React Compatible with Chrome
 
-Remember at the beginning we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension's package, Chrome won't know how to read your files and fail to run your extension.
+Remember we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension's package, Chrome won't know how to read your files and fail to run your extension.
 
 ### Prevent JavaScript file splitting
 
@@ -506,18 +511,18 @@ From now on, when we are building our extension, we should run `yarn build:exten
 
 ![new build directory](/assets/article_images/2020-10-26-welcome-to-jekyll/newname.png)
 
-Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a chrome extension, we will be using the chrome.storage api (read about it here).
+Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a Chrome extension, we will be using the chrome.storage api (read about it here).
 
-First, add `/* global chrome */` to the top of `StickyNotes.js`:
+First, add `/* global Chrome */` to the top of `StickyNotes.js`:
 
 ```jsx
 // StickyNotes.js
-/* global chrome */
+/* global Chrome */
 import React, { useState, useEffect } from "react";
 ...
 ```
 
-This will make the chrome variables available when you run the extension in the browser. But note: chrome variables are not available when the app is spun up locally in dev mode! If you try to, for example, access chrome storage via a method like `chrome.storage.local.get()` while the app is running locally, you will get a syntax error. For this reason, let's set an environment variable and an easy toggle to access it. We'll create a `.env` file in the root folder of the project:
+This will make the Chrome variables available when you run the extension in the browser. But note: Chrome variables are not available when the app is spun up locally! For example, if you try to access Chrome storage via a method like `chrome.storage.local.get()` while the app is running locally, you will get a syntax error. For this reason, let's set an environment variable and an easy toggle to access it. We'll create a `.env` file in the root folder of the project:
 
 ```env
 # .env
@@ -531,9 +536,9 @@ We'll also create another file called `constants.js`, which we'll reference to d
 export const localMode = process.env.REACT_APP_LOCAL === "true";
 ```
 
-When spinning up the app locally, set this REACT_APP_LOCAL to "true", and when building it as a chrome extension, change it to "false" (or comment out the line, or change it to literally any other string... .env vars aren't imported as boolean, it's just a string).
+When spinning up the app locally, set this REACT_APP_LOCAL to "true", and when building it as a Chrome extension, change it to "false".
 
-In StickyNotes.js, let's use another `useEffect` hook to `set()` our `notes` data to chrome storage on a note edit. We are going to organize our notes by URL; each URL will have it's own unique set of notes that the React app will save to and retrieve from chrome storage. Remember to import `localMode` from `constants.js` at the top of the file.
+In StickyNotes.js, let's use another `useEffect` hook to `set()` our `notes` data to Chrome storage on a note edit. We will organize our notes by URL; each URL will have it's own unique set of notes that the React app will save to and retrieve from Chrome storage. Remember to import `localMode` from `constants.js` at the top of the file.
 
 Let's also add a `useEffect` to access the stored notes data for the URL in question, if there is any.
 
@@ -579,13 +584,13 @@ const StickyNotes = () => {
 
 Note that we are using `chrome.storage.local` instead of `chrome.storage.sync` (read about the difference here). We are doing this primarily because of the write limits to sync.
 
-Note also the `set`ter function removes the entry from the database if there are no notes. We don't want to be piling up URLs in our chrome storage that don't have any notes in them!
+Note also the `set`ter function removes the entry from the database if there are no notes. We don't want to be piling up URLs in our Chrome storage that don't have any notes in them!
 
-You now have a fully-functioning notes app chrome extension! It's still very bare bones and there are still some bugs, so let's continue refining it. The code as of now should look like the below.
+You now have a fully-functioning notes app Chrome extension! It's still very bare-bones and there are still some bugs, so let's continue refining it. The code as of now should look like the below.
 
 ```jsx
 // StickyNotes.js:
-/* global chrome */
+/* global Chrome */
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
@@ -703,13 +708,13 @@ Since our extension is very simple, we won't require a backround script. However
 
 ### Make the Sticky Note a Shadow Component
 
-One very important aspect of creating a browser extension is dealing with how it interacts with the existing content of the webpage. A React app is really just JavaScript, and as we saw above when crafting the `insertionPoint`, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it's own styling rules.
+One very important aspect of creating a browser extension is dealing with how it interacts with the web page's existing content. A React app is really just JavaScript, and as we saw above when crafting the `insertionPoint`, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it's own styling rules.
 
-Let's look at a concrete example of this. Load your chrome extension into chrome, and navigate to `www.example.com`. Shift + click to add a note, and see what happens.
+Let's look at a concrete example of this. Load your Chrome extension into Chrome, and navigate to `www.example.com`. Shift + click to add a note, and see what happens.
 
 ![Styling conflicts between extension and example.com](/assets/article_images/2020-10-26-welcome-to-jekyll/example-site-styling-conflicts.gif)
 
-Our styling!! What happened? Well clearly, `www.example.com` has its own styling rules, and they are conflicting with those of our app.
+What happened?! `www.example.com` has its own styling rules, and they are conflicting with the elements rendered by our extension.
 
 There are a few solutions here. The first is to try to override the webpage's styling by using css techniques that take a higher precedence when the browser is computing styling, such as using `!important` or inline styling. These are inelegant solutions, both because they could potentially cause the inverse problem (our extension overriding the page styles and borking them up) and because they are heavy-handed and limited in the styling issues they can address (no more `styled-components`, for example). The second is to render these notes in an `<iframe>` element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these `StickyNotes` components inside of a shadow DOM instance.
 
@@ -782,9 +787,9 @@ Go back to `www.example.com`, and voila! Our notes look the way we want them to.
 
 ### Add a dashboard / popup.html
 
-At this point we have a decent notes app, but it can still be better. And we also have yet to make use of the chrome extension popup page, which is the probably the most recognizable feature of a chrome extension.
+At this point we have a decent notes app, but it can still be better. And we also have yet to make use of the Chrome extension popup page, which is probably the most recognizable feature of a Chrome extension.
 
-For our popup page, we will be making a dashboard showing all the URLs that we have notes on, as well as all the notes at those URLS. A library for our notes, if you will. This will demonstrate a) how to inject React into the chrome extension popup, and b) a way to communicate between the popup and the content script via `chrome.storage`.
+For our popup page, we will be making a dashboard showing all the URLs that we have notes on, as well as all the notes at those URLs. A library for our notes, if you will. This will demonstrate a) how to inject React into the Chrome extension popup, and b) a way to communicate between the popup and the content script via `chrome.storage`.
 
 The mechanics of creating the popup page component are pretty similar to how we made our `StickyNotes` component. We will use `useEffect` to query `chrome.storage.local`, set to a `notes` stateful variable, and use `styled-components` as our styling solution.
 
@@ -792,7 +797,7 @@ PopupComponent.js:
 
 ```jsx
 // popupComponent.js
-/* global chrome */
+/* global Chrome */
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
@@ -939,19 +944,15 @@ popupRoot &&
     </React.Fragment>,
     popupRoot
   );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 ```
 
 How is this working? Well, when we build the React app, all these files are going to be in the `build` directory. In `popup.html`, we are loading up `main.js` via a `<script>` tag. `main.js` will run like a normal js file, having access to the DOM of `popup.html`.
 
-In `index.js`, we have created a way for our React app to render different parts of the app into different html files. It will search the DOM for the `popup-root` id, and if it's there, render the `PopupComponent`, and if it's not, render the content script for the sticky notes.
+In `index.js`, we have created a way for our React app to render different parts of the app into different HTML files. It will search the DOM for the `popup-root` id, and if it's there, render the `PopupComponent`, and if it's not, render the content script for the sticky notes.
 
 ## Testing your extension
 
-Now that we've finished building our extension, let's try it out.
+Now that we've finished building our extension let's try it out.
 
 First, navigate to `chrome://extensions` in the URL bar. Next, enable `Developer Mode` in the top right corner. And lastly, click `Load Unpacked` and upload your `build` folder. That's it!
 
@@ -975,7 +976,7 @@ To wrap up, here's what we learned:
 
 ## Appendix
 
-- [Stackoverflow thread on code-splitting while building, and prevent chunk files](https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix)
+- [Stackoverflow thread on code-splitting while building and prevent chunk files](https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix)
 - [Submitting your extension to the Chrome Store](https://www.youtube.com/watch?v=A6X1fDf4poc)
 
 [jekyll]: http://jekyllrb.com

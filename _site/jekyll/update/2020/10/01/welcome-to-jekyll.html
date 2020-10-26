@@ -85,7 +85,7 @@
 
 <h2 id="browsers-are-the-future">Browsers are the future</h2>
 
-<p>Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of market share with claims from Google of over 2 billion active Chrome browsers in 2016. Chrome is wonderful for a handful of reasons:</p>
+<p>Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of the web browser market share. In 2016, there were over 2 billion active Chrome users. Chrome is wonderful for a handful of reasons:</p>
 
 <ol>
   <li>It looks and runs the same on most computers</li>
@@ -93,19 +93,19 @@
   <li>You can turbocharge Chrome using Extensions</li>
 </ol>
 
-<p>Regarding point 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you’re probability familiar with <a href="https://www.youtube.com/watch?v=aNv1qZ54YzQ">Honey</a>? Their product is almost entirely based around browser extensions, and Paypal just bought them for <strong>$4 billion</strong>! <a href="https://www.grammarly.com">Grammarly</a>, another Chrome extension, recently raised $90 million and is now valued at over $<strong>1 billion</strong>! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)</p>
+<p>Regarding point 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you’re probably familiar with <a href="https://www.youtube.com/watch?v=aNv1qZ54YzQ">Honey</a>? Their product is almost entirely based around browser extensions, and Paypal just bought them for <strong>$4 billion</strong>! <a href="https://www.grammarly.com">Grammarly</a>, another Chrome extension, recently raised $90 million and is now valued at over $<strong>1 billion</strong>! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)</p>
 
-<h2 id="extensions-are-great-but-not-simple-to-build-with-react">Extensions are great, but not simple to build with React</h2>
+<h2 id="extensions-are-great-but-not-simple-to-build-with-react">Extensions are great but not simple to build with React</h2>
 
-<p>In the year 2020, there are countless JavaScript frameworks that make developing for the web easier than ever. ReactJS happens to be <a href="https://twitter.com/AlexReibman/status/1203047332515926017/photo/1">one of the most in-demand JS frameworks</a> for building beautiful frontend UIs. Unfortunately, Chrome extensions don’t work the same as traditional web applications. At <a href="https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US">DocIt</a>, we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.</p>
+<p>There are plenty of great JavaScript frameworks for web development. But ReactJS happens to be <a href="https://twitter.com/AlexReibman/status/1203047332515926017/photo/1">one of the most in-demand JS frameworks</a> for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. At <a href="https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US">DocIt</a>, we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.</p>
 
 <p>Long story short, <em>you can’t just run <code class="language-plaintext highlighter-rouge">create-react-app</code>, click export, and expect a working extension</em>.</p>
 
-<p>In this tutorial, we will guide you step-by-step in building your own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. <a href="https://github.com/meerkat-citronella/react-chrome-sticky-note-extension">You can access the code for this extension here</a>. Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.</p>
+<p>In this tutorial, we will guide you step-by-step in building our own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. <a href="https://github.com/meerkat-citronella/react-Chrome-sticky-note-extension">You can access the code for this extension here</a>. Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.</p>
 
 <h3 id="skill-level">Skill level</h3>
 
-<p>Everyone! Beginners as well as seasoned experts will learn</p>
+<p>This tutorial is for developers familiar with React and the JavaScript ecosystem, but beginners should be able to along.</p>
 
 <h3 id="prerequisites">Prerequisites</h3>
 
@@ -142,15 +142,25 @@
 
 <p>Before we add the Chrome extension functionality, let’s focus on building a functioning React app.</p>
 
-<p>The easiest way to create a new React app is with Create React App. Run <code class="language-plaintext highlighter-rouge">npx create-react-app [YOUR_APP_NAME]</code> (we named ours react-chrome-sticky-note-extension) from a command line instance, and <code class="language-plaintext highlighter-rouge">cd</code> into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:</p>
+<p>The easiest way to create a new React app is with Create React App. Run <code class="language-plaintext highlighter-rouge">npx create-react-app [YOUR_APP_NAME]</code> (we named ours react-Chrome-sticky-note-extension) from the command line, and <code class="language-plaintext highlighter-rouge">cd</code> into the resulting directory, and open your favorite code editor (we use VSCode). Running CRA will give you the following boilerplate file structure:</p>
 
 <p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/react-boilerplate-dir-structure.png" alt="boilerplate react directory structure" /></p>
 
 <p>Right off the bat we are going to download a module to help us out with styling our app. From the root directory of your app (<code class="language-plaintext highlighter-rouge">[YOUR_APP_NAME</code>), install styled-components into your app, with <code class="language-plaintext highlighter-rouge">yarn add styled-components</code>.</p>
 
-<p>Let’s start with the file <code class="language-plaintext highlighter-rouge">App.js</code>. This will be the main component for our app. Let’s go ahead and rename it, to something like <code class="language-plaintext highlighter-rouge">StickyNotes.js</code>. Also change the name of the component being rendered in the file in a similar fashion, from <code class="language-plaintext highlighter-rouge">App</code> to <code class="language-plaintext highlighter-rouge">StickyNotes</code>. Adjust the corresponding import in <code class="language-plaintext highlighter-rouge">index.js</code> (or let VSCode automatically updated it for you). Go ahead delete all the boilerplate in the return statement of the <code class="language-plaintext highlighter-rouge">StickyNotes</code> component.</p>
+<p>Let’s start with a fresh component file <code class="language-plaintext highlighter-rouge">StickNotes.js</code>. <code class="language-plaintext highlighter-rouge">StickyNotes.js</code> will be our primary component. Also, update the name of the component being rendered in <code class="language-plaintext highlighter-rouge">index.js</code> from <code class="language-plaintext highlighter-rouge">App</code> to <code class="language-plaintext highlighter-rouge">StickyNotes</code>.</p>
 
-<p>Next, we are going to make some styled components to use in our <code class="language-plaintext highlighter-rouge">StickyNotes</code> component. At the top of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code> add the following:</p>
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// index.js</span>
+<span class="p">...</span>
+  <span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">React</span><span class="p">.</span><span class="nc">StrictMode</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nc">StickyNotes</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">React</span><span class="p">.</span><span class="nc">StrictMode</span><span class="p">&gt;,</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">insertion-point</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+<p>Next, we are going to make some <a href="https://styled-components.com">styled components</a> to use in our <code class="language-plaintext highlighter-rouge">StickyNotes</code> component. At the top of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code> add the following:</p>
 
 <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js</span>
 <span class="k">import</span> <span class="nx">styled</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
@@ -186,17 +196,11 @@
 `</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>Styled-components, is a very popular styling library for React that makes adding CSS to our components easy.</p>
-
 <p>Note that in <code class="language-plaintext highlighter-rouge">Container</code> we are passing props. More on this later.</p>
-
-<p>We are building this app with React Hooks. If you are unfamiliar with Hooks, you can read about them here. Hooks seem to be here to stay, and wonderfully abstract away a lot the extraneous typing that has to happen in a React class component.</p>
 
 <p>Let’s create a stateful variable to hold our notes data. We will use the <code class="language-plaintext highlighter-rouge">useState</code> React hook:</p>
 
-<p>StickyNotes.js:</p>
-
-<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// import useState</span>
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js:</span>
 <span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span>
 
 <span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -207,11 +211,11 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>First, let’s create the funcionality that let’s us add a sticky note. We will be using shift + click. Let’s add a listener to the component:</p>
+<p>Now, let’s create the funcionality that let’s us add sticky notes. We will be using shift + click. Let’s add a listener to the component:</p>
 
-<p>StickyNotes.js:</p>
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js:</span>
 
-<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// add useEffect to imports</span>
+<span class="c1">// add useEffect to imports</span>
 <span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="p">...</span>
@@ -235,15 +239,15 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>Few things to note about this <code class="language-plaintext highlighter-rouge">useEffect</code> function. Note that we are removing the listener on <code class="language-plaintext highlighter-rouge">useEffect</code> return. You can read more about cleaning up effects here. You should always remove your listeners in React, as subsequent renders will keep adding listeners unless they are removed. Note that we are using a named function for the listener callback, another necessity if we want to remove the listener (needs a reference a named function). Lastly, note the empty dependency array <code class="language-plaintext highlighter-rouge">[]</code> as the second and final argument of the <code class="language-plaintext highlighter-rouge">useEffect</code> callback function: this is intentional, as we only need to set the listener once, on the first render. You can read more about dependency arrays in regards to <code class="language-plaintext highlighter-rouge">useEffect</code> here.</p>
+<p>In this update, we included a <code class="language-plaintext highlighter-rouge">useEffect</code> hook. Note: we are removing the listener on <code class="language-plaintext highlighter-rouge">useEffect</code> return because you should always remove your listeners in React, as subsequent renders will keep adding listeners unless they are removed. You can read more about cleaning up effects <a href="https://reactjs.org/docs/hooks-intro.html">here</a>. Additionally, note the empty dependency array <code class="language-plaintext highlighter-rouge">[]</code> as the second and final argument of the <code class="language-plaintext highlighter-rouge">useEffect</code> callback function: this is intentional, as we only need to set the listener once, on the first render. You can read more about dependency arrays in regards to <code class="language-plaintext highlighter-rouge">useEffect</code> <a href="https://medium.com/better-programming/understanding-the-useeffect-dependency-array-2913da504c44">here</a>.</p>
 
-<p>For the <code class="language-plaintext highlighter-rouge">setNotes</code> function call, we are making use of JavaScript’s wonderfully expressive object literal notation, and using the splat operator <code class="language-plaintext highlighter-rouge">...</code> to set our <code class="language-plaintext highlighter-rouge">notes</code> variable. You can read more about object destructuring and the splat operator here. <code class="language-plaintext highlighter-rouge">e.pageX, e.pageY</code> are the pixel coordinates of the click on the page.</p>
+<p>For the <code class="language-plaintext highlighter-rouge">setNotes</code> function call, we are making use of JavaScript’s wonderfully expressive object literal notation, and using the spread operator <code class="language-plaintext highlighter-rouge">...</code> to set our <code class="language-plaintext highlighter-rouge">notes</code> variable. You can read more about object destructuring and the spread operator <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax">here</a>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">e.pageX, e.pageY</code> are the pixel coordinates of the click on the page. We use these to remember the exact position where we place our sticky notes.</p>
 
 <p>Remember the props we set up to be passed to our <code class="language-plaintext highlighter-rouge">Container</code> styled component above? Let’s bring that into play. Let’s set up our <code class="language-plaintext highlighter-rouge">return</code> statement:</p>
 
-<p>StickyNotes.js:</p>
-
-<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// stickyNotes.js</span>
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js</span>
 <span class="p">...</span>
 
 <span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -266,15 +270,16 @@
 
 </code></pre></div></div>
 
-<p>The coordinates we gleaned from our shift + click listener are passed via props to the <code class="language-plaintext highlighter-rouge">Container</code> styled component, which then uses those coordinates to absolutely position itself on the page! You should now have some functionality that looks like this:</p>
+<p>The coordinates we get from our shift + click listener are passed via props to the <code class="language-plaintext highlighter-rouge">Container</code> styled component, which then uses those coordinates to absolutely position itself on the page. You should now have some functionality that looks like this:</p>
 
-<p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/basic-note.gif" alt="basic sticky note functionality" /></p>
+<p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/basic-note.gif" alt="Basic sticky note functionality" /></p>
 
-<p>Although we are able to enter text into the <code class="language-plaintext highlighter-rouge">textarea</code>, it is not being saved at all. To do this, we need to turn the <code class="language-plaintext highlighter-rouge">textarea</code> into a controlled component. You can read more about React controlled components here. This is standard practice for React forms. We will save the note text from <code class="language-plaintext highlighter-rouge">textarea</code> alongside the coordinate data in the <code class="language-plaintext highlighter-rouge">notes</code> variable.</p>
+<p>Although we are able to enter text into the <code class="language-plaintext highlighter-rouge">textarea</code>, it is not being saved anywhere. To do this, we need to turn the <code class="language-plaintext highlighter-rouge">textarea</code> into a controlled component. You can read more about React controlled components <a href="https://reactjs.org/docs/forms.html">here</a>. We will save the note text from <code class="language-plaintext highlighter-rouge">textarea</code> alongside the coordinate data in the <code class="language-plaintext highlighter-rouge">notes</code> variable.</p>
 
 <p>In <code class="language-plaintext highlighter-rouge">StickyNotes.js</code>, update the component return statement to:</p>
 
-<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">...</span>
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js</span>
+<span class="p">...</span>
 <span class="kd">const</span> <span class="nx">StickyNotes</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
   <span class="p">...</span>
@@ -309,7 +314,7 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>We again make use of the splat notation, as well as terneray operators (read more here) and the <code class="language-plaintext highlighter-rouge">&amp;&amp;</code> notation. <code class="language-plaintext highlighter-rouge">setNotes</code> here is identifying the note that is being edited (by comparing the coordinates of the note (<code class="language-plaintext highlighter-rouge">cv</code>) with the coordinates in the locally-scoped <code class="language-plaintext highlighter-rouge">note</code> variable) and adding (or editing) the <code class="language-plaintext highlighter-rouge">note</code> property.</p>
+<p>We again make use of the spread notation, as well as ternary operators (read more <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator">here</a>) and the <code class="language-plaintext highlighter-rouge">&amp;&amp;</code> notation. <code class="language-plaintext highlighter-rouge">setNotes</code> here is identifying the note that is being edited (by comparing the coordinates of the note (<code class="language-plaintext highlighter-rouge">cv</code>) with the coordinates in the locally-scoped <code class="language-plaintext highlighter-rouge">note</code> variable) and adding (or editing) the <code class="language-plaintext highlighter-rouge">note</code> property.</p>
 
 <p>The <code class="language-plaintext highlighter-rouge">textarea</code> is now a controlled component. You can log <code class="language-plaintext highlighter-rouge">notes</code> to the console, and see that is updating as you edit a note.</p>
 
@@ -345,7 +350,7 @@
   <span class="p">);</span>
 </code></pre></div></div>
 
-<p>This is the core functionality of the app! We can add notes, edit them, and delete them, and it is all saved in a single stateful variable. Next we’ll turn this humble React app into a Chrome extension.</p>
+<p>We’re done with the core functionality of the app! We can add notes, edit them, and delete them, and it is all saved in a single stateful variable. Next we’ll turn this humble React app into a Chrome extension.</p>
 
 <p>The full code of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code> at this point is as follows:</p>
 
@@ -429,7 +434,10 @@
             <span class="p">&lt;</span><span class="nc">Header</span><span class="p">&gt;</span>
               <span class="p">&lt;</span><span class="nc">StyledButton</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleDelete</span><span class="si">}</span><span class="p">&gt;</span>X<span class="p">&lt;/</span><span class="nc">StyledButton</span><span class="p">&gt;</span>
             <span class="p">&lt;/</span><span class="nc">Header</span><span class="p">&gt;</span>
-            <span class="p">&lt;</span><span class="nc">StyledTextArea</span> <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">handleChange</span><span class="si">}</span> <span class="p">/&gt;</span>
+            <span class="p">&lt;</span><span class="nc">StyledTextArea</span>
+              <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">handleChange</span><span class="si">}</span>
+              <span class="na">note</span><span class="p">=</span><span class="si">{</span><span class="nx">note</span><span class="p">.</span><span class="nx">note</span> <span class="p">?</span> <span class="nx">note</span><span class="p">.</span><span class="nx">note</span> <span class="p">:</span> <span class="dl">""</span><span class="si">}</span>
+            <span class="p">/&gt;</span>
           <span class="p">&lt;/</span><span class="nc">Container</span><span class="p">&gt;</span>
         <span class="p">);</span>
       <span class="p">})</span><span class="si">}</span>
@@ -442,14 +450,13 @@
 
 <h2 id="chrome-extension-configuration">Chrome Extension Configuration</h2>
 
-<p>Chrome Extensions may seem daunting, but it’s really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know
-how to make Chrome extensions.</p>
+<p>Chrome Extensions may seem daunting, but it’s really all just JavaScript. A Chrome Extension is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know how to make Chrome extensions.</p>
 
 <p>Before we start coding, let’s break down how Chrome Extensions are configured.</p>
 
-<p>Extensions are generally composed of 3 main JavaScript components: Content Scripts, Popup Scripts, and Background Scripts. Additionally, every chrome extension must include a <code class="language-plaintext highlighter-rouge">manifest.json</code> that tells Chrome how to run your extension.</p>
+<p>Extensions are generally composed of 3 main JavaScript components: Content Scripts, Popup Scripts, and Background Scripts. Additionally, every Chrome extension must include a <code class="language-plaintext highlighter-rouge">manifest.json</code> that tells Chrome how to run your extension.</p>
 
-<p>However, things are a bit different when we’re working with React. When you build a React app, all of the code gets bundled into a single js file by Webpack. Hence, all of our our JS that affects UI (content scripts and popup scripts) will be bundled into a single file, <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
+<p>However, things are a bit different when we’re working with React. When you build a React app, all of the code gets bundled into a single js file by Webpack. Hence, all of our JS that affects UI (content scripts and popup scripts) will be bundled into a single file, <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
 
 <p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/ChromeExtension.png" alt="Chrome Extension Architecture" /></p>
 
@@ -473,7 +480,7 @@ how to make Chrome extensions.</p>
     </ul>
   </li>
   <li>
-    <p><code class="language-plaintext highlighter-rouge">contentScript.js</code>- A content script is a js file injected into the web page that the user is viewing (i.e. wikipedia.org, google.com, etc.). This script will be responsible for making any changes to the current wepbage being viewed. This script will automatically be bundled into <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
+    <p><code class="language-plaintext highlighter-rouge">contentScript.js</code>- A content script is a js file injected into the web page that the user is viewing (i.e. wikipedia.org, google.com, etc.). This script will be responsible for making any changes to the current webpage being viewed. This script will automatically be bundled into <code class="language-plaintext highlighter-rouge">main.js</code>.</p>
   </li>
   <li>
     <p>Assets- Any images, css, and other files used by your extension.</p>
@@ -547,7 +554,7 @@ how to make Chrome extensions.</p>
 
 <h2 id="make-react-compatible-with-chrome">Make React Compatible with Chrome</h2>
 
-<p>Remember at the beginning we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension’s package, Chrome won’t know how to read your files and fail to run your extension.</p>
+<p>Remember we mentioned that extensions are just JavaScript? This is true, but not all JS is created equal. Most JS projects are a mix of JSX, Typescript, JSONs, and other assets spread across multiple files. If you try moving your files into your extension’s package, Chrome won’t know how to read your files and fail to run your extension.</p>
 
 <h3 id="prevent-javascript-file-splitting">Prevent JavaScript file splitting</h3>
 
@@ -600,17 +607,17 @@ how to make Chrome extensions.</p>
 
 <p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/newname.png" alt="new build directory" /></p>
 
-<p>Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a chrome extension, we will be using the chrome.storage api (read about it here).</p>
+<p>Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a Chrome extension, we will be using the chrome.storage api (read about it here).</p>
 
-<p>First, add <code class="language-plaintext highlighter-rouge">/* global chrome */</code> to the top of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code>:</p>
+<p>First, add <code class="language-plaintext highlighter-rouge">/* global Chrome */</code> to the top of <code class="language-plaintext highlighter-rouge">StickyNotes.js</code>:</p>
 
 <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js</span>
-<span class="cm">/* global chrome */</span>
+<span class="cm">/* global Chrome */</span>
 <span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
 <span class="p">...</span>
 </code></pre></div></div>
 
-<p>This will make the chrome variables available when you run the extension in the browser. But note: chrome variables are not available when the app is spun up locally in dev mode! If you try to, for example, access chrome storage via a method like <code class="language-plaintext highlighter-rouge">chrome.storage.local.get()</code> while the app is running locally, you will get a syntax error. For this reason, let’s set an environment variable and an easy toggle to access it. We’ll create a <code class="language-plaintext highlighter-rouge">.env</code> file in the root folder of the project:</p>
+<p>This will make the Chrome variables available when you run the extension in the browser. But note: Chrome variables are not available when the app is spun up locally! For example, if you try to access Chrome storage via a method like <code class="language-plaintext highlighter-rouge">chrome.storage.local.get()</code> while the app is running locally, you will get a syntax error. For this reason, let’s set an environment variable and an easy toggle to access it. We’ll create a <code class="language-plaintext highlighter-rouge">.env</code> file in the root folder of the project:</p>
 
 <pre><code class="language-env"># .env
 REACT_APP_LOCAL=true
@@ -622,9 +629,9 @@ REACT_APP_LOCAL=true
 <span class="k">export</span> <span class="kd">const</span> <span class="nx">localMode</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_LOCAL</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">true</span><span class="dl">"</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>When spinning up the app locally, set this REACT_APP_LOCAL to “true”, and when building it as a chrome extension, change it to “false” (or comment out the line, or change it to literally any other string… .env vars aren’t imported as boolean, it’s just a string).</p>
+<p>When spinning up the app locally, set this REACT_APP_LOCAL to “true”, and when building it as a Chrome extension, change it to “false”.</p>
 
-<p>In StickyNotes.js, let’s use another <code class="language-plaintext highlighter-rouge">useEffect</code> hook to <code class="language-plaintext highlighter-rouge">set()</code> our <code class="language-plaintext highlighter-rouge">notes</code> data to chrome storage on a note edit. We are going to organize our notes by URL; each URL will have it’s own unique set of notes that the React app will save to and retrieve from chrome storage. Remember to import <code class="language-plaintext highlighter-rouge">localMode</code> from <code class="language-plaintext highlighter-rouge">constants.js</code> at the top of the file.</p>
+<p>In StickyNotes.js, let’s use another <code class="language-plaintext highlighter-rouge">useEffect</code> hook to <code class="language-plaintext highlighter-rouge">set()</code> our <code class="language-plaintext highlighter-rouge">notes</code> data to Chrome storage on a note edit. We will organize our notes by URL; each URL will have it’s own unique set of notes that the React app will save to and retrieve from Chrome storage. Remember to import <code class="language-plaintext highlighter-rouge">localMode</code> from <code class="language-plaintext highlighter-rouge">constants.js</code> at the top of the file.</p>
 
 <p>Let’s also add a <code class="language-plaintext highlighter-rouge">useEffect</code> to access the stored notes data for the URL in question, if there is any.</p>
 
@@ -669,12 +676,12 @@ REACT_APP_LOCAL=true
 
 <p>Note that we are using <code class="language-plaintext highlighter-rouge">chrome.storage.local</code> instead of <code class="language-plaintext highlighter-rouge">chrome.storage.sync</code> (read about the difference here). We are doing this primarily because of the write limits to sync.</p>
 
-<p>Note also the <code class="language-plaintext highlighter-rouge">set</code>ter function removes the entry from the database if there are no notes. We don’t want to be piling up URLs in our chrome storage that don’t have any notes in them!</p>
+<p>Note also the <code class="language-plaintext highlighter-rouge">set</code>ter function removes the entry from the database if there are no notes. We don’t want to be piling up URLs in our Chrome storage that don’t have any notes in them!</p>
 
-<p>You now have a fully-functioning notes app chrome extension! It’s still very bare bones and there are still some bugs, so let’s continue refining it. The code as of now should look like the below.</p>
+<p>You now have a fully-functioning notes app Chrome extension! It’s still very bare-bones and there are still some bugs, so let’s continue refining it. The code as of now should look like the below.</p>
 
 <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// StickyNotes.js:</span>
-<span class="cm">/* global chrome */</span>
+<span class="cm">/* global Chrome */</span>
 <span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
 <span class="k">import</span> <span class="nx">logo</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./logo.svg</span><span class="dl">"</span><span class="p">;</span>
 <span class="k">import</span> <span class="dl">"</span><span class="s2">./App.css</span><span class="dl">"</span><span class="p">;</span>
@@ -792,25 +799,24 @@ REACT_APP_LOCAL=true
 
 <h3 id="make-the-sticky-note-a-shadow-component">Make the Sticky Note a Shadow Component</h3>
 
-<p>One very important aspect of creating a browser extension is dealing with how it interacts with the existing content of the webpage. A React app is really just JavaScript, and as we saw above when crafting the <code class="language-plaintext highlighter-rouge">insertionPoint</code>, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it’s own styling rules.</p>
+<p>One very important aspect of creating a browser extension is dealing with how it interacts with the web page’s existing content. A React app is really just JavaScript, and as we saw above when crafting the <code class="language-plaintext highlighter-rouge">insertionPoint</code>, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it’s own styling rules.</p>
 
-<p>Let’s look at a concrete example of this. Load your chrome extension into chrome, and navigate to <code class="language-plaintext highlighter-rouge">www.example.com</code>. Shift + click to add a note, and see what happens.</p>
+<p>Let’s look at a concrete example of this. Load your Chrome extension into Chrome, and navigate to <code class="language-plaintext highlighter-rouge">www.example.com</code>. Shift + click to add a note, and see what happens.</p>
 
 <p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/example-site-styling-conflicts.gif" alt="Styling conflicts between extension and example.com" /></p>
 
-<p>Our styling!! What happened? Well clearly, <code class="language-plaintext highlighter-rouge">www.example.com</code> has its own styling rules, and they are conflicting with those of our app.</p>
+<p>What happened?! <code class="language-plaintext highlighter-rouge">www.example.com</code> has its own styling rules, and they are conflicting with the elements rendered by our extension.</p>
 
 <p>There are a few solutions here. The first is to try to override the webpage’s styling by using css techniques that take a higher precedence when the browser is computing styling, such as using <code class="language-plaintext highlighter-rouge">!important</code> or inline styling. These are inelegant solutions, both because they could potentially cause the inverse problem (our extension overriding the page styles and borking them up) and because they are heavy-handed and limited in the styling issues they can address (no more <code class="language-plaintext highlighter-rouge">styled-components</code>, for example). The second is to render these notes in an <code class="language-plaintext highlighter-rouge">&lt;iframe&gt;</code> element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these <code class="language-plaintext highlighter-rouge">StickyNotes</code> components inside of a shadow DOM instance.</p>
 
-<p>You can think of the shadow DOM as a “DOM within a DOM.” Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don’t conflict with those of the host webpage. You can read more about shadom DOMs here.</p>
+<p>You can think of the shadow DOM as a “DOM within a DOM.” Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don’t conflict with those of the host webpage. You can read more about <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM">shadom DOMs here.</a></p>
 
-<p>To implement the shadow DOM in our app, we are going to use the module <code class="language-plaintext highlighter-rouge">react-shadow</code>. Read more about it in the repo here. Go ahead and add the package to your project via <code class="language-plaintext highlighter-rouge">npm i react-shadow</code> or <code class="language-plaintext highlighter-rouge">yarn add react-shadow</code>.</p>
+<p>To implement the shadow DOM in our app, we are going to use the module <code class="language-plaintext highlighter-rouge">react-shadow</code>. Read more about it in the <a href="https://www.npmjs.com/package/react-shadow">repo here</a>. Go ahead and add the package to your project via <code class="language-plaintext highlighter-rouge">npm i react-shadow</code> or <code class="language-plaintext highlighter-rouge">yarn add react-shadow</code>.</p>
 
 <p>Let’s make a new file called <code class="language-plaintext highlighter-rouge">ShadowRoot.js</code> in our <code class="language-plaintext highlighter-rouge">src</code> folder. Add the code below:</p>
 
-<p>ShadowRoot.js:</p>
-
-<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ShadowRoot.js</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
 <span class="k">import</span> <span class="nx">root</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-shadow</span><span class="dl">"</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">StyleSheetManager</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
 
@@ -870,16 +876,16 @@ REACT_APP_LOCAL=true
 
 <h3 id="add-a-dashboard--popuphtml">Add a dashboard / popup.html</h3>
 
-<p>At this point we have a decent notes app, but it can still be better. And we also have yet to make use of the chrome extension popup page, which is the probably the most recognizable feature of a chrome extension.</p>
+<p>At this point we have a decent notes app, but it can still be better. And we also have yet to make use of the Chrome extension popup page, which is probably the most recognizable feature of a Chrome extension.</p>
 
-<p>For our popup page, we will be making a dashboard showing all the URLs that we have notes on, as well as all the notes at those URLS. A library for our notes, if you will. This will demonstrate a) how to inject React into the chrome extension popup, and b) a way to communicate between the popup and the content script via <code class="language-plaintext highlighter-rouge">chrome.storage</code>.</p>
+<p>For our popup page, we will be making a dashboard showing all the URLs that we have notes on, as well as all the notes at those URLs. A library for our notes, if you will. This will demonstrate a) how to inject React into the Chrome extension popup, and b) a way to communicate between the popup and the content script via <code class="language-plaintext highlighter-rouge">chrome.storage</code>.</p>
 
 <p>The mechanics of creating the popup page component are pretty similar to how we made our <code class="language-plaintext highlighter-rouge">StickyNotes</code> component. We will use <code class="language-plaintext highlighter-rouge">useEffect</code> to query <code class="language-plaintext highlighter-rouge">chrome.storage.local</code>, set to a <code class="language-plaintext highlighter-rouge">notes</code> stateful variable, and use <code class="language-plaintext highlighter-rouge">styled-components</code> as our styling solution.</p>
 
 <p>PopupComponent.js:</p>
 
 <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// popupComponent.js</span>
-<span class="cm">/* global chrome */</span>
+<span class="cm">/* global Chrome */</span>
 <span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
 <span class="k">import</span> <span class="nx">styled</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">styled-components</span><span class="dl">"</span><span class="p">;</span>
 
@@ -1023,19 +1029,15 @@ REACT_APP_LOCAL=true
     <span class="p">&lt;/</span><span class="nc">React</span><span class="p">.</span><span class="nc">Fragment</span><span class="p">&gt;,</span>
     <span class="nx">popupRoot</span>
   <span class="p">);</span>
-
-<span class="c1">// If you want to start measuring performance in your app, pass a function</span>
-<span class="c1">// to log results (for example: reportWebVitals(console.log))</span>
-<span class="c1">// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals</span>
 </code></pre></div></div>
 
 <p>How is this working? Well, when we build the React app, all these files are going to be in the <code class="language-plaintext highlighter-rouge">build</code> directory. In <code class="language-plaintext highlighter-rouge">popup.html</code>, we are loading up <code class="language-plaintext highlighter-rouge">main.js</code> via a <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag. <code class="language-plaintext highlighter-rouge">main.js</code> will run like a normal js file, having access to the DOM of <code class="language-plaintext highlighter-rouge">popup.html</code>.</p>
 
-<p>In <code class="language-plaintext highlighter-rouge">index.js</code>, we have created a way for our React app to render different parts of the app into different html files. It will search the DOM for the <code class="language-plaintext highlighter-rouge">popup-root</code> id, and if it’s there, render the <code class="language-plaintext highlighter-rouge">PopupComponent</code>, and if it’s not, render the content script for the sticky notes.</p>
+<p>In <code class="language-plaintext highlighter-rouge">index.js</code>, we have created a way for our React app to render different parts of the app into different HTML files. It will search the DOM for the <code class="language-plaintext highlighter-rouge">popup-root</code> id, and if it’s there, render the <code class="language-plaintext highlighter-rouge">PopupComponent</code>, and if it’s not, render the content script for the sticky notes.</p>
 
 <h2 id="testing-your-extension">Testing your extension</h2>
 
-<p>Now that we’ve finished building our extension, let’s try it out.</p>
+<p>Now that we’ve finished building our extension let’s try it out.</p>
 
 <p>First, navigate to <code class="language-plaintext highlighter-rouge">chrome://extensions</code> in the URL bar. Next, enable <code class="language-plaintext highlighter-rouge">Developer Mode</code> in the top right corner. And lastly, click <code class="language-plaintext highlighter-rouge">Load Unpacked</code> and upload your <code class="language-plaintext highlighter-rouge">build</code> folder. That’s it!</p>
 
@@ -1067,7 +1069,7 @@ REACT_APP_LOCAL=true
 <h2 id="appendix">Appendix</h2>
 
 <ul>
-  <li><a href="https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix">Stackoverflow thread on code-splitting while building, and prevent chunk files</a></li>
+  <li><a href="https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix">Stackoverflow thread on code-splitting while building and prevent chunk files</a></li>
   <li><a href="https://www.youtube.com/watch?v=A6X1fDf4poc">Submitting your extension to the Chrome Store</a></li>
 </ul>
 
