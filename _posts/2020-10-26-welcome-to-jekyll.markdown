@@ -970,6 +970,7 @@ To wrap up, here's what we learned:
 
 ## Appendix
 
+- [Code to the Sticky Notes App](https://github.com/meerkat-citronella/react-chrome-sticky-note-extension)
 - [Stackoverflow thread on code-splitting while building and prevent chunk files](https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix)
 - [Submitting your extension to the Chrome Store](https://www.youtube.com/watch?v=A6X1fDf4poc)
 
