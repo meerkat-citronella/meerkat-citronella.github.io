@@ -7,23 +7,21 @@ tags: featured
 image: /assets/article_images/2020-10-26-welcome-to-jekyll/desktop.JPG
 ---
 
-## Browsers are the future
+## Extensions are great! But not simple to easy to build
 
-Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of the web browser market share. In 2016, there were over 2 billion active Chrome users. Chrome is wonderful for a handful of reasons:
+Chrome extensions are a great way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you might be probably familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ). Their product is almost entirely based around browser extensions, and Paypal recently bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**. With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
 
-1. It looks and runs the same on most computers
-2. It's easy to install
-3. You can turbocharge Chrome using Extensions
+There are plenty of great JavaScript frameworks for web development. But React happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building frontend code. Unfortunately, Chrome extensions don't work the same as traditional web apps. When we built [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seem to work too well. Here are some of the issues we encountered:
 
-Regarding point 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you're probably familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ)? Their product is almost entirely based around browser extensions, and Paypal just bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
-
-## Extensions are great but not simple to build with React
-
-There are plenty of great JavaScript frameworks for web development. But ReactJS happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building frontend code. Unfortunately, Chrome extensions don't work the same as traditional web apps. At [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.
+- Webpack does not create extension-compatible React builds
+- React components from your extension will interfere with the CSS styling of visited webpages
+- React only renders in 1 HTML document at a time and cannot render in both Popup and Content Script code simultaneously.
 
 Long story short, _you can't just run `create-react-app`, click export, and expect a working extension_.
 
-In this tutorial, we will guide you step-by-step in building our own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. [You can access the code for this extension here](https://github.com/meerkat-citronella/react-Chrome-sticky-note-extension). Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.
+In this tutorial, we will guide you step-by-step in building your own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, pin, and save notes to any webpage. [You can access the code for this extension here](https://github.com/meerkat-citronella/react-Chrome-sticky-note-extension). Most of our code will use React, but we will also use a fair amount of vanilla JavaScript.
+
+![Screenshot of our extension](/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png)
 
 ### Skill level
 
@@ -50,19 +48,13 @@ In this tutorial, you will learn:
 
 ### What we'll build
 
-The web is replete with great learning resources, but it's oftentimes difficult to capture your thoughts when reading through dense topics. Research suggests that writing down notes while you read helps [improve knowledge retention](https://www.researchgate.net/publication/277951569_The_Effects_of_Note-Taking_Skills_Instruction_on_Elementary_Students%27_Reading).
-
-So, for this tutorial, we'll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here's a screenshot of what we'll build:
-
-![Screenshot of our extension](/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png)
-
 ## Create React App
 
 Before we add the Chrome extension functionality, let's focus on building a functioning React app.
 
 The easiest way to create a new React app is with Create React App. Run `npx create-react-app [YOUR_APP_NAME]` (we named ours react-Chrome-sticky-note-extension) from the command line, and `cd` into the resulting directory, and open your favorite code editor (we use VSCode). Running CRA will give you the following boilerplate file structure:
 
-![boilerplate react directory structure](/assets/article_images/2020-10-26-welcome-to-jekyll/react-boilerplate-dir-structure.png)
+![Boilerplate Create React App directory structure](/assets/article_images/2020-10-26-welcome-to-jekyll/react-boilerplate-dir-structure.png)
 
 Right off the bat we are going to download a module to help us out with styling our app. From the root directory of your app (`[YOUR_APP_NAME`), install styled-components into your app, with `yarn add styled-components`.
 
@@ -132,7 +124,7 @@ const StickyNotes = () => {
 }
 ```
 
-Now, let's create the funcionality that let's us add sticky notes. We will be using shift + click. Let's add a listener to the component:
+Now, let's create the functionality that let's us add sticky notes. When we hold `Shift` on the keyboard and click, we want a sticky note to render. First, let's add a listener to the component:
 
 ```jsx
 // StickyNotes.js:
@@ -466,7 +458,7 @@ Unfortunately for us, code splitting makes it difficult to package our code into
 
 Additionally, Webpack adds random hashes to the files it builds. (This is to prompt browser to re-fetch files that may have changed between builds instead of relying on cached files). However, this also poses an issue for us because unless we account for the hash changes, we'll have to change our `manifest.json` to match the new files names every time we build.
 
-![file_splitting](/assets/article_images/2020-10-26-welcome-to-jekyll/file_splitting.png)
+![File splitting from Webpack](/assets/article_images/2020-10-26-welcome-to-jekyll/file_splitting.png)
 
 To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.
 
@@ -507,7 +499,7 @@ We modified `package.json` to include 2 additional commands: `build:extension` a
 
 From now on, when we are building our extension, we should run `yarn build:extension`. Running this command will create a build directory that looks like this:
 
-![new build directory](/assets/article_images/2020-10-26-welcome-to-jekyll/newname.png)
+![New build directory](/assets/article_images/2020-10-26-welcome-to-jekyll/newname.png)
 
 Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a Chrome extension, we will be using the chrome.storage api (read about it here).
 
@@ -706,7 +698,7 @@ Since our extension is very simple, we won't require a backround script. However
 
 ### Make the Sticky Note a Shadow Component
 
-One very important aspect of creating a browser extension is dealing with how it interacts with the web page's existing content. A React app is really just JavaScript, and as we saw above when crafting the `insertionPoint`, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the contenxt of the host webpage, which has of course it's own styling rules.
+One very important aspect of creating a browser extension is dealing with how it interacts with the web page's existing content. A React app is really just JavaScript, and as we saw above when crafting the `insertionPoint`, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the context of the host webpage, which has of course it's own styling rules.
 
 Let's look at a concrete example of this. Load your Chrome extension into Chrome, and navigate to `www.example.com`. Shift + click to add a note, and see what happens.
 
@@ -714,7 +706,9 @@ Let's look at a concrete example of this. Load your Chrome extension into Chrome
 
 What happened?! `www.example.com` has its own styling rules, and they are conflicting with the elements rendered by our extension.
 
-There are a few solutions here. The first is to try to override the webpage's styling by using css techniques that take a higher precedence when the browser is computing styling, such as using `!important` or inline styling. These are inelegant solutions, both because they could potentially cause the inverse problem (our extension overriding the page styles and borking them up) and because they are heavy-handed and limited in the styling issues they can address (no more `styled-components`, for example). The second is to render these notes in an `<iframe>` element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these `StickyNotes` components inside of a shadow DOM instance.
+There are a few solutions here. The first is to try to override the webpage's styling by using css techniques that take a higher precedence when the browser is computing styling, such as using `!important` or inline styling. These are inelegant solutions, both because they could potentially cause the inverse problem (our extension can overriding the page's styles and break them). Additionally, using `!important` may cause unintended styling issues and limit our ability to use `styled-components`.
+
+The second is to render these notes in an `<iframe>` element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these `StickyNotes` components inside of a shadow DOM instance.
 
 You can think of the shadow DOM as a "DOM within a DOM." Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don't conflict with those of the host webpage. You can read more about [shadom DOMs here.](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
 
@@ -958,7 +952,7 @@ First, navigate to `chrome://extensions` in the URL bar. Next, enable `Developer
 
 Now, we can play around with our extension on any page.
 
-![complete notes app on google.com](/assets/article_images/2020-10-26-welcome-to-jekyll/completed-notes-app-google.gif)
+![Functioning notes app on google.com](/assets/article_images/2020-10-26-welcome-to-jekyll/completed-notes-app-google.gif)
 
 ## Summary
 

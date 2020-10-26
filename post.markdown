@@ -130,7 +130,7 @@ const StickyNotes = () => {
 }
 ```
 
-First, let's create the funcionality that let's us add a sticky note. We will be using shift + click. Let's add a listener to the component:
+First, let's create the functionality that let's us add a sticky notes. When we hold `shift` and click, we want a sticky note to render. First, let's add a listener to the component:
 
 StickyNotes.js:
 
@@ -235,7 +235,7 @@ const StickyNotes = () => {
 }
 ```
 
-We again make use of the splat notation, as well as terneray operators (read more here) and the `&&` notation. `setNotes` here is identifying the note that is being edited (by comparing the coordinates of the note (`cv`) with the coordinates in the locally-scoped `note` variable) and adding (or editing) the `note` property.
+We again make use of the splat notation, as well as ternary operators (read more here) and the `&&` notation. `setNotes` here is identifying the note that is being edited (by comparing the coordinates of the note (`cv`) with the coordinates in the locally-scoped `note` variable) and adding (or editing) the `note` property.
 
 The `textarea` is now a controlled component. You can log `notes` to the console, and see that is updating as you edit a note.
 

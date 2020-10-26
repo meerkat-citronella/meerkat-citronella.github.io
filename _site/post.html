@@ -210,7 +210,7 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>First, let’s create the funcionality that let’s us add a sticky note. We will be using shift + click. Let’s add a listener to the component:</p>
+<p>First, let’s create the functionality that let’s us add a sticky notes. When we hold <code class="language-plaintext highlighter-rouge">shift</code> and click, we want a sticky note to render. First, let’s add a listener to the component:</p>
 
 <p>StickyNotes.js:</p>
 
@@ -312,7 +312,7 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>We again make use of the splat notation, as well as terneray operators (read more here) and the <code class="language-plaintext highlighter-rouge">&amp;&amp;</code> notation. <code class="language-plaintext highlighter-rouge">setNotes</code> here is identifying the note that is being edited (by comparing the coordinates of the note (<code class="language-plaintext highlighter-rouge">cv</code>) with the coordinates in the locally-scoped <code class="language-plaintext highlighter-rouge">note</code> variable) and adding (or editing) the <code class="language-plaintext highlighter-rouge">note</code> property.</p>
+<p>We again make use of the splat notation, as well as ternary operators (read more here) and the <code class="language-plaintext highlighter-rouge">&amp;&amp;</code> notation. <code class="language-plaintext highlighter-rouge">setNotes</code> here is identifying the note that is being edited (by comparing the coordinates of the note (<code class="language-plaintext highlighter-rouge">cv</code>) with the coordinates in the locally-scoped <code class="language-plaintext highlighter-rouge">note</code> variable) and adding (or editing) the <code class="language-plaintext highlighter-rouge">note</code> property.</p>
 
 <p>The <code class="language-plaintext highlighter-rouge">textarea</code> is now a controlled component. You can log <code class="language-plaintext highlighter-rouge">notes</code> to the console, and see that is updating as you edit a note.</p>
 
