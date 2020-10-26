@@ -7,8 +7,6 @@ tags: featured
 image: /assets/article_images/2020-10-26-welcome-to-jekyll/desktop.JPG
 ---
 
-# Introduction
-
 ## Browsers are the future
 
 Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of the web browser market share. In 2016, there were over 2 billion active Chrome users. Chrome is wonderful for a handful of reasons:
