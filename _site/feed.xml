@@ -6,8 +6,8 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 25 Oct 2020 19:07:39 -0400</pubDate>
-    <lastBuildDate>Sun, 25 Oct 2020 19:07:39 -0400</lastBuildDate>
+    <pubDate>Sun, 25 Oct 2020 20:08:43 -0400</pubDate>
+    <lastBuildDate>Sun, 25 Oct 2020 20:08:43 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -67,7 +67,7 @@
 
 &lt;p&gt;So, for this tutorial, we’ll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here’s a screenshot of what we’ll build:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;screenshot.png&quot; alt=&quot;alt text&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png&quot; alt=&quot;alt text&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;create-react-app&quot;&gt;Create React App&lt;/h2&gt;
 
@@ -75,7 +75,7 @@
 
 &lt;p&gt;The easiest way to create a new React app is with Create React App. Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npx create-react-app [YOUR_APP_NAME]&lt;/code&gt; (we named ours react-chrome-sticky-note-extension) from a command line instance, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cd&lt;/code&gt; into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;react-boilerplate-dir-structure.png&quot; alt=&quot;boilerplate react directory structure&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/react-boilerplate-dir-structure.png&quot; alt=&quot;boilerplate react directory structure&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Right off the bat we are going to download a module to help us out with styling our app. From the root directory of your app (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[YOUR_APP_NAME&lt;/code&gt;), install styled-components into your app, with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn add styled-components&lt;/code&gt;.&lt;/p&gt;
 
@@ -201,7 +201,7 @@
 
 &lt;p&gt;The coordinates we gleaned from our shift + click listener are passed via props to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Container&lt;/code&gt; styled component, which then uses those coordinates to absolutely position itself on the page! You should now have some functionality that looks like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;basic-note.gif&quot; alt=&quot;basic sticky note functionality&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/basic-note.gif&quot; alt=&quot;basic sticky note functionality&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Although we are able to enter text into the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;textarea&lt;/code&gt;, it is not being saved at all. To do this, we need to turn the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;textarea&lt;/code&gt; into a controlled component. You can read more about React controlled components here. This is standard practice for React forms. We will save the note text from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;textarea&lt;/code&gt; alongside the coordinate data in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;notes&lt;/code&gt; variable.&lt;/p&gt;
 
@@ -375,7 +375,8 @@
 
 &lt;h2 id=&quot;chrome-extension-configuration&quot;&gt;Chrome Extension Configuration&lt;/h2&gt;
 
-&lt;p&gt;Chrome Extensions may seem daunting, but it’s really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know how to make Chrome extensions.&lt;/p&gt;
+&lt;p&gt;Chrome Extensions may seem daunting, but it’s really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know
+how to make Chrome extensions.&lt;/p&gt;
 
 &lt;p&gt;Before we start coding, let’s break down how Chrome Extensions are configured.&lt;/p&gt;
 
@@ -383,7 +384,7 @@
 
 &lt;p&gt;However, things are a bit different when we’re working with React. When you build a React app, all of the code gets bundled into a single js file by Webpack. Hence, all of our our JS that affects UI (content scripts and popup scripts) will be bundled into a single file, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main.js&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;ChromeExtension.png&quot; alt=&quot;Chrome Extension Architecture&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/ChromeExtension.png&quot; alt=&quot;Chrome Extension Architecture&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -448,7 +449,7 @@
 &lt;/ul&gt;
 
 &lt;p&gt;Your metadata will be visible at the url &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chrome://extensions&lt;/code&gt;
-&lt;img src=&quot;name.png&quot; alt=&quot;Metadata in the extensions tab&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/name.png&quot; alt=&quot;Metadata in the extensions tab&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;scripts-and-permissions&quot;&gt;Scripts and permissions&lt;/h4&gt;
 
@@ -475,7 +476,7 @@
 &lt;/ul&gt;
 
 &lt;p&gt;Our popup script will communicate to the content script (and vice versa) by using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chrome.storage&lt;/code&gt; api as an intermediary data store.
-&lt;img src=&quot;communication.png&quot; alt=&quot;Communication between scripts&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/communication.png&quot; alt=&quot;Communication between scripts&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;make-react-compatible-with-chrome&quot;&gt;Make React Compatible with Chrome&lt;/h2&gt;
 
@@ -489,7 +490,7 @@
 
 &lt;p&gt;Additionally, Webpack adds random hashes to the files it builds. (This is to prompt browser to re-fetch files that may have changed between builds instead of relying on cached files). However, this also poses an issue for us because unless we account for the hash changes, we’ll have to change our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manifest.json&lt;/code&gt; to match the new files names every time we build.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;file_splitting.png&quot; alt=&quot;file_splitting&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/file_splitting.png&quot; alt=&quot;file_splitting&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.&lt;/p&gt;
 
@@ -530,7 +531,7 @@
 
 &lt;p&gt;From now on, when we are building our extension, we should run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn build:extension&lt;/code&gt;. Running this command will create a build directory that looks like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;newname.png&quot; alt=&quot;new build directory&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/newname.png&quot; alt=&quot;new build directory&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a chrome extension, we will be using the chrome.storage api (read about it here).&lt;/p&gt;
 
@@ -728,7 +729,7 @@ REACT_APP_LOCAL=true
 
 &lt;p&gt;Let’s look at a concrete example of this. Load your chrome extension into chrome, and navigate to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www.example.com&lt;/code&gt;. Shift + click to add a note, and see what happens.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;example-site-styling-conflicts.gif&quot; alt=&quot;Styling conflicts between extension and example.com&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/example-site-styling-conflicts.gif&quot; alt=&quot;Styling conflicts between extension and example.com&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Our styling!! What happened? Well clearly, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www.example.com&lt;/code&gt; has its own styling rules, and they are conflicting with those of our app.&lt;/p&gt;
 
@@ -971,11 +972,11 @@ REACT_APP_LOCAL=true
 
 &lt;p&gt;First, navigate to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chrome://extensions&lt;/code&gt; in the URL bar. Next, enable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Developer Mode&lt;/code&gt; in the top right corner. And lastly, click &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Load Unpacked&lt;/code&gt; and upload your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build&lt;/code&gt; folder. That’s it!&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;developermode.png&quot; alt=&quot;Enable developer mode and upload&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/developermode.png&quot; alt=&quot;Enable developer mode and upload&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now, we can play around with our extension on any page.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;completed-notes-app-google.gif&quot; alt=&quot;complete notes app on google.com&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/completed-notes-app-google.gif&quot; alt=&quot;complete notes app on google.com&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;A# appendix&lt;/p&gt;
 
@@ -1004,9 +1005,9 @@ REACT_APP_LOCAL=true
 &lt;/ul&gt;
 
 </description>
-        <pubDate>Fri, 29 Aug 2014 10:34:25 -0400</pubDate>
-        <link>http://localhost:4000/jekyll/update/2014/08/29/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://localhost:4000/jekyll/update/2014/08/29/welcome-to-jekyll.html</guid>
+        <pubDate>Thu, 01 Oct 2020 14:34:25 -0400</pubDate>
+        <link>http://localhost:4000/jekyll/update/2020/10/01/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://localhost:4000/jekyll/update/2020/10/01/welcome-to-jekyll.html</guid>
         
         <category>featured</category>
         

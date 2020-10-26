@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Create a Chrome Extension with React"
-date: 2014-08-29 14:34:25
+date: 2020-09-31 14:34:25
 categories: jekyll update
 tags: featured
-image: /assets/article_images/2014-08-29-welcome-to-jekyll/desktop.JPG
+image: /assets/article_images/2020-10-26-welcome-to-jekyll/desktop.JPG
 ---
 
 # Introduction
@@ -56,7 +56,7 @@ The web is replete with great learning resources, but it's oftentimes difficult 
 
 So, for this tutorial, we'll build a simple extension that saves sticky notes on any webpage. The sticky notes will persist between visit sessions, so you can always revisit your notes. Here's a screenshot of what we'll build:
 
-![alt text](screenshot.png)
+![alt text](/assets/article_images/2020-10-26-welcome-to-jekyll/screenshot.png)
 
 ## Create React App
 
@@ -64,7 +64,7 @@ Before we add the Chrome extension functionality, let's focus on building a func
 
 The easiest way to create a new React app is with Create React App. Run `npx create-react-app [YOUR_APP_NAME]` (we named ours react-chrome-sticky-note-extension) from a command line instance, and `cd` into the resulting directory, and open your favorite code editor (we use VSCode). This will give you the following boilerplate file structure:
 
-![boilerplate react directory structure](react-boilerplate-dir-structure.png)
+![boilerplate react directory structure](/assets/article_images/2020-10-26-welcome-to-jekyll/react-boilerplate-dir-structure.png)
 
 Right off the bat we are going to download a module to help us out with styling our app. From the root directory of your app (`[YOUR_APP_NAME`), install styled-components into your app, with `yarn add styled-components`.
 
@@ -194,7 +194,7 @@ const StickyNotes = () => {
 
 The coordinates we gleaned from our shift + click listener are passed via props to the `Container` styled component, which then uses those coordinates to absolutely position itself on the page! You should now have some functionality that looks like this:
 
-![basic sticky note functionality](basic-note.gif)
+![basic sticky note functionality](/assets/article_images/2020-10-26-welcome-to-jekyll/basic-note.gif)
 
 Although we are able to enter text into the `textarea`, it is not being saved at all. To do this, we need to turn the `textarea` into a controlled component. You can read more about React controlled components here. This is standard practice for React forms. We will save the note text from `textarea` alongside the coordinate data in the `notes` variable.
 
@@ -371,7 +371,8 @@ export default StickyNotes;
 
 ## Chrome Extension Configuration
 
-Chrome Extensions may seem daunting, but it's really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know how to make Chrome extensions.
+Chrome Extensions may seem daunting, but it's really all just JavaScript. A Chrome Extension really is just a set of JavaScript files that run alongside normal webpages. If you know how to use JavaScript, you know
+how to make Chrome extensions.
 
 Before we start coding, let's break down how Chrome Extensions are configured.
 
@@ -379,7 +380,7 @@ Extensions are generally composed of 3 main JavaScript components: Content Scrip
 
 However, things are a bit different when we're working with React. When you build a React app, all of the code gets bundled into a single js file by Webpack. Hence, all of our our JS that affects UI (content scripts and popup scripts) will be bundled into a single file, `main.js`.
 
-![Chrome Extension Architecture](ChromeExtension.png)
+![Chrome Extension Architecture](/assets/article_images/2020-10-26-welcome-to-jekyll/ChromeExtension.png)
 
 - `manifest.json`- Used to instruct Chrome how to run your scripts.
 
@@ -430,7 +431,7 @@ Here is what our `manifest.json` should look like:
 - `description`: Short description of what your app does. Note: This description is entirely separate from the description you will provide on the Chrome store page.
 
 Your metadata will be visible at the url `chrome://extensions`
-![Metadata in the extensions tab](name.png)
+![Metadata in the extensions tab](/assets/article_images/2020-10-26-welcome-to-jekyll/name.png)
 
 #### Scripts and permissions
 
@@ -447,7 +448,7 @@ Your metadata will be visible at the url `chrome://extensions`
 - `permissions`: Listing permissions in this array gives you access to certain API operations such as `chrome.storage` and `chrome.bookmarks`. For our extension, we will only need access to `chrome.storage`, so we will use `storage`. Note: When you publish to the Chrome store, **you cannot request more permissions than your extension actually uses.** If you do, your application will be rejected by Chrome store reviewers.
 
 Our popup script will communicate to the content script (and vice versa) by using the `chrome.storage` api as an intermediary data store.
-![Communication between scripts](communication.png)
+![Communication between scripts](/assets/article_images/2020-10-26-welcome-to-jekyll/communication.png)
 
 ## Make React Compatible with Chrome
 
@@ -461,7 +462,7 @@ Unfortunately for us, code splitting makes it difficult to package our code into
 
 Additionally, Webpack adds random hashes to the files it builds. (This is to prompt browser to re-fetch files that may have changed between builds instead of relying on cached files). However, this also poses an issue for us because unless we account for the hash changes, we'll have to change our `manifest.json` to match the new files names every time we build.
 
-![file_splitting](file_splitting.png)
+![file_splitting](/assets/article_images/2020-10-26-welcome-to-jekyll/file_splitting.png)
 
 To prevent Webpack from making our extension unusable, we need to run a script to prevent code-splitting. This script allows us to without ejecting from Create React App.
 
@@ -502,7 +503,7 @@ We modified `package.json` to include 2 additional commands: `build:extension` a
 
 From now on, when we are building our extension, we should run `yarn build:extension`. Running this command will create a build directory that looks like this:
 
-![new build directory](newname.png)
+![new build directory](/assets/article_images/2020-10-26-welcome-to-jekyll/newname.png)
 
 Now that we have created our React app, written our extension boilerplate, and written build scripts to bundle our React jsx files as a single content script, we will go about adding a database to our React app. Since this is a chrome extension, we will be using the chrome.storage api (read about it here).
 
@@ -705,7 +706,7 @@ One very important aspect of creating a browser extension is dealing with how it
 
 Let's look at a concrete example of this. Load your chrome extension into chrome, and navigate to `www.example.com`. Shift + click to add a note, and see what happens.
 
-![Styling conflicts between extension and example.com](example-site-styling-conflicts.gif)
+![Styling conflicts between extension and example.com](/assets/article_images/2020-10-26-welcome-to-jekyll/example-site-styling-conflicts.gif)
 
 Our styling!! What happened? Well clearly, `www.example.com` has its own styling rules, and they are conflicting with those of our app.
 
@@ -954,11 +955,11 @@ Now that we've finished building our extension, let's try it out.
 
 First, navigate to `chrome://extensions` in the URL bar. Next, enable `Developer Mode` in the top right corner. And lastly, click `Load Unpacked` and upload your `build` folder. That's it!
 
-![Enable developer mode and upload](developermode.png)
+![Enable developer mode and upload](/assets/article_images/2020-10-26-welcome-to-jekyll/developermode.png)
 
 Now, we can play around with our extension on any page.
 
-![complete notes app on google.com](completed-notes-app-google.gif)
+![complete notes app on google.com](/assets/article_images/2020-10-26-welcome-to-jekyll/completed-notes-app-google.gif)
 
 A# appendix
 
