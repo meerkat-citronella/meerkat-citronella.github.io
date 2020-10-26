@@ -9,13 +9,13 @@ image: /assets/article_images/2020-10-26-welcome-to-jekyll/desktop.JPG
 
 ## Extensions are great! But not simple to build
 
-Chrome extensions are a great way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you might be probably familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ). Their product is almost entirely based around browser extensions, and Paypal recently bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**. With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
+Chrome extensions are a great way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you might be familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ). Their product is almost entirely based around browser extensions, and Paypal recently bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**. With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
 
 ![Top picks from the Chrome Extension Store](/assets/article_images/2020-10-26-welcome-to-jekyll/extensions.png)
 
 There are plenty of great JavaScript frameworks for web development. But React happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building frontend code. Unfortunately, Chrome extensions don't work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.
 
-When we built [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:
+When we built [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless hours tryigng to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:
 
 - Webpack does not create extension-compatible React builds
 - React components from your extension will interfere with the CSS styling of visited webpages
