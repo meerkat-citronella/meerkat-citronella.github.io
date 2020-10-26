@@ -11,25 +11,25 @@ image: /assets/article_images/2020-10-26-welcome-to-jekyll/desktop.JPG
 
 ## Browsers are the future
 
-Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of market share with claims from Google of over 2 billion active Chrome browsers in 2016. Chrome is wonderful for a handful of reasons:
+Google Chrome is now the most popular web browser of all time, and user adoption of Chrome has accelerated over the past several years. Chrome has over 2 billion active users, and it owns 65% of the web browser market share. In 2016, there were over 2 billion active Chrome users. Chrome is wonderful for a handful of reasons:
 
 1. It looks and runs the same on most computers
 2. It's easy to install
 3. You can turbocharge Chrome using Extensions
 
-Regarding point 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you're probability familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ)? Their product is almost entirely based around browser extensions, and Paypal just bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
+Regarding point 3, Chrome extensions are an incredible way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you're probably familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ)? Their product is almost entirely based around browser extensions, and Paypal just bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**! With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
 
-## Extensions are great, but not simple to build with React
+## Extensions are great but not simple to build with React
 
-In the year 2020, there are countless JavaScript frameworks that make developing for the web easier than ever. ReactJS happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building beautiful frontend UIs. Unfortunately, Chrome extensions don't work the same as traditional web applications. At [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.
+In the year 2020, a plethora of intuitive yet powerful JavaScript frameworks have made developing for the web easier than ever. ReactJS happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building beautiful frontend UIs. Unfortunately, Chrome extensions don't work the same as traditional web applications. At [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless days toiling away with the Chrome Extension API and React when we built our Chrome Extension. We tried several React+Chrome Extension tutorials available on the web, and unfortunately, none of them seem to work too well.
 
 Long story short, _you can't just run `create-react-app`, click export, and expect a working extension_.
 
-In this tutorial, we will guide you step-by-step in building your own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. [You can access the code for this extension here](https://github.com/meerkat-citronella/react-chrome-sticky-note-extension). Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.
+In this tutorial, we will guide you step-by-step in building our own React-based Chrome Extension. Along the way, we will build a sticky note extension that lets users write, save, and pin notes to any webpage. [You can access the code for this extension here](https://github.com/meerkat-citronella/react-chrome-sticky-note-extension). Most of our code will be written in React, but we will also use a fair amount of vanilla JavaScript.
 
 ### Skill level
 
-Everyone! Beginners as well as seasoned experts will learn
+This tutorial is written for developers familiar with React and the JavaScript ecosystem, but beginners should be able to along.
 
 ### Prerequisites
 
@@ -158,9 +158,9 @@ const StickyNotes = () => {
 }
 ```
 
-Few things to note about this `useEffect` function. Note that we are removing the listener on `useEffect` return. You can read more about cleaning up effects here. You should always remove your listeners in React, as subsequent renders will keep adding listeners unless they are removed. Note that we are using a named function for the listener callback, another necessity if we want to remove the listener (needs a reference a named function). Lastly, note the empty dependency array `[]` as the second and final argument of the `useEffect` callback function: this is intentional, as we only need to set the listener once, on the first render. You can read more about dependency arrays in regards to `useEffect` here.
+Few things to note about this `useEffect` function. Note that we are removing the listener on `useEffect` return. You can read more about cleaning up effects [here](https://reactjs.org/docs/hooks-intro.html). You should always remove your listeners in React, as subsequent renders will keep adding listeners unless they are removed. Lastly, note the empty dependency array `[]` as the second and final argument of the `useEffect` callback function: this is intentional, as we only need to set the listener once, on the first render. You can read more about dependency arrays in regards to `useEffect` [here](https://medium.com/better-programming/understanding-the-useeffect-dependency-array-2913da504c44).
 
-For the `setNotes` function call, we are making use of JavaScript's wonderfully expressive object literal notation, and using the splat operator `...` to set our `notes` variable. You can read more about object destructuring and the splat operator here. `e.pageX, e.pageY` are the pixel coordinates of the click on the page.
+For the `setNotes` function call, we are making use of JavaScript's wonderfully expressive object literal notation, and using the splat operator `...` to set our `notes` variable. You can read more about object destructuring and the splat operator [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax). `e.pageX, e.pageY` are the pixel coordinates of the click on the page.
 
 Remember the props we set up to be passed to our `Container` styled component above? Let's bring that into play. Let's set up our `return` statement:
 
@@ -194,7 +194,7 @@ The coordinates we gleaned from our shift + click listener are passed via props 
 
 ![basic sticky note functionality](/assets/article_images/2020-10-26-welcome-to-jekyll/basic-note.gif)
 
-Although we are able to enter text into the `textarea`, it is not being saved at all. To do this, we need to turn the `textarea` into a controlled component. You can read more about React controlled components here. This is standard practice for React forms. We will save the note text from `textarea` alongside the coordinate data in the `notes` variable.
+Although we are able to enter text into the `textarea`, it is not being saved at all. To do this, we need to turn the `textarea` into a controlled component. You can read more about React controlled components [here](https://reactjs.org/docs/forms.html). This is standard practice for React forms. We will save the note text from `textarea` alongside the coordinate data in the `notes` variable.
 
 In `StickyNotes.js`, update the component return statement to:
 
@@ -234,7 +234,7 @@ const StickyNotes = () => {
 }
 ```
 
-We again make use of the splat notation, as well as terneray operators (read more here) and the `&&` notation. `setNotes` here is identifying the note that is being edited (by comparing the coordinates of the note (`cv`) with the coordinates in the locally-scoped `note` variable) and adding (or editing) the `note` property.
+We again make use of the splat notation, as well as ternery operators (read more [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator)) and the `&&` notation. `setNotes` here is identifying the note that is being edited (by comparing the coordinates of the note (`cv`) with the coordinates in the locally-scoped `note` variable) and adding (or editing) the `note` property.
 
 The `textarea` is now a controlled component. You can log `notes` to the console, and see that is updating as you edit a note.
 
@@ -356,7 +356,10 @@ const StickyNotes = () => {
             <Header>
               <StyledButton onClick={handleDelete}>X</StyledButton>
             </Header>
-            <StyledTextArea onChange={handleChange} />
+            <StyledTextArea
+              onChange={handleChange}
+              note={note.note ? note.note : ""}
+            />
           </Container>
         );
       })}
@@ -710,15 +713,14 @@ Our styling!! What happened? Well clearly, `www.example.com` has its own styling
 
 There are a few solutions here. The first is to try to override the webpage's styling by using css techniques that take a higher precedence when the browser is computing styling, such as using `!important` or inline styling. These are inelegant solutions, both because they could potentially cause the inverse problem (our extension overriding the page styles and borking them up) and because they are heavy-handed and limited in the styling issues they can address (no more `styled-components`, for example). The second is to render these notes in an `<iframe>` element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these `StickyNotes` components inside of a shadow DOM instance.
 
-You can think of the shadow DOM as a "DOM within a DOM." Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don't conflict with those of the host webpage. You can read more about shadom DOMs here.
+You can think of the shadow DOM as a "DOM within a DOM." Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don't conflict with those of the host webpage. You can read more about [shadom DOMs here.](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
 
-To implement the shadow DOM in our app, we are going to use the module `react-shadow`. Read more about it in the repo here. Go ahead and add the package to your project via `npm i react-shadow` or `yarn add react-shadow`.
+To implement the shadow DOM in our app, we are going to use the module `react-shadow`. Read more about it in the [repo here](https://www.npmjs.com/package/react-shadow). Go ahead and add the package to your project via `npm i react-shadow` or `yarn add react-shadow`.
 
 Let's make a new file called `ShadowRoot.js` in our `src` folder. Add the code below:
 
-ShadowRoot.js:
-
 ```jsx
+// ShadowRoot.js
 import React, { useState } from "react";
 import root from "react-shadow";
 import { StyleSheetManager } from "styled-components";
