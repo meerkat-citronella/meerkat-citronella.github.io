@@ -83,11 +83,11 @@
           <a name="topofpage"></a>
           <h2 id="extensions-are-great-but-not-simple-to-build">Extensions are great! But not simple to build</h2>
 
-<p>Chrome extensions are a great way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you might be probably familiar with <a href="https://www.youtube.com/watch?v=aNv1qZ54YzQ">Honey</a>. Their product is almost entirely based around browser extensions, and Paypal recently bought them for <strong>$4 billion</strong>! <a href="https://www.grammarly.com">Grammarly</a>, another Chrome extension, recently raised $90 million and is now valued at over $<strong>1 billion</strong>. With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)</p>
+<p>Chrome extensions are a great way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you might be familiar with <a href="https://www.youtube.com/watch?v=aNv1qZ54YzQ">Honey</a>. Their product is almost entirely based around browser extensions, and Paypal recently bought them for <strong>$4 billion</strong>! <a href="https://www.grammarly.com">Grammarly</a>, another Chrome extension, recently raised $90 million and is now valued at over $<strong>1 billion</strong>.</p>
 
 <p><img src="/assets/article_images/2020-10-26-welcome-to-jekyll/extensions.png" alt="Top picks from the Chrome Extension Store" /></p>
 
-<p>There are plenty of great JavaScript frameworks for web development. But React happens to be <a href="https://twitter.com/AlexReibman/status/1203047332515926017/photo/1">one of the most in-demand JS frameworks</a> for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.</p>
+<p>Wouldn’t it be great to build an extension in React? React happens to be <a href="https://twitter.com/AlexReibman/status/1203047332515926017/photo/1">one of the most in-demand JS frameworks</a> for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.</p>
 
 <p>When we built <a href="https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US">DocIt</a>, we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:</p>
 
@@ -120,14 +120,14 @@
   <li><a href="https://developer.mozilla.org/en-US/docs/Web/API">HTML and the DOM API</a></li>
 </ul>
 
-<p>In this tutorial, you will learn:</p>
+<p>In this tutorial, you will:</p>
 
 <ul>
   <li>Turn a React App into Chrome Extension-compatible JavaScript</li>
   <li>Create Popups with the Chrome Extension API</li>
   <li>Modify web pages with Content Scripts</li>
   <li>Avoid CSS collisions with Shadow Roots</li>
-  <li>Resources to publish your Chrome Extension to the public and expedite the review process</li>
+  <li>Find resources to publish your Chrome Extension to the public and expedite the review process</li>
 </ul>
 
 <h2 id="starting-with-a-fresh-react-app">Starting with a Fresh React App</h2>
@@ -457,7 +457,7 @@
     <p><code class="language-plaintext highlighter-rouge">manifest.json</code>- Used to instruct Chrome how to run your scripts.</p>
   </li>
   <li>
-    <p><code class="language-plaintext highlighter-rouge">background.js</code>- A script that runs behind the scenes from your active web page. This script is usually used for advanced techniques such as message passing or running async computations.</p>
+    <p><code class="language-plaintext highlighter-rouge">background.js</code>- A script that runs behind the scenes from your active web page. This script is usually used for advanced techniques such as message passing or running async computations. We won’t be using background scripts for this tutorial.</p>
   </li>
   <li>
     <p>Popup- Popup is the window that launches when you press the extension button on the Chrome Toolbar.</p>
@@ -785,10 +785,6 @@ REACT_APP_LOCAL=true
 <span class="k">export</span> <span class="k">default</span> <span class="nx">StickyNotes</span><span class="p">;</span>
 </code></pre></div></div>
 
-<h3 id="create-a-background-script">Create a Background Script</h3>
-
-<p>Since our extension is very simple, we won’t require a backround script. However, if you wanted to use advanced techniques such as message passing, you can create a script called <code class="language-plaintext highlighter-rouge">background.js</code></p>
-
 <h3 id="make-the-sticky-note-a-shadow-component">Make the Sticky Note a Shadow Component</h3>
 
 <p>One very important aspect of creating a browser extension is dealing with how it interacts with the web page’s existing content. A React app is really just JavaScript, and as we saw above when crafting the <code class="language-plaintext highlighter-rouge">insertionPoint</code>, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the context of the host webpage, which has of course it’s own styling rules.</p>
@@ -803,7 +799,7 @@ REACT_APP_LOCAL=true
 
 <p>The second is to render these notes in an <code class="language-plaintext highlighter-rouge">&lt;iframe&gt;</code> element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these <code class="language-plaintext highlighter-rouge">StickyNotes</code> components inside of a shadow DOM instance.</p>
 
-<p>You can think of the shadow DOM as a “DOM within a DOM.” Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don’t conflict with those of the host webpage. You can read more about <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM">shadom DOMs here.</a></p>
+<p>You can think of the shadow DOM as a “DOM within a DOM.” Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don’t conflict with those of the host webpage. You can read more about <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM">shadow DOMs here.</a></p>
 
 <p>To implement the shadow DOM in our app, we are going to use the module <code class="language-plaintext highlighter-rouge">react-shadow</code>. Read more about it in the <a href="https://www.npmjs.com/package/react-shadow">repo here</a>. Go ahead and add the package to your project via <code class="language-plaintext highlighter-rouge">npm i react-shadow</code> or <code class="language-plaintext highlighter-rouge">yarn add react-shadow</code>.</p>
 
@@ -955,7 +951,7 @@ REACT_APP_LOCAL=true
 
 <p>The tricky part comes in making sure that <code class="language-plaintext highlighter-rouge">PopupComponent</code> gets where it needs to go (the <code class="language-plaintext highlighter-rouge">popup.html</code>) and doesn’t go where it isn’t needed (in the sticky notes).</p>
 
-<p>Remember in <code class="language-plaintext highlighter-rouge">manifest.json</code>, assinging the default popup like so?</p>
+<p>Remember in <code class="language-plaintext highlighter-rouge">manifest.json</code>, assigning the default popup like so?</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">//</span><span class="w"> </span><span class="err">manifest.json</span><span class="w">
 </span><span class="p">{</span><span class="w">
@@ -1063,7 +1059,8 @@ REACT_APP_LOCAL=true
 <h2 id="appendix">Appendix</h2>
 
 <ul>
-  <li><a href="https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix">Stackoverflow thread on code-splitting while building and prevent chunk files</a></li>
+  <li><a href="https://github.com/meerkat-citronella/react-chrome-sticky-note-extension">Code to the Sticky Notes App</a></li>
+  <li><a href="https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix">StackOverflow thread on code-splitting while building and prevent chunk files</a></li>
   <li><a href="https://www.youtube.com/watch?v=A6X1fDf4poc">Submitting your extension to the Chrome Store</a></li>
 </ul>
 

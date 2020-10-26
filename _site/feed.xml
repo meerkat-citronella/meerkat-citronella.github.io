@@ -6,19 +6,19 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 26 Oct 2020 16:06:24 -0400</pubDate>
-    <lastBuildDate>Mon, 26 Oct 2020 16:06:24 -0400</lastBuildDate>
+    <pubDate>Mon, 26 Oct 2020 16:41:57 -0400</pubDate>
+    <lastBuildDate>Mon, 26 Oct 2020 16:41:57 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
         <title>Create a Chrome Extension with React</title>
         <description>&lt;h2 id=&quot;extensions-are-great-but-not-simple-to-build&quot;&gt;Extensions are great! But not simple to build&lt;/h2&gt;
 
-&lt;p&gt;Chrome extensions are a great way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you might be probably familiar with &lt;a href=&quot;https://www.youtube.com/watch?v=aNv1qZ54YzQ&quot;&gt;Honey&lt;/a&gt;. Their product is almost entirely based around browser extensions, and Paypal recently bought them for &lt;strong&gt;$4 billion&lt;/strong&gt;! &lt;a href=&quot;https://www.grammarly.com&quot;&gt;Grammarly&lt;/a&gt;, another Chrome extension, recently raised $90 million and is now valued at over $&lt;strong&gt;1 billion&lt;/strong&gt;. With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)&lt;/p&gt;
+&lt;p&gt;Chrome extensions are a great way for developers to deliver delightful software to users. If you’ve ever watched a Mr. Beast video, you might be familiar with &lt;a href=&quot;https://www.youtube.com/watch?v=aNv1qZ54YzQ&quot;&gt;Honey&lt;/a&gt;. Their product is almost entirely based around browser extensions, and Paypal recently bought them for &lt;strong&gt;$4 billion&lt;/strong&gt;! &lt;a href=&quot;https://www.grammarly.com&quot;&gt;Grammarly&lt;/a&gt;, another Chrome extension, recently raised $90 million and is now valued at over $&lt;strong&gt;1 billion&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/article_images/2020-10-26-welcome-to-jekyll/extensions.png&quot; alt=&quot;Top picks from the Chrome Extension Store&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;There are plenty of great JavaScript frameworks for web development. But React happens to be &lt;a href=&quot;https://twitter.com/AlexReibman/status/1203047332515926017/photo/1&quot;&gt;one of the most in-demand JS frameworks&lt;/a&gt; for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.&lt;/p&gt;
+&lt;p&gt;Wouldn’t it be great to build an extension in React? React happens to be &lt;a href=&quot;https://twitter.com/AlexReibman/status/1203047332515926017/photo/1&quot;&gt;one of the most in-demand JS frameworks&lt;/a&gt; for building frontend code. Unfortunately, Chrome extensions don’t work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.&lt;/p&gt;
 
 &lt;p&gt;When we built &lt;a href=&quot;https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US&quot;&gt;DocIt&lt;/a&gt;, we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:&lt;/p&gt;
 
@@ -51,14 +51,14 @@
   &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API&quot;&gt;HTML and the DOM API&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;In this tutorial, you will learn:&lt;/p&gt;
+&lt;p&gt;In this tutorial, you will:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Turn a React App into Chrome Extension-compatible JavaScript&lt;/li&gt;
   &lt;li&gt;Create Popups with the Chrome Extension API&lt;/li&gt;
   &lt;li&gt;Modify web pages with Content Scripts&lt;/li&gt;
   &lt;li&gt;Avoid CSS collisions with Shadow Roots&lt;/li&gt;
-  &lt;li&gt;Resources to publish your Chrome Extension to the public and expedite the review process&lt;/li&gt;
+  &lt;li&gt;Find resources to publish your Chrome Extension to the public and expedite the review process&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;starting-with-a-fresh-react-app&quot;&gt;Starting with a Fresh React App&lt;/h2&gt;
@@ -388,7 +388,7 @@
     &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manifest.json&lt;/code&gt;- Used to instruct Chrome how to run your scripts.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;background.js&lt;/code&gt;- A script that runs behind the scenes from your active web page. This script is usually used for advanced techniques such as message passing or running async computations.&lt;/p&gt;
+    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;background.js&lt;/code&gt;- A script that runs behind the scenes from your active web page. This script is usually used for advanced techniques such as message passing or running async computations. We won’t be using background scripts for this tutorial.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Popup- Popup is the window that launches when you press the extension button on the Chrome Toolbar.&lt;/p&gt;
@@ -716,10 +716,6 @@ REACT_APP_LOCAL=true
 &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;StickyNotes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;create-a-background-script&quot;&gt;Create a Background Script&lt;/h3&gt;
-
-&lt;p&gt;Since our extension is very simple, we won’t require a backround script. However, if you wanted to use advanced techniques such as message passing, you can create a script called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;background.js&lt;/code&gt;&lt;/p&gt;
-
 &lt;h3 id=&quot;make-the-sticky-note-a-shadow-component&quot;&gt;Make the Sticky Note a Shadow Component&lt;/h3&gt;
 
 &lt;p&gt;One very important aspect of creating a browser extension is dealing with how it interacts with the web page’s existing content. A React app is really just JavaScript, and as we saw above when crafting the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;insertionPoint&lt;/code&gt;, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the context of the host webpage, which has of course it’s own styling rules.&lt;/p&gt;
@@ -734,7 +730,7 @@ REACT_APP_LOCAL=true
 
 &lt;p&gt;The second is to render these notes in an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;iframe&amp;gt;&lt;/code&gt; element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;StickyNotes&lt;/code&gt; components inside of a shadow DOM instance.&lt;/p&gt;
 
-&lt;p&gt;You can think of the shadow DOM as a “DOM within a DOM.” Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don’t conflict with those of the host webpage. You can read more about &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM&quot;&gt;shadom DOMs here.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;You can think of the shadow DOM as a “DOM within a DOM.” Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don’t conflict with those of the host webpage. You can read more about &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM&quot;&gt;shadow DOMs here.&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;To implement the shadow DOM in our app, we are going to use the module &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;react-shadow&lt;/code&gt;. Read more about it in the &lt;a href=&quot;https://www.npmjs.com/package/react-shadow&quot;&gt;repo here&lt;/a&gt;. Go ahead and add the package to your project via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm i react-shadow&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn add react-shadow&lt;/code&gt;.&lt;/p&gt;
 
@@ -886,7 +882,7 @@ REACT_APP_LOCAL=true
 
 &lt;p&gt;The tricky part comes in making sure that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PopupComponent&lt;/code&gt; gets where it needs to go (the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;popup.html&lt;/code&gt;) and doesn’t go where it isn’t needed (in the sticky notes).&lt;/p&gt;
 
-&lt;p&gt;Remember in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manifest.json&lt;/code&gt;, assinging the default popup like so?&lt;/p&gt;
+&lt;p&gt;Remember in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;manifest.json&lt;/code&gt;, assigning the default popup like so?&lt;/p&gt;
 
 &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;manifest.json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -994,7 +990,8 @@ REACT_APP_LOCAL=true
 &lt;h2 id=&quot;appendix&quot;&gt;Appendix&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix&quot;&gt;Stackoverflow thread on code-splitting while building and prevent chunk files&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/meerkat-citronella/react-chrome-sticky-note-extension&quot;&gt;Code to the Sticky Notes App&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix&quot;&gt;StackOverflow thread on code-splitting while building and prevent chunk files&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=A6X1fDf4poc&quot;&gt;Submitting your extension to the Chrome Store&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 

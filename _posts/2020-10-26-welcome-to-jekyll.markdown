@@ -9,13 +9,13 @@ image: /assets/article_images/2020-10-26-welcome-to-jekyll/desktop.JPG
 
 ## Extensions are great! But not simple to build
 
-Chrome extensions are a great way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you might be familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ). Their product is almost entirely based around browser extensions, and Paypal recently bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**. With a great idea and some hard work, perhaps you too can build a unicorn startup in Chrome :)
+Chrome extensions are a great way for developers to deliver delightful software to users. If you've ever watched a Mr. Beast video, you might be familiar with [Honey](https://www.youtube.com/watch?v=aNv1qZ54YzQ). Their product is almost entirely based around browser extensions, and Paypal recently bought them for **\$4 billion**! [Grammarly](https://www.grammarly.com), another Chrome extension, recently raised \$90 million and is now valued at over \$**1 billion**.
 
 ![Top picks from the Chrome Extension Store](/assets/article_images/2020-10-26-welcome-to-jekyll/extensions.png)
 
-There are plenty of great JavaScript frameworks for web development. But React happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building frontend code. Unfortunately, Chrome extensions don't work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.
+Wouldn't it be great to build an extension in React? React happens to be [one of the most in-demand JS frameworks](https://twitter.com/AlexReibman/status/1203047332515926017/photo/1) for building frontend code. Unfortunately, Chrome extensions don't work the same as traditional web apps. Traditional web apps serve HTML and JavaScript to users, but extensions run JavaScript alongside the browser. Hence, the architecture is completely different.
 
-When we built [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless hours tryigng to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:
+When we built [DocIt](https://chrome.google.com/webstore/detail/docit/fmceajdookgglbnmeonlcedeoajmchpn?hl=en-US), we spent countless hours trying to make React code compatible with Chrome. We tried following several React+Chrome Extension tutorials available on the web. However, none of them seemed to work too well. Here are some of the issues we encountered:
 
 - Webpack does not create extension-compatible React builds
 - React components from your extension will interfere with the CSS styling of visited webpages
@@ -42,13 +42,13 @@ To get started with this tutorial, you should be familiar with:
 - [Yarn](https://yarnpkg.com)
 - [HTML and the DOM API](https://developer.mozilla.org/en-US/docs/Web/API)
 
-In this tutorial, you will learn:
+In this tutorial, you will:
 
 - Turn a React App into Chrome Extension-compatible JavaScript
 - Create Popups with the Chrome Extension API
 - Modify web pages with Content Scripts
 - Avoid CSS collisions with Shadow Roots
-- Resources to publish your Chrome Extension to the public and expedite the review process
+- Find resources to publish your Chrome Extension to the public and expedite the review process
 
 ## Starting with a Fresh React App
 
@@ -382,7 +382,7 @@ However, things are a bit different when we're working with React. When you buil
 
 - `manifest.json`- Used to instruct Chrome how to run your scripts.
 
-- `background.js`- A script that runs behind the scenes from your active web page. This script is usually used for advanced techniques such as message passing or running async computations.
+- `background.js`- A script that runs behind the scenes from your active web page. This script is usually used for advanced techniques such as message passing or running async computations. We won't be using background scripts for this tutorial.
 
 - Popup- Popup is the window that launches when you press the extension button on the Chrome Toolbar.
 
@@ -694,10 +694,6 @@ const StickyNotes = () => {
 export default StickyNotes;
 ```
 
-### Create a Background Script
-
-Since our extension is very simple, we won't require a backround script. However, if you wanted to use advanced techniques such as message passing, you can create a script called `background.js`
-
 ### Make the Sticky Note a Shadow Component
 
 One very important aspect of creating a browser extension is dealing with how it interacts with the web page's existing content. A React app is really just JavaScript, and as we saw above when crafting the `insertionPoint`, in the case of an extension, that js is simply appended to the existing html/js/css of the webpage that it is being run on. This potentially causes nasty styling conflicts, since the html/jss/css that we insert into the webpage via our React app content script is run in the context of the host webpage, which has of course it's own styling rules.
@@ -712,7 +708,7 @@ There are a few solutions here. The first is to try to override the webpage's st
 
 The second is to render these notes in an `<iframe>` element. Nothing inherently wrong with this, but it ends up being very complicated and not worth the time. The third method, and the one that we will be using, is to render these `StickyNotes` components inside of a shadow DOM instance.
 
-You can think of the shadow DOM as a "DOM within a DOM." Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don't conflict with those of the host webpage. You can read more about [shadom DOMs here.](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
+You can think of the shadow DOM as a "DOM within a DOM." Each shadow DOM is cut off from styling rules dictated from outside the shadow DOM, and hence makes it the perfect vehicle for making sure our styles don't conflict with those of the host webpage. You can read more about [shadow DOMs here.](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
 
 To implement the shadow DOM in our app, we are going to use the module `react-shadow`. Read more about it in the [repo here](https://www.npmjs.com/package/react-shadow). Go ahead and add the package to your project via `npm i react-shadow` or `yarn add react-shadow`.
 
@@ -867,7 +863,7 @@ export const PopupComponent = () => {
 
 The tricky part comes in making sure that `PopupComponent` gets where it needs to go (the `popup.html`) and doesn't go where it isn't needed (in the sticky notes).
 
-Remember in `manifest.json`, assinging the default popup like so?
+Remember in `manifest.json`, assigning the default popup like so?
 
 ```json
 // manifest.json
@@ -971,7 +967,7 @@ To wrap up, here's what we learned:
 ## Appendix
 
 - [Code to the Sticky Notes App](https://github.com/meerkat-citronella/react-chrome-sticky-note-extension)
-- [Stackoverflow thread on code-splitting while building and prevent chunk files](https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix)
+- [StackOverflow thread on code-splitting while building and prevent chunk files](https://stackoverflow.com/questions/53796986/build-react-app-generate-static-files-with-chunk-suffix)
 - [Submitting your extension to the Chrome Store](https://www.youtube.com/watch?v=A6X1fDf4poc)
 
 [jekyll]: http://jekyllrb.com
